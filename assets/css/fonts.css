@@ -1,0 +1,142 @@
+@font-face {
+	font-family: 'Cera Pro';
+	src: url('/fonts/CeraPro-Medium.eot');
+	src: local('/fonts/Cera Pro Medium'), local('/fonts/CeraPro-Medium'),
+		url('/fonts/CeraPro-Medium.eot?#iefix') format('embedded-opentype'),
+		url('/fonts/CeraPro-Medium.woff2') format('woff2'),
+		url('/fonts/CeraPro-Medium.woff') format('woff'),
+		url('/fonts/CeraPro-Medium.ttf') format('truetype');
+	font-weight: 500;
+	font-style: normal;
+	font-display: swap;
+}
+
+@font-face {
+	font-family: 'Cera Pro';
+	src: url('/fonts/CeraPro-Light.eot');
+	src: local('/fonts/Cera Pro Light'), local('/fonts/CeraPro-Light'),
+		url('/fonts/CeraPro-Light.eot?#iefix') format('embedded-opentype'),
+		url('/fonts/CeraPro-Light.woff2') format('woff2'),
+		url('/fonts/CeraPro-Light.woff') format('woff'),
+		url('/fonts/CeraPro-Light.ttf') format('truetype');
+	font-weight: 300;
+	font-style: normal;
+	font-display: swap;
+}
+
+@font-face {
+	font-family: 'Cera Pro';
+	src: url('/fonts/CeraPro-Regular.eot');
+	src: local('/fonts/Cera Pro Regular'), local('/fonts/CeraPro-Regular'),
+		url('/fonts/CeraPro-Regular.eot?#iefix') format('embedded-opentype'),
+		url('/fonts/CeraPro-Regular.woff2') format('woff2'),
+		url('/fonts/CeraPro-Regular.woff') format('woff'),
+		url('/fonts/CeraPro-Regular.ttf') format('truetype');
+	font-weight: normal;
+	font-style: normal;
+	font-display: swap;
+}
+
+@font-face {
+	font-family: 'Rubik';
+	src: url('/fonts/Rubik-Bold.eot');
+	src: local('/fonts/Rubik Bold'), local('/fonts/Rubik-Bold'),
+		url('/fonts/Rubik-Bold.eot?#iefix') format('embedded-opentype'),
+		url('/fonts/Rubik-Bold.woff2') format('woff2'),
+		url('/fonts/Rubik-Bold.woff') format('woff'),
+		url('/fonts/Rubik-Bold.ttf') format('truetype');
+	font-weight: bold;
+	font-style: normal;
+	font-display: swap;
+}
+
+@font-face {
+	font-family: 'Rubik';
+	src: url('/fonts/Rubik-Light.eot');
+	src: local('/fonts/Rubik Light'), local('/fonts/Rubik-Light'),
+		url('/fonts/Rubik-Light.eot?#iefix') format('embedded-opentype'),
+		url('/fonts/Rubik-Light.woff2') format('woff2'),
+		url('/fonts/Rubik-Light.woff') format('woff'),
+		url('/fonts/Rubik-Light.ttf') format('truetype');
+	font-weight: 300;
+	font-style: normal;
+	font-display: swap;
+}
+
+@font-face {
+	font-family: 'Gotu';
+	src: url('/fonts/Gotu-Regular.eot');
+	src: local('/fonts/Gotu'), local('/fonts/Gotu-Regular'),
+		url('/fonts/Gotu-Regular.eot?#iefix') format('embedded-opentype'),
+		url('/fonts/Gotu-Regular.woff2') format('woff2'),
+		url('/fonts/Gotu-Regular.woff') format('woff'),
+		url('/fonts/Gotu-Regular.ttf') format('truetype');
+	font-weight: normal;
+	font-style: normal;
+	font-display: swap;
+}
+
+@font-face {
+	font-family: 'Rubik';
+	src: url('/fonts/Rubik-Regular.eot');
+	src: local('/fonts/Rubik Regular'), local('/fonts/Rubik-Regular'),
+		url('/fonts/Rubik-Regular.eot?#iefix') format('embedded-opentype'),
+		url('/fonts/Rubik-Regular.woff2') format('woff2'),
+		url('/fonts/Rubik-Regular.woff') format('woff'),
+		url('/fonts/Rubik-Regular.ttf') format('truetype');
+	font-weight: normal;
+	font-style: normal;
+	font-display: swap;
+}
+
+@font-face {
+	font-family: 'Century Gothic';
+	src: url('/fonts/CenturyGothic-Bold.eot');
+	src: local('/fonts/Century Gothic Bold'), local('/fonts/CenturyGothic-Bold'),
+		url('/fonts/CenturyGothic-Bold.eot?#iefix') format('embedded-opentype'),
+		url('/fonts/CenturyGothic-Bold.woff2') format('woff2'),
+		url('/fonts/CenturyGothic-Bold.woff') format('woff'),
+		url('/fonts/CenturyGothic-Bold.ttf') format('truetype');
+	font-weight: bold;
+	font-style: normal;
+	font-display: swap;
+}
+
+@font-face {
+	font-family: 'Rubik';
+	src: url('/fonts/Rubik-Medium.eot');
+	src: local('/fonts/Rubik Medium'), local('/fonts/Rubik-Medium'),
+		url('/fonts/Rubik-Medium.eot?#iefix') format('embedded-opentype'),
+		url('/fonts/Rubik-Medium.woff2') format('woff2'),
+		url('/fonts/Rubik-Medium.woff') format('woff'),
+		url('/fonts/Rubik-Medium.ttf') format('truetype');
+	font-weight: 500;
+	font-style: normal;
+	font-display: swap;
+}
+
+@font-face {
+	font-family: 'Century Gothic';
+	src: url('/fonts/CenturyGothic.eot');
+	src: local('/fonts/Century Gothic'), local('/fonts/CenturyGothic'),
+		url('/fonts/CenturyGothic.eot?#iefix') format('embedded-opentype'),
+		url('/fonts/CenturyGothic.woff2') format('woff2'),
+		url('/fonts/CenturyGothic.woff') format('woff'),
+		url('/fonts/CenturyGothic.ttf') format('truetype');
+	font-weight: normal;
+	font-style: normal;
+	font-display: swap;
+}
+
+@font-face {
+	font-family: 'Cera Pro';
+	src: url('/fonts/CeraPro-Bold.eot');
+	src: local('/fonts/Cera Pro Bold'), local('/fonts/CeraPro-Bold'),
+		url('/fonts/CeraPro-Bold.eot?#iefix') format('embedded-opentype'),
+		url('/fonts/CeraPro-Bold.woff2') format('woff2'),
+		url('/fonts/CeraPro-Bold.woff') format('woff'),
+		url('/fonts/CeraPro-Bold.ttf') format('truetype');
+	font-weight: bold;
+	font-style: normal;
+	font-display: swap;
+}
