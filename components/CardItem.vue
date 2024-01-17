@@ -70,7 +70,8 @@ watch(modalCardIsOpen, (newState) => {
 						<Counter v-else
 							@increase-counter="$emit('increase-quantity', product.id)"
 							@decrease-counter="$emit('decrease-quantity', product.id)"
-							:quantity="props.productQuantity" />
+							:quantity="props.productQuantity"
+							class="card__counter" />
 					</div>
 				</div>
 			</div>
@@ -82,15 +83,16 @@ watch(modalCardIsOpen, (newState) => {
 		@toggle-modal="modalCardIsOpen = !modalCardIsOpen">
 		<CardModal
 			:productId="product.id"
+			:productQuantity="props.productQuantity"
 			@toggle-modal="modalCardIsOpen = !modalCardIsOpen" />
 	</modalWindow>
 </template>
 
 <style scoped>
 .card {
-	/* position: relative; */
+	position: relative;
 	max-width: 620px;
-	min-height: 765px;
+	height: 765px;
 	background: linear-gradient(1deg, #121212 0.77%, rgba(18, 18, 18, 0.49) 43.56%);
 	border: 1px solid #282828;
 	border-radius: 12px;
@@ -263,11 +265,10 @@ watch(modalCardIsOpen, (newState) => {
 	align-items: center;
 	width: 178px;
 	height: 54px;
-	/* padding: 0.8em 2.1em; */
 	font-family: "Century Gothic";
 	font-size: 19px;
 	font-weight: 700;
-	line-height: normal;
+	line-height: 1;
 	letter-spacing: 0.19px;
 	color: var(--accent-color);
 	background: transparent;
@@ -299,5 +300,91 @@ watch(modalCardIsOpen, (newState) => {
 
 .card__button-cart:hover::before {
 	opacity: 1;
+}
+
+@media (max-width: 575.98px) {
+	.card {
+		height: 475px;
+		border-radius: 6px;
+	}
+
+	.card__badge {
+		top: 12px;
+		right: 12px;
+		font-size: 9px;
+		border-radius: 3px;
+	}
+
+	.card__info {
+		padding: 24px;
+	}
+
+	.card__title {
+		font-size: 22px;
+	}
+
+	.card__weight {
+		font-size: 11px;
+	}
+
+	.card__desc {
+		margin-bottom: 30px;
+		font-size: 14px;
+	}
+
+	.card__price {
+		flex-direction: column;
+		align-items: flex-start;
+	}
+
+	.card__price-actual {
+		order: 2;
+		margin-right: 0;
+		font-size: 26px;
+	}
+
+	.card__price-old {
+		margin-bottom: 8px;
+		font-size: 11px;
+	}
+
+	.card__price-old::after {
+		bottom: 5px;
+	}
+
+	.card__button-fav {
+		width: 41px;
+		height: 41px;
+		margin-right: 10px;
+		background-size: 14px 12px;
+		border-radius: 5px;
+	}
+
+	.card__button-cart {
+		width: 124px;
+		height: 41px;
+		font-size: 15px;
+		border-radius: 5px;
+	}
+
+	.card__button-cart::before {
+		border-radius: 5px;
+	}
+
+	.card__counter {
+		width: 124px;
+		height: 41px;
+		border-radius: 5px;
+	}
+
+	.card__counter :deep(.counter__value) {
+		font-size: 16px;
+	}
+
+	.card__counter :deep(.counter__plus),
+	.card__counter :deep(.counter__minus) {
+		--line-width: 12px;
+		padding: 12px;
+	}
 }
 </style>

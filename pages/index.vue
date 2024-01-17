@@ -6,70 +6,87 @@ const productNew = productStore.categoryNew;
 const productVipBento = productStore.categoryVipBento;
 const productCurry = productStore.categoryCurry;
 
+const { clientWidth } = useClientWidth();
+
+
+const decorIconsQuantity = computed(() => {
+	if (clientWidth.value < 576) return 8;
+	return 10;
+});
+
+
+
+const backgroundDecor = ref(null);
+if (backgroundDecor.value) {
+	console.log(backgroundDecor.value);
+	const handleBackgroundDecor = useBackgroundDecorHandler(backgroundDecor);
+	handleBackgroundDecor();
+}
+
 </script>
 
 <template>
-	<CarouselHero />
+	<CategoryTitleList v-if="clientWidth < 576" class="category-title--index" />
+	<CarouselHero v-if="clientWidth >= 576" />
 
-	<div class="product">
-		<div class="container">
-			<div class="product__title-wrap">
-				<h2 class="product__title">ЯПОНСКИЕ КОРОБОЧКИ С ЕДОЙ</h2>
-				<DecorIcons :quantity="10" class="product__title-decor" />
-			</div>
-		</div>
+	<TitleWithDecor
+		class="title-w-d--japan-food title-w-d--japan-food-index-top"
+		:decorIconsQuantity="decorIconsQuantity">
+		ЯПОНСКИЕ КОРОБОЧКИ&nbsp;С&nbsp;ЕДОЙ
+	</TitleWithDecor>
+
+	<CarouselHero v-if="clientWidth < 576" />
+
+	<div class="background-decor" ref="backgroundDecor">
+		<CategoryTitleList v-if="clientWidth >= 576" class="category-title--index" />
+		<Category id="new"
+			title="Новинки"
+			classModifier="new"
+			:productList="productNew" />
+
+		<Reasons v-if="clientWidth >= 576" />
+
+		<Category id="vip-bento"
+			title="VIP-Бенто"
+			classModifier="vip-bento"
+			:productList="productVipBento" />
+
+		<Category id="curry"
+			class="category--without-mb"
+			classModifier="curry"
+			title="Карри"
+			:productList="productCurry" />
 	</div>
-	<CategoryTitleList class="category-title--index" />
-	<Category id="new"
-		title="Новинки"
-		classModifier="new"
-		:productList="productNew" />
-
-	<Reasons />
-
-	<Category id="vip-bento"
-		title="VIP-Бенто"
-		classModifier="vip-bento"
-		:productList="productVipBento" />
-
-	<Category id="curry"
-		title="Карри"
-		classModifier="curry"
-		:productList="productCurry" />
 
 	<Support class="support--index" />
+
+	<TitleWithDecor v-if="clientWidth < 576"
+		class="title-w-d--japan-food title-w-d--japan-food-index-bottom"
+		:decorIconsQuantity="decorIconsQuantity">
+		ЯПОНСКИЕ КОРОБОЧКИ&nbsp;С&nbsp;ЕДОЙ
+	</TitleWithDecor>
+
+	<NavMenu v-if="clientWidth < 576" />
 </template>
 
 <style scoped>
-.product {
-	padding-top: 40px;
-}
-
-.product__title-wrap {
-	display: flex;
-	justify-content: space-between;
-	align-items: center;
-	margin-bottom: 30px
-}
-
-.product__title {
-	margin-right: 10px;
-	font-family: "Century Gothic";
-	font-size: 54px;
-	font-weight: 400;
-	line-height: 1;
-	letter-spacing: 0.54px;
-	color: var(--accent-color);
-}
-
-.product__title-decor {}
-
 .category-title--index {
 	margin-bottom: 50px;
 	padding: 0 0 20px;
 }
 
 .support--index {
-	padding: 5px 0 55px;
+	padding: 40px 0 55px;
+}
+
+@media (max-width: 575.98px) {
+	.category-title--index {
+		padding: 10px 0 0;
+		margin-bottom: 0;
+	}
+
+	.support--index {
+		padding: 25px 0 0;
+	}
 }
 </style>

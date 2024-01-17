@@ -25,6 +25,7 @@ const scrollToTop = () => window.scrollTo({ top: 0, behavior: 'smooth' });
 	position: fixed;
 	right: 35px;
 	bottom: 160px;
+	z-index: 5;
 	width: 50px;
 	height: 50px;
 	background-image:
@@ -37,6 +38,7 @@ const scrollToTop = () => window.scrollTo({ top: 0, behavior: 'smooth' });
 	background-position: center;
 	border: none;
 	border-radius: 14px;
+	box-shadow: 0px 4px 12px 0px rgba(0, 0, 0, 0.3);
 	opacity: 0;
 	transition: opacity 150ms ease-in-out;
 	cursor: pointer;
@@ -44,5 +46,14 @@ const scrollToTop = () => window.scrollTo({ top: 0, behavior: 'smooth' });
 
 .button-scroll-to-top.is-visible {
 	opacity: 1;
+}
+
+@media (max-width: 575.98px) {
+	.button-scroll-to-top {
+		width: 40px;
+		height: 40px;
+		right: 10px;
+		bottom: 60px;
+	}
 }
 </style>

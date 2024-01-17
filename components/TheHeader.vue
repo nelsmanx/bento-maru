@@ -19,6 +19,9 @@ const scrollHandler = () => {
 	window.scrollY > 0 ? pageIsScrolled.value = true : pageIsScrolled.value = false;
 };
 
+
+const { clientWidth } = useClientWidth();
+
 </script>
 
 <template>
@@ -28,29 +31,29 @@ const scrollHandler = () => {
 				class="header__button-burger"></button>
 			<div class="container">
 				<div class="header__items">
-					<a class="header__tel" href="tel:+79006600020">+7 (900) 660-00-20</a>
-					<span class="header__city">Южно-Сахалинск</span>
+					<a v-if="clientWidth >= 576" class="header__tel" href="tel:+79006600020">+7 (900) 660-00-20</a>
+					<span v-if="clientWidth >= 576" class="header__city">Южно-Сахалинск</span>
 					<div class="header__logo ">
 						<img v-if="$route.path === '/'" class="header__logo-image" src="~\assets\images\logo-cropped-top.svg" alt="Логотип компании">
 						<NuxtLink v-else to="/" class="header__logo-link">
 							<img class="header__logo-image" src="~\assets\images\logo-cropped-top.png" alt="Логотип компании">
 						</NuxtLink>
 					</div>
-					<social-list class="header__social"
+					<social-list v-if="clientWidth >= 576" class="header__social"
 						:class="{ 'header__social--cart-full': hasProductItems }">
 						<SocialItem modifier="vk" link="https://vk.com/" />
 						<SocialItem modifier="telegram" link="https://t.me/" />
 						<SocialItem modifier="whatsapp" link="https://wa.me/" />
 					</social-list>
 					<div class="header__actions">
-						<NuxtLink to="/favorites">
-							<div class="header__button-fav"
-								:class="[
-									{ 'header__button-fav--cart-full': hasProductItems },
-									{ 'is-active': isItemInFav }
-								]">
-							</div>
+						<NuxtLink to="/favorites"
+							class="header__button-fav"
+							:class="[
+								{ 'header__button-fav--cart-full': hasProductItems },
+								{ 'is-active': isItemInFav }
+							]">
 						</NuxtLink>
+						<a v-if="clientWidth < 576" class="header__button-tel" href="tel:+79006600020"></a>
 						<NuxtLink to="/cart">
 							<HeaderCart class="header__cart" />
 						</NuxtLink>
@@ -67,27 +70,15 @@ const scrollHandler = () => {
 	top: 0;
 	z-index: 10;
 	background-color: #2a2b2f;
-	background-image: url("~/assets/images/background-pattern.svg");
+	background-image: url("~/assets/images/background/pattern.svg");
 	background-position: 0 0;
 	background-repeat: repeat;
 }
 
 .header.shadow-on-scroll {
-	box-shadow: 0px 0px 10px 5px rgb(100 100 100 / 15%);
+	box-shadow: 0px 0px 10px 5px rgb(0 0 0 / 15%);
 }
 
-/* .header.is-fixed {
-	position: fixed;
-	z-index: 10;
-	top: 0;
-	left: 0;
-	right: 0;
-	background-color: #2a2b2f;
-	background-image: url("~/assets/images/background-pattern.svg");
-	background-position: 0 0;
-	background-repeat: repeat;
-	box-shadow: 0px 0px 10px 5px rgb(100 100 100 / 15%);
-} */
 .header__inner {
 	position: relative;
 }
@@ -166,9 +157,6 @@ const scrollHandler = () => {
 }
 
 .header__button-fav {
-	display: flex;
-	justify-content: center;
-	align-items: center;
 	width: 44px;
 	height: 44px;
 	margin-right: 8px;
@@ -185,5 +173,53 @@ const scrollHandler = () => {
 
 .header__button-fav.is-active {
 	background-image: url("~/assets/icons/fav-orange-active.svg");
+}
+
+@media (max-width: 575.98px) {
+	.header__items {
+		height: 70px;
+	}
+
+	.header__button-burger {
+		left: 22px;
+		width: 30px;
+		height: 30px;
+		background-size: 15px 11px;
+	}
+
+	.header__logo-image {
+		--scale: 0.55;
+	}
+
+	.header__actions {
+		margin-left: auto;
+	}
+
+	.header__button-fav {
+		width: 34px;
+		height: 34px;
+		margin-right: 9px;
+		border-width: 1px;
+		border-radius: 7px;
+		background-size: 17px 14px;
+	}
+
+	.header__button-tel {
+		display: block;
+		padding: 5px;
+		width: 34px;
+		height: 34px;
+		background: url("~/assets/icons/tel-white.svg") center/ 14px 14px no-repeat;
+		border: 1px solid #fff;
+		border-radius: 7px;
+		cursor: pointer;
+	}
+
+	.header__cart {
+		position: fixed;
+		left: 50%;
+		bottom: 20px;
+		transform: translateX(-50%);
+	}
 }
 </style>

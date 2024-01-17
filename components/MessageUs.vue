@@ -58,4 +58,35 @@
 	margin-right: 12px;
 	background: url("~/assets/icons/message-us-button.svg") center/contain no-repeat;
 }
+
+@media (max-width: 575.98px) {
+	.message-us {
+		min-height: auto;
+		padding: 35px;
+		border-radius: 6px;
+	}
+
+	.message-us__title {
+		font-size: 25px;
+		text-align: center;
+	}
+
+	.message-us__desc {
+		margin-bottom: 20px;
+		font-size: 12px;
+		text-align: center;
+	}
+
+	.message-us__button {
+		height: 44px;
+		font-size: 13px;
+		font-weight: 700;
+		border-radius: 6px;
+	}
+
+	.message-us__button::before {
+		width: 16px;
+		height: 16px;
+	}
+}
 </style>

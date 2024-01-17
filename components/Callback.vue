@@ -56,7 +56,7 @@
 	font-family: "Century Gothic";
 	font-size: 14px;
 	font-weight: 700;
-	line-height: 1.6;
+	line-height: 1;
 	letter-spacing: 0.14px;
 	color: #fef6f2;
 	background-color: transparent;
@@ -81,11 +81,48 @@
 	font-family: "Century Gothic";
 	font-size: 18px;
 	font-weight: 700;
-	line-height: normal;
+	line-height: 1;
 	color: var(--accent-color);
 	background: #fff;
 	border: none;
 	border-radius: 12px;
 	cursor: pointer;
+}
+
+@media (max-width: 575.98px) {
+	.callback {
+		min-height: auto;
+		padding: 26px 26px 32px;
+		border-radius: 6px;
+	}
+
+	.callback__title {
+		margin-bottom: 16px;
+		font-size: 25px;
+		text-align: center;
+	}
+
+	.callback__desc {
+		margin-bottom: 24px;
+		font-size: 12px;
+		text-align: center;
+	}
+
+	.callback__form {
+		grid-template-columns: 100%;
+		gap: 14px;
+	}
+
+	.callback__form-input {
+		height: 50px;
+		font-size: 13px;
+		border-radius: 6px;
+	}
+
+	.callback__form-button {
+		height: 54px;
+		font-size: 15px;
+		border-radius: 6px;
+	}
 }
 </style>

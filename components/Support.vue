@@ -15,4 +15,11 @@
 	grid-auto-flow: column;
 	gap: 60px;
 }
+
+@media (max-width: 575.98px) {
+	.support__group {
+		grid-auto-flow: row;
+		gap: 20px;
+	}
+}
 </style>

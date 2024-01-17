@@ -26,27 +26,27 @@ const props = defineProps({
 }
 
 .decor-icons__item {
+	--scale: 1;
 	background-size: contain;
 	background-position: center bottom;
 	background-repeat: no-repeat;
 }
 
 .decor-icons__item:nth-child(3n+1) {
-	width: 28px;
-	height: 27px;
+	width: calc(var(--scale) *28px);
+	height: calc(var(--scale) * 27px);
 	background-image: url("~/assets/icons/decor/1.svg");
 }
 
 .decor-icons__item:nth-child(3n+2) {
-	width: 39px;
-	height: 26px;
+	width: calc(var(--scale) * 39px);
+	height: calc(var(--scale) * 27px);
 	background-image: url("~/assets/icons/decor/2.svg");
 }
 
 .decor-icons__item:nth-child(3n+3) {
-	width: 32px;
-	height: 27px;
+	width: calc(var(--scale) * 32px);
+	height: calc(var(--scale) * 27px);
 	background-image: url("~/assets/icons/decor/3.svg");
 }
-
 </style>

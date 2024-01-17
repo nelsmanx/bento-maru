@@ -1,5 +1,10 @@
+<script setup>
+const { clientWidth } = useClientWidth();
+</script>
+
 <template>
-	<footer class="footer">
+	<footer v-if="clientWidth >= 576"
+		class="footer">
 		<div class="container">
 			<div class="footer__top">
 				<div class="footer__top-inner">
@@ -55,6 +60,53 @@
 						<SocialItem modifier="whatsapp" link="https://wa.me/" />
 					</social-list>
 				</div>
+			</div>
+		</div>
+	</footer>
+
+	<footer v-if="clientWidth < 576"
+		class="footer-mobile">
+		<div class="container">
+			<div class="footer-mobile__info">
+				<div class="footer-mobile__tel">
+					<p class="footer-mobile__tel-text-accent">Доставка по Южно-Сахалинску</p>
+					<a class="footer-mobile__tel-link" href="tel:+79006600020">+7 (900) 660-00-20</a>
+				</div>
+
+				<div class="sidebar-menu__schedule">
+					<p class="footer-mobile__schedule-text-accent">Принимаем заказы</p>
+					<p class="footer-mobile__schedule-text">с 10:00 до 18:00</p>
+				</div>
+			</div>
+
+			<social-list class="footer-mobile__social">
+				<SocialItem modifier="vk" link="https://vk.com/" />
+				<SocialItem modifier="telegram" link="https://t.me/" />
+				<SocialItem modifier="whatsapp" link="https://wa.me/" />
+			</social-list>
+
+			<button class="footer-mobile__button-callback">Задать вопрос</button>
+
+			<div class="footer-mobile__link-section">
+				<ul class="footer-mobile__link-list">
+					<li class="footer-mobile__link-item">
+						<a class="footer-mobile__link" href="#">Условия проведения акций</a>
+					</li>
+					<li class="footer-mobile__link-item">
+						<a class="footer-mobile__link" href="#">Политика конфиденциальности</a>
+					</li>
+					<li class="footer-mobile__link-item">
+						<a class="footer-mobile__link" href="#">Прочие ссылки</a>
+					</li>
+				</ul>
+			</div>
+
+			<div class="footer-mobile__copr">
+				<span class="footer-mobile__copr-text">© 2023 ООО «СОТОРА», 693027 Сахалинская область, г.Южно-Сахалинск, пр-кт Победы д.9Б, кв.62, ИНН 6166106919, ОГРН 1226500003982. </span>
+				<a class="footer-mobile__copr-link" href="#">Публичная оферта</a>
+				<a class="footer-mobile__copr-link" href="#">Политика использования cookie</a>
+				<a class="footer-mobile__copr-link" href="#">Политика конфиденциальности</a>
+				<a class="footer-mobile__copr-link" href="#">Согласие на обработку персональных данных</a>
 			</div>
 		</div>
 	</footer>
@@ -251,4 +303,137 @@
 }
 
 .footer__bottom-social {}
+</style>
+
+<style scoped>
+.footer-mobile {
+	padding: 42px 0 0;
+}
+
+.footer-mobile__info {
+	margin-bottom: 44px;
+}
+
+.footer-mobile__tel {
+	margin-bottom: 40px;
+	text-align: center;
+}
+
+.sidebar-menu__schedule {
+	margin-bottom: 44px;
+	text-align: center;
+}
+
+.footer-mobile__tel-text-accent,
+.footer-mobile__schedule-text-accent {
+	margin-bottom: 5px;
+	font-family: "Cera Pro";
+	font-size: 14px;
+	font-weight: 400;
+	line-height: normal;
+	letter-spacing: 0.06em;
+	color: var(--accent-color);
+}
+
+.footer-mobile__tel-link,
+.footer-mobile__schedule-text {
+	font-family: "Century Gothic";
+	font-size: 34px;
+	font-weight: 700;
+	line-height: normal;
+	color: #fff;
+}
+
+.footer-mobile__social {
+	margin-bottom: 35px;
+}
+
+.footer-mobile__social :deep(.social__list) {
+	display: grid;
+	justify-content: center;
+	gap: 5px;
+}
+
+.footer-mobile__social :deep(.social__link) {
+	border-radius: 8px;
+}
+
+.footer-mobile__button-callback {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	max-width: 315px;
+	width: 100%;
+	height: 50px;
+	margin-inline: auto;
+	margin-bottom: 45px;
+	padding: 5px;
+	font-family: "Century Gothic";
+	font-size: 16px;
+	font-weight: 700;
+	line-height: normal;
+	letter-spacing: 0.16px;
+	color: #fff;
+	background: var(--accent-gradient);
+	border: none;
+	border-radius: 5px;
+	cursor: pointer;
+}
+
+.footer-mobile__link-section {
+	margin-bottom: 50px;
+}
+
+.footer-mobile__link-list {}
+
+.footer-mobile__link-item {
+	text-align: center;
+}
+
+.footer-mobile__link-item:not(:last-child) {
+	margin-bottom: 20px;
+}
+
+.footer-mobile__link {
+	font-family: "Cera Pro";
+	font-size: 16px;
+	font-weight: 300;
+	line-height: normal;
+	letter-spacing: 0.16px;
+	color: #f9fafb;
+	opacity: 0.4;
+}
+
+.footer-mobile__link:hover {
+	color: var(--accent-color);
+	opacity: 1;
+}
+
+.footer-mobile__copr {}
+
+.footer-mobile__copr-text,
+.footer-mobile__copr-link {
+	font-family: "Cera Pro";
+	font-size: 10px;
+	font-weight: 300;
+	line-height: 1.8;
+	letter-spacing: 0.095px;
+	color: #f9fafb;
+	opacity: 0.6;
+}
+
+.footer-mobile__copr-link {
+	transition: all 150ms ease-in-out;
+}
+
+.footer-mobile__copr-link:not(:last-child)::after {
+	content: '\00a0/';
+	margin-right: 3px;
+	opacity: 0.6;
+}
+
+.footer-mobile__copr-link:hover {
+	color: var(--accent-color);
+	opacity: 1;
+}
 </style>

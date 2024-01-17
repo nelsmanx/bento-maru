@@ -8,13 +8,12 @@ const productCategories = productStore.categoryTitleList;
 
 <template>
 	<div class="category-title">
-		<div class="container">
+		<div class="container container--category-title">
 			<ul class="category-title__list">
 				<li v-for="item in productCategories" class="category-title__item">
 					<NuxtLink :to="item.anchor" class="category-title__link">
 						{{ item.title }}
 					</NuxtLink>
-					<!-- <a class="category-title__link" :href="item.anchor">{{ item.title }}</a> -->
 				</li>
 				<li class="category-title__item">
 					<NuxtLink to="/delivery" class="category-title__link">
@@ -70,6 +69,43 @@ const productCategories = productStore.categoryTitleList;
 }
 
 .category-title__item:not(:last-child) {
-	margin-right: 10px;
+	margin-right: 36px;
+}
+
+.category-title__link {
+	display: block;
+	width: max-content;
+}
+
+@media (max-width: 575.98px) {
+	.category-title .container {
+		padding-right: 0;
+	}
+
+	.category-title::after {
+		display: none;
+	}
+
+	.category-title__list {
+		justify-content: flex-start;
+		overflow-x: auto;
+	}
+
+	.category-title__list::-webkit-scrollbar {
+		display: none;
+	}
+
+	.category-title__list {
+		-ms-overflow-style: none;
+		scrollbar-width: none;
+	}
+
+	.category-title__item {
+		font-size: 13px;
+	}
+
+	.category-title__item:not(:last-child) {
+		margin-right: 28px;
+	}
 }
 </style>
