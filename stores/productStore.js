@@ -1,220 +1,74 @@
+import ApiService from '~/services/ApiService';
+
 export const useProductStore = defineStore('product', {
 	state: () => ({
-		products: [
-			{
-				id: 1,
-				title: "Бенто Микс",
-				category: [1, 2, 12],
-				description: "В составе только топовое меню - любимчики наших покупателей: Короке (картофельная котлетка), Креветка Фрай, Горбуша гриль, Осьминожка из сосисок, Корень Лотоса, Тофу КараАге, КусиКацу (шашлычок свиной в сухарях), Онигири, Фасоль с кунжутом",
-				imagePath: "/images/products/bento-mix.jpg",
-				weight: 400,
-				priceActual: 500,
-				priceOld: 700,
-				isNew: true,
-				isFav: false,
-			},
-			{
-				id: 2,
-				title: "VIP Бенто",
-				category: [1, 3, 12],
-				description: "В составе только топовое меню - любимчики наших покупателей: Короке (картофельная котлетка), Креветка Фрай,  Осьминожка из сосисок и т.д.",
-				imagePath: "/images/products/bento-mix.jpg",
-				weight: 400,
-				priceActual: 500,
-				priceOld: 700,
-				isNew: true,
-				isFav: false,
-			},
-			{
-				id: 3,
-				title: "Карри",
-				category: [1, 4, 12],
-				description: "В составе только топовое меню - любимчики наших покупателей: Короке (картофельная котлетка), Креветка Фрай,  Осьминожка из сосисок и т.д.",
-				imagePath: "/images/products/bento-mix.jpg",
-				weight: 400,
-				priceActual: 500,
-				priceOld: 700,
-				isNew: true,
-				isFav: false,
-			},
-			{
-				id: 4,
-				title: "Сэндвичи",
-				category: [1, 5, 12],
-				description: "В составе только топовое меню - любимчики наших покупателей: Короке (картофельная котлетка), Креветка Фрай,  Осьминожка из сосисок и т.д.",
-				imagePath: "/images/products/bento-mix.jpg",
-				weight: 400,
-				priceActual: 500,
-				priceOld: 700,
-				isNew: true,
-				isFav: false,
-			},
-			{
-				id: 5,
-				title: "Онигири",
-				category: [1, 6],
-				description: "В составе только топовое меню - любимчики наших покупателей: Короке (картофельная котлетка), Креветка Фрай,  Осьминожка из сосисок и т.д.",
-				imagePath: "/images/products/bento-mix.jpg",
-				weight: 400,
-				priceActual: 500,
-				priceOld: 700,
-				isNew: true,
-				isFav: false,
-			},
-			{
-				id: 6,
-				title: "Супы",
-				category: [1, 7],
-				description: "В составе только топовое меню - любимчики наших покупателей: Короке (картофельная котлетка), Креветка Фрай,  Осьминожка из сосисок и т.д.",
-				imagePath: "/images/products/bento-mix.jpg",
-				weight: 400,
-				priceActual: 500,
-				priceOld: 700,
-				isNew: true,
-				isFav: false,
-			},
-			{
-				id: 10,
-				title: "VIP Бенто",
-				category: [3],
-				description: "В составе только топовое меню - любимчики наших покупателей: Короке (картофельная котлетка), Креветка Фрай,  Осьминожка из сосисок и т.д.",
-				imagePath: "/images/products/bento-mix.jpg",
-				weight: 400,
-				priceActual: 500,
-				priceOld: 700,
-				isNew: false,
-				isFav: false,
-			},
-			{
-				id: 11,
-				title: "Карри",
-				category: [4],
-				description: "В составе только топовое меню - любимчики наших покупателей: Короке (картофельная котлетка), Креветка Фрай,  Осьминожка из сосисок и т.д.",
-				imagePath: "/images/products/bento-mix.jpg",
-				weight: 400,
-				priceActual: 500,
-				priceOld: 700,
-				isNew: false,
-				isFav: false,
-			},
-
-
-
-
-
-			{
-				id: 20,
-				title: "Соевый соус",
-				category: [11],
-				priceActual: 60,
-			},
-			{
-				id: 21,
-				title: "Дополнительные палочки",
-				category: [11],
-				priceActual: 15,
-			},
-		],
-
-		categories: [
-			{
-				id: 1,
-				title: 'Новинки',
-				anchor: '/#new'
-			},
-			{
-				id: 2,
-				title: 'Бенто',
-				anchor: '/#bento'
-			},
-			{
-				id: 3,
-				title: 'VIP Бенто',
-				anchor: '/#vip-bento'
-			},
-			{
-				id: 4,
-				title: 'Карри',
-				anchor: '/#curry'
-			},
-			{
-				id: 5,
-				title: 'Сэндвичи',
-				anchor: '/#sandwiches'
-			},
-			{
-				id: 6,
-				title: 'Онигири',
-				anchor: '/#onigiri'
-			},
-			{
-				id: 7,
-				title: 'Супы',
-				anchor: '/#soup'
-			},
-			{
-				id: 8,
-				title: 'Гедза',
-				anchor: '/#gedza'
-			},
-			{
-				id: 9,
-				title: 'Соусы',
-				anchor: '/#sauces'
-			},
-			{
-				id: 10,
-				title: 'Напитки',
-				anchor: '/#beverages'
-			},
-			{
-				id: 11,
-				title: 'Добавки'
-			},
-			{
-				id: 12,
-				title: 'Попробуйте также'
-			},
-		]
+		products: [],
+		categories: [],
+		active: 41,
+		category: [],
+		bento: [],
+		curry: [],
+		banners: [],
+		favorites: []
 	}),
 
 	getters: {
-		categoryTitleList() {
-			return this.categories.reduce((titles, category) => {
-				if (category.hasOwnProperty('anchor')) titles.push({
-					title: category.title,
-					anchor: category.anchor
-				});
-				return titles;
-			}, []);
+		getCategory() {
+			return this.category;
 		},
-
-		categoryNew() {
-			return this.products.filter(product => product.category.includes(1));
-		},
-		categoryVipBento() {
-			return this.products.filter(product => product.category.includes(3));
-		},
-		categoryCurry() {
-			return this.products.filter(product => product.category.includes(4));
-		},
-		categoryTryAlso() {
-			return this.products.filter(product => product.category.includes(12));
-		},
-
-		productsInFav() {
-			return this.products.filter(product => product.isFav);
-		},
-
 		hasProductInFav() {
-			return this.productsInFav.length ? true : false;
-		}
-	},
-
-	actions: {
-		toggleFav(productId) {
-			const targetProduct = this.products.find(product => product.id === productId);
-			targetProduct.isFav = !targetProduct.isFav;
+			if (this.favorites.length > 0) {
+				return true;
+			} else {
+				return false;
+			}
 		},
+		isFav: (state) => {
+			return (itemId) => {
+				const itemInFav = state.favorites.find(product => product.id === itemId);
+				return itemInFav ? true : false;
+			};
+		},
+	},
+	actions: {
+		async getBanners() {
+            this.banners = await new ApiService().getBanners(); 
+        },
+		async getCategories() {
+            this.categories = await new ApiService().getCategories(); 
+        },
+		async activeCategory(categoryid) {
+			if(categoryid) {
+				this.active = categoryid;
+			}
+			if(this.categories) {
+				this.category = this.categories.find(item => item.id === this.active);
+			}
+		},
+		async getActiveProducts() {
+			this.products = await new ApiService().getProducts(this.category.id); 
+		},
+		async getBento() {
+			this.bento = await new ApiService().getProducts(156); 
+		},
+		async getCurry() {
+			this.curry = await new ApiService().getProducts(157); 
+		},
+		async loadFavorites() {
+			if (process.client) { this.favorites = JSON.parse(localStorage.getItem('favorites')) || []; 
+			} else {
+				this.favorites = [];
+			}
+		},
+		toggleFavorite(item) {
+			const itemInFavorites = this.favorites.find(favorite => favorite.id === item.id);
+			if (itemInFavorites) {
+				this.favorites = this.favorites.filter((favorite => favorite.id !== item.id));
+				if (process.client) { localStorage.setItem('favorites', JSON.stringify(this.favorites)); }
+			} else {
+				this.favorites.push(item);
+				if (process.client) { localStorage.setItem('favorites', JSON.stringify(this.favorites)); }
+			}
+		}
 	}
 });

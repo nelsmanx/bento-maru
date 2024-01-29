@@ -2,7 +2,7 @@
 import { useProductStore } from '@/stores/productStore';
 const productStore = useProductStore();
 const hasProductInFav = computed(() => productStore.hasProductInFav);
-const productsInFav = computed(() => productStore.productsInFav);
+const productsInFav = computed(() => productStore.favorites);
 
 </script>
 

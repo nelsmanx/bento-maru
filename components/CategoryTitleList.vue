@@ -1,26 +1,40 @@
 <script setup>
 import { useProductStore } from '@/stores/productStore';
 const productStore = useProductStore();
-
-const productCategories = productStore.categoryTitleList;
-
+const categories = productStore.categories;
+const route = useRoute();
+const router = useRouter();
+function updateCategory(id) {
+	productStore.activeCategory(id);
+	if (route.name !== 'index') {
+      router.push('/')
+    }
+}
 </script>
 
 <template>
 	<div class="category-title">
-		<div class="container container--category-title">
-			<ul class="category-title__list">
-				<li v-for="item in productCategories" class="category-title__item">
-					<NuxtLink :to="item.anchor" class="category-title__link">
-						{{ item.title }}
-					</NuxtLink>
-				</li>
-				<li class="category-title__item">
-					<NuxtLink to="/delivery" class="category-title__link">
-						Доставка
-					</NuxtLink>
-				</li>
-			</ul>
+		<div class="container">
+			<Swiper
+				:slidesPerView="'auto'"
+				:spaceBetween="29"
+				:speed="1000"
+			>
+				<SwiperSlide v-for="(item, key) in categories" :key="key">
+					<div class="category-title__item">
+						<button type="button" class="category-title__link" @click="updateCategory(item.id)">
+							{{ item.name }}
+						</button>
+					</div>
+				</SwiperSlide>
+				<SwiperSlide class="last">
+					<div class="category-title__item">
+						<NuxtLink to="/delivery" class="category-title__link">
+							Доставка
+						</NuxtLink>
+					</div>
+				</SwiperSlide>
+			</Swiper>
 		</div>
 	</div>
 </template >
@@ -42,6 +56,19 @@ const productCategories = productStore.categoryTitleList;
 	opacity: 0.3;
 	transform: translateX(-50%);
 }
+.swiper-slide {
+	width: fit-content;
+}
+
+.swiper-slide.last {
+	margin-right: 0 !important;
+}
+
+@media (min-width:1200px) {
+	.swiper-slide:not(.last) {
+		margin-right: auto !important;
+	}
+}
 
 .category-title__list {
 	display: flex;
@@ -55,9 +82,21 @@ const productCategories = productStore.categoryTitleList;
 	font-weight: 400;
 	line-height: normal;
 	letter-spacing: 0.18px;
-	color: #fff;
+	color: #fff !important;
 	cursor: pointer;
 	transition: color 150ms ease-in-out;
+	a, button {
+		background: transparent;
+		border: 0;
+		padding: 0;
+		font-size: inherit;
+		color: #fff;
+		cursor: pointer;
+		transition: 0.5s
+	}
+	a:hover, button:hover {
+		color: var(--accent-color);
+	}
 }
 
 .category-title__item:hover {
@@ -69,12 +108,11 @@ const productCategories = productStore.categoryTitleList;
 }
 
 .category-title__item:not(:last-child) {
-	margin-right: 36px;
+	margin-right: 10px;
 }
 
 .category-title__link {
-	display: block;
-	width: max-content;
+	white-space: nowrap;
 }
 
 @media (max-width: 575.98px) {
@@ -86,26 +124,8 @@ const productCategories = productStore.categoryTitleList;
 		display: none;
 	}
 
-	.category-title__list {
-		justify-content: flex-start;
-		overflow-x: auto;
-	}
-
-	.category-title__list::-webkit-scrollbar {
-		display: none;
-	}
-
-	.category-title__list {
-		-ms-overflow-style: none;
-		scrollbar-width: none;
-	}
-
 	.category-title__item {
 		font-size: 13px;
-	}
-
-	.category-title__item:not(:last-child) {
-		margin-right: 28px;
 	}
 }
 </style>

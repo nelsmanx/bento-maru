@@ -1,6 +1,10 @@
 <script setup>
-const { clientWidth } = useClientWidth();
-
+	import config from "@/config";
+	import { useProductStore } from '@/stores/productStore';
+	const baseUrl = `${config.app.server.scheme}://${config.app.server.host}`;
+	const productStore = useProductStore();
+	productStore.getBanners();
+	const { clientWidth } = useClientWidth();
 </script>
 
 <template>
@@ -12,111 +16,22 @@ const { clientWidth } = useClientWidth();
 				navigation
 				pagination
 				loop>
-				<!-- 
-			:navigation="{
-			nextEl: '.swiper-nav-next',
-			prevEl: '.swiper-nav-prev'
-		}"
-			:autoplay="{
-			delay: 5000,
-		}" -->
-				<!-- <div class="swiper-nav">
-			<button class="swiper-nav-prev"></button>
-			<button class="swiper-nav-next"></button>
-		</div> -->
-
-
-				<SwiperSlide>
-					<div class="swiper__inner swiper__inner--1">
+				<SwiperSlide v-for="(banner, key) in productStore.banners" :key="key">
+					<div class="swiper__inner" :class="'swiper__inner--' + (key + 1)">
 						<div class="container swiper__container">
 							<div class="swiper__content">
-								<picture class="swiper__picture swiper__picture--1">
-									<source media="(max-width: 575.98px)" srcset="~/assets/images/carousel-hero/product-1-cropped.png">
-									<img src="~/assets/images/carousel-hero/product-1.png" alt="Доставка бенто по южно-сахалинску">
-								</picture>
-
+								<div class="swiper__image-wrap">
+									<img class="swiper__image" :src='baseUrl + banner.photos[0]' alt="">
+								</div>
 								<div class="swiper__info">
-									<h2 class="swiper__title">ДОСТАВКА БЕНТО ПО <span class="accent">ЮЖНО-САХАЛИНСКУ</span></h2>
-									<p class="swiper__desc">Гарантируем вкус и качество - проверено японским шефом! <span class="accent">Бесплатная доставка при заказе от&nbsp;1000 рублей</span></p>
+									<div class="swiper__title" v-html="banner.h1"></div>
+									<div class="swiper__desc" v-html="banner.content"></div>
 									<button class="swiper__button">Перейти в каталог</button>
 								</div>
 							</div>
 						</div>
 					</div>
 				</SwiperSlide>
-
-				<SwiperSlide>
-					<div class="swiper__inner swiper__inner--2">
-						<div class="container swiper__container">
-							<div class="swiper__content">
-								<picture class="swiper__picture swiper__picture--2">
-									<source media="(max-width: 575.98px)" srcset="~/assets/images/carousel-hero/product-2-cropped.png">
-									<img src="~/assets/images/carousel-hero/product-2.png" alt="Более 25 компонентов в каждом бенто">
-								</picture>
-								<div class="swiper__info">
-									<h2 class="swiper__title swiper__title--2"><span class="accent">БОЛЕЕ 25 КОМПОНЕНТОВ</span> В&nbsp;КАЖДОМ БЕНТО</h2>
-									<p class="swiper__desc swiper__desc--2">Секрет долголетия японцев в том, что они едят разнообразную пищу: чем больше продуктов в одной тарелке, тем полезнее для здоровья.</p>
-									<button class="swiper__button">Перейти в каталог</button>
-								</div>
-							</div>
-						</div>
-					</div>
-				</SwiperSlide>
-
-				<SwiperSlide>
-					<div class="swiper__inner swiper__inner--3">
-						<div class="container swiper__container">
-							<div class="swiper__content">
-								<picture class="swiper__picture swiper__picture--3">
-									<source media="(max-width: 575.98px)" srcset="~/assets/images/carousel-hero/product-3-cropped.png">
-									<img src="~/assets/images/carousel-hero/product-3.png" alt="У нас есть блюда даже для тех, у кого нет аппетита!">
-								</picture>
-								<div class="swiper__info swiper__info--3">
-									<h2 class="swiper__title swiper__title--3">У НАС ЕСТЬ БЛЮДА ДАЖЕ ДЛЯ ТЕХ, <span class="accent">У КОГО НЕТ АППЕТИТА!</span></h2>
-									<p class="swiper__desc swiper__desc--3">Выбор вариантов Бенто, супов и карри не оставит равнодушным ни детей, ни взрослых.</p>
-									<button class="swiper__button">Перейти в каталог</button>
-								</div>
-							</div>
-						</div>
-					</div>
-				</SwiperSlide>
-
-				<SwiperSlide>
-					<div class="swiper__inner swiper__inner--4">
-						<div class="container swiper__container">
-							<div class="swiper__content">
-								<picture class="swiper__picture swiper__picture--4">
-									<source media="(max-width: 575.98px)" srcset="~/assets/images/carousel-hero/product-4-cropped.png">
-									<img src="~/assets/images/carousel-hero/product-4.png" alt="Контроль качества от японского шефа">
-								</picture>
-								<div class="swiper__info swiper__info--4">
-									<h2 class="swiper__title swiper__title--4">КОНТРОЛЬ КАЧЕСТВА <span class="accent">ОТ&nbsp;ЯПОНСКОГО ШЕФА</span></h2>
-									<p class="swiper__desc swiper__desc--4">Производство Бенто - особый технологический процесс и мы используем японские секреты производства, включая стандарты контроля качества РФ</p>
-									<button class="swiper__button">Перейти в каталог</button>
-								</div>
-							</div>
-						</div>
-					</div>
-				</SwiperSlide>
-
-				<SwiperSlide>
-					<div class="swiper__inner swiper__inner--5">
-						<div class="container swiper__container">
-							<div class="swiper__content">
-								<picture class="swiper__picture swiper__picture--5">
-									<source media="(max-width: 575.98px)" srcset="~/assets/images/carousel-hero/product-5-cropped.png">
-									<img src="~/assets/images/carousel-hero/product-5.png" alt="Соблюдение стандартов качества РФ и Японии">
-								</picture>
-								<div class="swiper__info">
-									<h2 class="swiper__title swiper__title--5">СОБЛЮДЕНИЕ СТАНДАРТОВ КАЧЕСТВА <span class="accent">РФ&nbsp;И&nbsp;ЯПОНИИ</span></h2>
-									<p class="swiper__desc swiper__desc--5">Производство Бенто - особый технологический процесс и мы используем японские секреты производства, включая стандарты контроля качества РФ</p>
-									<button class="swiper__button">Перейти в каталог</button>
-								</div>
-							</div>
-						</div>
-					</div>
-				</SwiperSlide>
-
 			</Swiper>
 		</div>
 	</section>
@@ -187,10 +102,25 @@ const { clientWidth } = useClientWidth();
 	opacity: 1;
 }
 
+.swiper__title b, #swiper-hero .swiper__desc p strong {
+	color: var(--accent-color) !important;
+}
+.swiper__image {
+	width: 100%;
+	height: 100%;
+	object-fit: contain;
+}
+@media (max-width: 1200px) {
+	.swiper__image {
+		width: 100%;
+		object-fit: contain;
+	}
+}
 @media (max-width: 575.98px) {
 	#swiper-hero {
 		min-height: 530px;
 		border-radius: 6px;
+		padding-bottom: 27px;
 	}
 
 	#swiper-hero .swiper-button-prev,
@@ -237,58 +167,6 @@ const { clientWidth } = useClientWidth();
 }
 </style>
 
-<!-- <style>
-#swiper-hero .swiper-nav {
-	position: absolute;
-	z-index: 2;
-	top: 50%;
-	right: 38px;
-	left: 38px;
-	display: flex;
-	justify-content: space-between;
-	align-items: center;
-	height: 0;
-}
-
- #swiper-hero .swiper-nav-prev,
-#swiper-hero .swiper-nav-next {
-	display: flex;
-	justify-content: center;
-	align-items: center;
-	width: 54px;
-	height: 54px;
-	padding: 0;
-	border: none;
-	border-radius: 50%;
-	cursor: pointer;
-}
-
-#swiper-hero .swiper-nav-prev {
-	background: linear-gradient(90deg, rgba(30, 30, 30, 1) 0%, rgba(35, 36, 38, 1) 100%);
-}
-
-#swiper-hero .swiper-nav-next {
-	background: #3e3e42;
-}
-
-#swiper-hero .swiper-nav-prev:before,
-#swiper-hero .swiper-nav-next:before {
-	content: '';
-	width: 8px;
-	height: 15px;
-	background-size: contain;
-	background-repeat: no-repeat;
-	background-position: center;
-}
-
-#swiper-hero .swiper-nav-prev:before {
-	background-image: url("data:image/svg+xml,%3Csvg width='8' height='15' viewBox='0 0 8 15' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath fill-rule='evenodd' clip-rule='evenodd' d='M7.09437 0.155454C7.19945 0.0499659 7.32665 -9.53674e-07 7.47045 -9.53674e-07C7.61424 -9.53674e-07 7.74144 0.0499659 7.84653 0.155454C8.05116 0.360876 8.05116 0.699549 7.84653 0.904971L1.27619 7.5007L7.84653 14.0964C8.05116 14.3018 8.05116 14.6405 7.84653 14.8459C7.64189 15.0514 7.30453 15.0514 7.0999 14.8459L0.153474 7.87267C-0.051158 7.66725 -0.051158 7.32858 0.153474 7.12316L7.09437 0.155454Z' fill='white'/%3E%3C/svg%3E");
-}
-
-#swiper-hero .swiper-nav-next:before {
-	background-image: url("data:image/svg+xml,%3Csvg width='10' height='17' viewBox='0 0 10 17' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath fill-rule='evenodd' clip-rule='evenodd' d='M1.11671 16.6395C0.998472 16.7577 0.855339 16.8137 0.693534 16.8137C0.531729 16.8137 0.388594 16.7577 0.270352 16.6395C0.0400911 16.4092 0.0400911 16.0296 0.270352 15.7993L7.66359 8.40606L0.270352 1.01284C0.0400911 0.782579 0.0400911 0.402956 0.270352 0.172696C0.500613 -0.0575652 0.880231 -0.0575652 1.11049 0.172696L8.92691 7.98911C9.15717 8.21938 9.15717 8.599 8.92691 8.82926L1.11671 16.6395Z' fill='white'/%3E%3C/svg%3E%0A");
-}
-</style> -->
 <style scoped>
 #swiper-hero .swiper__inner {
 	position: relative;
@@ -354,6 +232,12 @@ const { clientWidth } = useClientWidth();
 	width: calc(var(--scale) * 321px);
 	height: calc(var(--scale) * 302px);
 	background: url("~/assets/images/carousel-hero/bg-vector-5.svg") 0 0/contain no-repeat;
+}
+
+#swiper-hero .swiper__inner--3 .swiper__image {
+	height: 100%;
+	object-position: bottom;
+	object-fit: contain;
 }
 
 #swiper-hero .swiper__container {
@@ -426,11 +310,12 @@ const { clientWidth } = useClientWidth();
 #swiper-hero .swiper__title {
 	margin-bottom: 28px;
 	font-family: "Century Gothic";
-	font-size: 45px;
+	font-size: 42px;
 	font-weight: 700;
 	line-height: normal;
 	letter-spacing: 0.02em;
 	color: #fff;
+	text-transform: uppercase;
 }
 
 #swiper-hero .swiper__title--2 {
@@ -519,7 +404,7 @@ const { clientWidth } = useClientWidth();
 	}
 
 	#swiper-hero .swiper__inner {
-		height: 500px;
+		height: 530px;
 		background:
 			linear-gradient(90deg, #000 -28.61%, #333438 150.26%),
 			url("~/assets/images/carousel-hero/product-shadow-mobile.png") top 0 center/contain no-repeat;
@@ -544,16 +429,20 @@ const { clientWidth } = useClientWidth();
 
 	#swiper-hero .swiper__info {
 		margin-top: 0;
+		display: flex;
+		flex-direction: column;
 	}
 
 	#swiper-hero .swiper__title {
 		margin-bottom: 18px;
-		font-size: 23px;
+		font-size: 20px;
 	}
 
 	#swiper-hero .swiper__desc {
 		margin-bottom: 25px;
-		font-size: 14px;
+		font-size: 13px;
+		line-height: 1.4;
+		flex: 1 1 auto;
 	}
 
 	#swiper-hero .swiper__button {

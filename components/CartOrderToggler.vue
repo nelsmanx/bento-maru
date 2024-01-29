@@ -110,4 +110,20 @@ defineEmits(['tab-click']);
 .order-toggler__input-default.is-active ~ .order-toggler__input-custom {
 	background-image: var(--accent-gradient);
 }
+
+@media (max-width: 1200px) {
+	.order-toggler__input-custom {
+		border-radius: 6.138px;
+	}
+	.order-toggler__label {
+		font-size: 13.811px;
+		letter-spacing: 0.138px; 
+	}
+}
+
+@media (max-width: 991px) {
+	.order-toggler {
+		border-radius: 9.2px;
+	}
+}
 </style>

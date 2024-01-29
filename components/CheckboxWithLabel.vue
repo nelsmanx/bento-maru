@@ -87,4 +87,10 @@ defineEmits(['update:modelValue']);
 	background-image: url("~/assets/icons/check-orange.svg");
 	transform: translate(-50%, -50%);
 }
+
+@media (max-width: 1200px) {
+	.checkbox-w-l__label-content {
+		font-size: 12px;
+	}
+}
 </style>

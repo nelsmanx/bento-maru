@@ -86,4 +86,22 @@ defineEmits(['increase-counter', 'decrease-counter']);
 	letter-spacing: 0.19px;
 	color: var(--accent-color);
 }
+
+@media (max-width: 575.98px) {
+	.counter {
+		width: 120px;
+		height: 41px;
+		padding: 3px;
+		border-radius: 5px;
+	}
+	.counter__plus, .counter__minus {
+		padding: 16px;
+	}
+	.counter__value {
+		font-size: 15px;
+	}
+	.counter__plus, .counter__minus {
+		--line-width: 10px;
+	}
+}
 </style>

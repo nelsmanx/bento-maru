@@ -1,9 +1,9 @@
 <script setup>
-import { useProductStore } from '~/stores/productStore';
+import { useCartStore } from '~/stores/cartStore';
 
 const props = defineProps({
-	addonId: {
-		type: Number,
+	addon: {
+		type: Object,
 		required: true
 	},
 	addonQuantity: {
@@ -11,10 +11,17 @@ const props = defineProps({
 		required: true
 	}
 });
-
-const productStore = useProductStore();
-const productList = productStore.products;
-const addon = productList.find((item) => item.id === props.addonId);
+const cartStore = useCartStore();
+if (props.addon.title == 'Соевый соус') {
+	const addon = cartStore.sause;
+} else {
+	const addon = cartStore.sticks;
+}
+function descrease(addon) {
+	if(addon.quantity > 0) {
+		addonQuantity--;
+	}
+}
 const addonTotalPrice = computed(() => props.addonQuantity * addon.priceActual);
 </script>
 
@@ -22,10 +29,17 @@ const addonTotalPrice = computed(() => props.addonQuantity * addon.priceActual);
 	<li class="cart-addon-item">
 		<div class="cart-addon-item__inner">
 			<p class="cart-addon-item__title">{{ addon.title }}</p>
-			<Counter :quantity="props.addonQuantity"
-				@increase-counter="$emit('increase-quantity', addon.id)"
-				@decrease-counter="$emit('decrease-quantity', addon.id)"
-				class="cart-addon-item__counter" />
+			<div class="counter cart-addon-item__counter">
+				<div class="counter__inner">
+					<span @click="descrease(addon)"
+						class="counter__minus">
+					</span>
+					<span class="counter__value">{{ addon.quantity }}</span>
+					<span @click="addon.quantity++"
+						class="counter__plus">
+					</span>
+				</div>
+			</div>
 			<div class="cart-addon-item__total-price">{{ addonTotalPrice }} ₽</div>
 		</div>
 	</li>
@@ -54,7 +68,7 @@ const addonTotalPrice = computed(() => props.addonQuantity * addon.priceActual);
 	color: var(--accent-color);
 }
 
-.cart-addon-item__counter {
+.cart__addon .cart-addon-item__counter {
 	margin-left: auto;
 }
 
@@ -96,5 +110,23 @@ const addonTotalPrice = computed(() => props.addonQuantity * addon.priceActual);
 .cart-addon-item .counter__value {
 	font-size: 15px;
 	color: #fff;
+}
+
+@media (max-width: 991px) {
+	.cart-addon-item__title {
+		font-size: 14px;
+	}
+	.cart-addon-item__total-price {
+		font-size: 18px;
+	}
+}
+
+@media (max-width: 768px) {
+	.cart-addon-item .counter__plus,
+	.cart-addon-item .counter__minus {
+		--line-width: 6px;
+		padding: 10px;
+		border-radius: 2.5px;
+	}
 }
 </style>

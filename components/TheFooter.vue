@@ -1,10 +1,24 @@
 <script setup>
-const { clientWidth } = useClientWidth();
+	import { useAppStore } from '~/stores/appStore';
+	const appStore = useAppStore();
+	const { clientWidth } = useClientWidth();
+	const modalFormIsOpen = ref(false);
+	const response = ref('');
+	async function sendEmail(event) {
+		let formdata = new FormData(event.target);
+		formdata.set('type', 'Модальная форма "Задать вопрос"');
+		var obj = {};
+		formdata.forEach((value, key) => obj[key] = value);
+		var json = JSON.stringify(obj);
+		response.value = await new ApiService().sendForm(json);
+		event.target.reset();
+		setTimeout(() => {
+			modalFormIsOpen = !modalFormIsOpen;
+		}, 2000);
+	}
 </script>
-
 <template>
-	<footer v-if="clientWidth >= 576"
-		class="footer">
+	<footer v-if="clientWidth >= 576" class="footer">
 		<div class="container">
 			<div class="footer__top">
 				<div class="footer__top-inner">
@@ -14,11 +28,11 @@ const { clientWidth } = useClientWidth();
 					</div>
 					<div class="footer__top-tel">
 						<p class="footer__top-tel-text footer__top-text-accent">Позвоните нам</p>
-						<a class="footer__top-tel-link" href="tel:+79006600020">+7 (900) 660-00-20</a>
+						<a class="footer__top-tel-link" :href="'tel:+' + appStore.siteparams.phone.replace(/\D/g,'')">{{appStore.siteparams.phone}}</a>
 					</div>
 					<div class="footer__top-schedule">
 						<p class="footer__top-schedule-text-1 footer__top-text-accent">Принимаем заказы</p>
-						<p class="footer__top-schedule-text-2">с 10:00 до 18:00</p>
+						<p class="footer__top-schedule-text-2" v-html="appStore.siteparams.workingHours"></p>
 					</div>
 					<div class="footer__top-decor-wrap">
 						<DecorIcons :quantity="10" class="footer__top-decor" />
@@ -55,34 +69,33 @@ const { clientWidth } = useClientWidth();
 					</ul>
 
 					<social-list class="footer__bottom-social">
-						<SocialItem modifier="vk" link="https://vk.com/" />
-						<SocialItem modifier="telegram" link="https://t.me/" />
-						<SocialItem modifier="whatsapp" link="https://wa.me/" />
+						<SocialItem modifier="vk" :link="appStore.siteparams.vk" />
+						<SocialItem modifier="telegram" :link="appStore.siteparams.telegram" />
+						<SocialItem modifier="whatsapp" :link="appStore.siteparams.whatsapp" />
 					</social-list>
 				</div>
 			</div>
 		</div>
 	</footer>
-
 	<footer v-if="clientWidth < 576"
 		class="footer-mobile">
 		<div class="container">
 			<div class="footer-mobile__info">
 				<div class="footer-mobile__tel">
 					<p class="footer-mobile__tel-text-accent">Доставка по Южно-Сахалинску</p>
-					<a class="footer-mobile__tel-link" href="tel:+79006600020">+7 (900) 660-00-20</a>
+					<a class="footer__top-tel-link" :href="'tel:+' + appStore.siteparams.phone.replace(/\D/g,'')">{{appStore.siteparams.phone}}</a>
 				</div>
 
 				<div class="sidebar-menu__schedule">
 					<p class="footer-mobile__schedule-text-accent">Принимаем заказы</p>
-					<p class="footer-mobile__schedule-text">с 10:00 до 18:00</p>
+					<p class="footer-mobile__schedule-text" v-html="appStore.siteparams.workingHours"></p>
 				</div>
 			</div>
 
-			<social-list class="footer-mobile__social">
-				<SocialItem modifier="vk" link="https://vk.com/" />
-				<SocialItem modifier="telegram" link="https://t.me/" />
-				<SocialItem modifier="whatsapp" link="https://wa.me/" />
+			<social-list class="footer__bottom-social">
+				<SocialItem modifier="vk" :link="appStore.siteparams.vk" />
+				<SocialItem modifier="telegram" :link="appStore.siteparams.telegram" />
+				<SocialItem modifier="whatsapp" :link="appStore.siteparams.whatsapp" />
 			</social-list>
 
 			<button class="footer-mobile__button-callback">Задать вопрос</button>
@@ -102,7 +115,7 @@ const { clientWidth } = useClientWidth();
 			</div>
 
 			<div class="footer-mobile__copr">
-				<span class="footer-mobile__copr-text">© 2023 ООО «СОТОРА», 693027 Сахалинская область, г.Южно-Сахалинск, пр-кт Победы д.9Б, кв.62, ИНН 6166106919, ОГРН 1226500003982. </span>
+				<span class="footer-mobile__copr-text">© © {{ new Date().getFullYear() }} ООО «СОТОРА», 693027 Сахалинская область, г.Южно-Сахалинск, пр-кт Победы д.9Б, кв.62, ИНН 6166106919, ОГРН 1226500003982. </span>
 				<a class="footer-mobile__copr-link" href="#">Публичная оферта</a>
 				<a class="footer-mobile__copr-link" href="#">Политика использования cookie</a>
 				<a class="footer-mobile__copr-link" href="#">Политика конфиденциальности</a>
@@ -110,6 +123,33 @@ const { clientWidth } = useClientWidth();
 			</div>
 		</div>
 	</footer>
+	<ModalWindow
+		:isOpen="modalFormIsOpen"
+		@toggle-modal="modalFormIsOpen = !modalFormIsOpen">
+		<div class="callback">
+			<button type="button" class="close" @click="modalFormIsOpen = !modalFormIsOpen"><IconsClose /></button>
+			<h2 class="callback__title" v-if="response">{{ response.message }}</h2>
+			<h2 class="callback__title" v-else>Есть вопросы?</h2>
+			<p class="callback__desc" v-if="response">
+				Наш специалист свяжется с Вами в ближайшее время
+			</p>
+			<p class="callback__desc" v-else>
+				Оставьте свой номер телефона, мы свяжемся с Вами, расскажем про все наши блюда и выберем для Вас самый подходящий Бенто!
+			</p>
+			<form @submit.prevent="sendEmail($event)" class="callback__form" action="/">
+				<input class="callback__form-input" type="text" name="name" placeholder="Имя">
+				<input class="callback__form-input" type="tel" name="phone" placeholder="Телефон">
+				<button type="submit" class="callback__form-button">Задать вопрос</button>
+				<label class="custom-checkbox">
+					<input type="checkbox" name="policy" checked required>
+					<i><IconsCheck /></i>
+					<span>
+						Нажимая кнопку, вы соглашаетесь с условиями Политики конфиденциальности
+					</span>
+				</label>
+			</form>
+		</div>
+	</ModalWindow>
 </template>
 
 <style scoped>
@@ -303,6 +343,14 @@ const { clientWidth } = useClientWidth();
 }
 
 .footer__bottom-social {}
+
+@media (max-width: 575.98px) {
+	footer .footer__bottom-social {
+		display: flex;
+		justify-content: center;
+		margin-bottom: 54px;
+	}
+}
 </style>
 
 <style scoped>
@@ -435,5 +483,14 @@ const { clientWidth } = useClientWidth();
 .footer-mobile__copr-link:hover {
 	color: var(--accent-color);
 	opacity: 1;
+}
+
+@media (max-width: 575px) {
+	.footer-mobile {
+		padding-bottom: 60px;
+	}
+	.footer-mobile__schedule-text, .footer-mobile .footer__top-tel-link {
+		font-size: 30px;
+	}
 }
 </style>

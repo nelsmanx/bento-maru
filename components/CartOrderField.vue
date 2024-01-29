@@ -204,4 +204,23 @@ const classModifier = props.classModifier ? `order-field__title--${props.classMo
 .order-field__check.is-active::before {
 	background-image: url("~/assets/icons/check-orange.svg");
 }
+
+@media (max-width: 1200px) {
+	.order-field__title {
+		font-size: 12px;
+	}
+	.order-field__value, .order-field__input {
+		font-size: 13px;
+		letter-spacing: 0.16px;
+	}
+	.order-field {
+		height: 48px;
+	}
+}
+
+@media (max-width: 991px) {
+	.order-field {
+		border-radius: 9.2px;
+	}
+}
 </style>

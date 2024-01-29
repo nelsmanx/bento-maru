@@ -1,14 +1,31 @@
+<script setup>
+	import ApiService from '~/services/ApiService';
+	const response = ref('');
+	async function sendEmail(event) {
+		let formdata = new FormData(event.target);
+		formdata.set('type', 'Форма "Задать вопрос"');
+		var obj = {};
+		formdata.forEach((value, key) => obj[key] = value);
+		var json = JSON.stringify(obj);
+		response.value = await new ApiService().sendForm(json);
+		event.target.reset();
+	}
+</script>
+
 <template>
 	<div class="callback">
-		<h2 class="callback__title">Не можете определиться с выбором?</h2>
-		<p class="callback__desc">
+		<h2 class="callback__title" v-if="response">{{ response.message }}</h2>
+		<h2 class="callback__title" v-else>Не можете определиться с выбором?</h2>
+		<p class="callback__desc" v-if="response">
+			Наш специалист свяжется с Вами в ближайшее время
+		</p>
+		<p class="callback__desc" v-else>
 			Оставьте свой номер телефона, мы свяжемся с Вами, расскажем про все наши блюда и выберем для Вас самый подходящий Бенто!
 		</p>
-		<form @submit.prevent
-			class="callback__form" action="/">
-			<input class="callback__form-input" type="text" placeholder="Имя">
-			<input class="callback__form-input" type="tel" placeholder="Телефон">
-			<button class="callback__form-button">Задать вопрос</button>
+		<form @submit.prevent="sendEmail($event)" class="callback__form" action="/">
+			<input class="callback__form-input" type="text" name="name" placeholder="Имя">
+			<input class="callback__form-input" type="tel" name="phone" placeholder="Телефон">
+			<button type="submit" class="callback__form-button">Задать вопрос</button>
 		</form>
 	</div>
 </template>

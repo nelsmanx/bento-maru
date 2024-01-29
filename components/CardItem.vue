@@ -1,10 +1,12 @@
 <script setup>
-import { useProductStore } from '@/stores/productStore';
-
+import config from "@/config";
 const props = defineProps({
-	productId: {
-		type: Number,
+	product: {
+		type: Object,
 		required: true
+	},
+	inFav: {
+		type: Boolean
 	},
 	productQuantity: {
 		type: Number,
@@ -14,16 +16,12 @@ const props = defineProps({
 
 defineEmits(['increase-quantity', 'decrease-quantity', 'toggle-fav']);
 
-const productStore = useProductStore();
-const productList = productStore.products;
-const product = productList.find((item) => item.id === props.productId);
-
-
 const modalCardIsOpen = ref(false);
 
 const addScrollLock = useAddScrollLock();
 const removeScrollLock = useRemoveScrollLock();
 const scrollLockRemoveDelay = 300;
+const baseUrl = `${config.app.server.scheme}://${config.app.server.host}`;
 
 watch(modalCardIsOpen, (newState) => {
 	if (newState) {
@@ -36,29 +34,29 @@ watch(modalCardIsOpen, (newState) => {
 </script>
 
 <template>
-	<div class="card" :class="$attrs.class">
+	<div class="card" :class="$attrs.class" v-if="product">
 		<div class="card__inner">
-			<span v-if="product.isNew" class="card__badge">NEW</span>
+			<span v-if="product.new === 1" class="card__badge">NEW</span>
 			<picture class="card__picture" @click="modalCardIsOpen = !modalCardIsOpen">
-				<img :src="product.imagePath" :alt="product.title">
+				<img :src="baseUrl + product.photos[0]" :alt="product.name">
 			</picture>
 			<div class="card__info">
 				<div class="card__title-and-weight">
 					<p class="card__title"
 						@click="modalCardIsOpen = !modalCardIsOpen">
-						{{ product.title }}
+						{{ product.name }}
 					</p>
-					<p class="card__weight">{{ product.weight }} г.</p>
+					<p class="card__weight">{{ product.weight }}</p>
 				</div>
-				<p class="card__desc">{{ product.description }}</p>
+				<div class="card__desc" v-html="product.introtext"></div>
 				<div class="card__price-and-actions">
 					<div class="card__price">
-						<div class="card__price-actual">{{ product.priceActual }} ₽</div>
-						<div v-if="product.priceOld" class="card__price-old">{{ product.priceOld }} руб</div>
+						<div class="card__price-actual">{{ product.price }} ₽</div>
+						<div v-if="product.priceOld > 0" class="card__price-old">{{ product.priceOld }} руб</div>
 					</div>
 					<div class="card__actions">
 						<button @click="$emit('toggle-fav')"
-							:class="{ 'is-active': product.isFav }"
+							:class="{ 'is-active': inFav }"
 							class="card__button-fav">
 						</button>
 
@@ -70,22 +68,21 @@ watch(modalCardIsOpen, (newState) => {
 						<Counter v-else
 							@increase-counter="$emit('increase-quantity', product.id)"
 							@decrease-counter="$emit('decrease-quantity', product.id)"
-							:quantity="props.productQuantity"
-							class="card__counter" />
+							:quantity="props.productQuantity" />
 					</div>
 				</div>
 			</div>
 		</div>
 	</div>
-
-	<modalWindow
+	
+	<ModalWindow
 		:isOpen="modalCardIsOpen"
 		@toggle-modal="modalCardIsOpen = !modalCardIsOpen">
 		<CardModal
 			:productId="product.id"
 			:productQuantity="props.productQuantity"
 			@toggle-modal="modalCardIsOpen = !modalCardIsOpen" />
-	</modalWindow>
+	</ModalWindow>
 </template>
 
 <style scoped>
@@ -98,8 +95,6 @@ watch(modalCardIsOpen, (newState) => {
 	border-radius: 12px;
 	overflow: hidden;
 }
-
-.card__inner {}
 
 .card__badge {
 	position: absolute;
@@ -265,10 +260,11 @@ watch(modalCardIsOpen, (newState) => {
 	align-items: center;
 	width: 178px;
 	height: 54px;
+	/* padding: 0.8em 2.1em; */
 	font-family: "Century Gothic";
 	font-size: 19px;
 	font-weight: 700;
-	line-height: 1;
+	line-height: normal;
 	letter-spacing: 0.19px;
 	color: var(--accent-color);
 	background: transparent;

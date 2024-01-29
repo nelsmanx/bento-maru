@@ -1,4 +1,5 @@
 <script setup>
+import config from "@/config";
 import { useCartStore } from '~/stores/cartStore';
 import { useProductStore } from '~/stores/productStore';
 
@@ -7,32 +8,35 @@ const props = defineProps({
 		type: Number,
 		required: true
 	},
+	productObj: {
+		type: Object
+	},
 	productQuantity: {
 		type: Number,
 		required: true
 	}
 });
 
+const baseUrl = `${config.app.server.scheme}://${config.app.server.host}`;
 const cartStore = useCartStore();
+cartStore.loadCart();
 
-const productStore = useProductStore();
-const productList = productStore.products;
-const product = productList.find((item) => item.id === props.productId);
-const productTotalPrice = computed(() => props.productQuantity * product.priceActual);
+const product = cartStore.cart.find((item) => item.id === props.productId);
+const productTotalPrice = computed(() => props.productQuantity * product.price);
 </script>
 
 <template>
-	<li class="cart-product-item">
+	<li class="cart-product-item" v-if="product">
 		<button @click="cartStore.deleteItem(product.id)"
 			class="cart-product-item__button-del"></button>
 		<div class="cart-product-item__inner">
 			<picture class="cart-product-item__picture">
-				<img :src="product.imagePath" alt="{{ product.title }}">
+				<img :src="baseUrl + product.photos[0]" :alt="product.name">
 			</picture>
 			<div class="cart-product-item__info">
 				<div class="cart-product-item__row-1">
-					<p class="cart-product-item__title">{{ product.title }}</p>
-					<p class="cart-product-item__weight">{{ product.weight }} г.</p>
+					<p class="cart-product-item__title">{{ product.name }}</p>
+					<p class="cart-product-item__weight">{{ product.weight }}</p>
 				</div>
 				<p class="cart-product-item__desc">{{ product.description }}</p>
 				<div class="cart-product-item__row-2">
@@ -181,5 +185,26 @@ const productTotalPrice = computed(() => props.productQuantity * product.priceAc
 
 .cart-product-item .counter__value {
 	font-size: 14px;
+}
+
+@media (max-width: 1200px) {
+	.cart-product-item__desc {
+		font-size: 12px;
+	}
+	.cart-product-item__inner {
+		grid-template-columns: 195px 1fr;
+	}
+}
+@media (max-width: 768px) {
+	.cart-product-item {
+		padding: 11px 12px;
+	}
+	.cart-product-item__inner {
+		grid-template-columns: 73px 1fr;
+		gap: 12px;
+	}
+	.cart-product-item__title {
+		font-size: 15px;
+	}
 }
 </style>

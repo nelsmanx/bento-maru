@@ -1,20 +1,21 @@
 <script setup>
 import { useProductStore } from '@/stores/productStore';
 const productStore = useProductStore();
-
-const productNew = productStore.categoryNew;
-const productVipBento = productStore.categoryVipBento;
-const productCurry = productStore.categoryCurry;
+productStore.activeCategory();
+productStore.getActiveProducts();
+watch(() => productStore.category, () => {
+	productStore.getActiveProducts();
+})
+/*Временный костыль*/
+productStore.getBento();
+productStore.getCurry();
 
 const { clientWidth } = useClientWidth();
-
 
 const decorIconsQuantity = computed(() => {
 	if (clientWidth.value < 576) return 8;
 	return 10;
 });
-
-
 
 const backgroundDecor = ref(null);
 if (backgroundDecor.value) {
@@ -22,7 +23,6 @@ if (backgroundDecor.value) {
 	const handleBackgroundDecor = useBackgroundDecorHandler(backgroundDecor);
 	handleBackgroundDecor();
 }
-
 </script>
 
 <template>
@@ -40,25 +40,27 @@ if (backgroundDecor.value) {
 	<div class="background-decor" ref="backgroundDecor">
 		<CategoryTitleList v-if="clientWidth >= 576" class="category-title--index" />
 		<Category id="new"
-			title="Новинки"
-			classModifier="new"
-			:productList="productNew" />
+			:title="productStore.category.name"
+			:classModifier="productStore.category.alias"
+			:category="productStore.category"
+			:productList="productStore.products"
+		/>
 
 		<Reasons v-if="clientWidth >= 576" />
 
 		<Category id="vip-bento"
 			title="VIP-Бенто"
 			classModifier="vip-bento"
-			:productList="productVipBento" />
+			:productList="productStore.bento" />
 
 		<Category id="curry"
 			class="category--without-mb"
 			classModifier="curry"
 			title="Карри"
-			:productList="productCurry" />
-	</div>
+			:productList="productStore.curry" />
 
-	<Support class="support--index" />
+		<Support class="support--index" />
+	</div>
 
 	<TitleWithDecor v-if="clientWidth < 576"
 		class="title-w-d--japan-food title-w-d--japan-food-index-bottom"
@@ -70,6 +72,29 @@ if (backgroundDecor.value) {
 </template>
 
 <style scoped>
+.product {
+	padding-top: 40px;
+}
+
+.product__title-wrap {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	margin-bottom: 30px
+}
+
+.product__title {
+	margin-right: 10px;
+	font-family: "Century Gothic";
+	font-size: 54px;
+	font-weight: 400;
+	line-height: 1;
+	letter-spacing: 0.54px;
+	color: var(--accent-color);
+}
+
+.product__title-decor {}
+
 .category-title--index {
 	margin-bottom: 50px;
 	padding: 0 0 20px;

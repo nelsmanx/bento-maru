@@ -1,48 +1,43 @@
 <script setup>
-import { useProductStore } from '~/stores/productStore';
-import { useCartStore } from '~/stores/cartStore';
+	import config from "~/config";
+	import { useCartStore } from '~/stores/cartStore';
 
-const props = defineProps({
-	productId: {
-		type: Number,
-		required: true
-	},
-	productQuantity: {
-		type: Number,
-		required: true
-	}
-});
+	const props = defineProps({
+		productId: {
+			type: Number,
+			required: true
+		},
+		productQuantity: {
+			type: Number,
+			required: true
+		}
+	});
 
-const emit = defineEmits(['toggle-modal']);
+	const emit = defineEmits(['toggle-modal']);
 
-const { clientWidth } = useClientWidth();
+	const { clientWidth } = useClientWidth();
+	const cartStore = useCartStore();
+	const product = cartStore.cart.find(item => item.id === props.productId);
+	const baseUrl = `${config.app.server.scheme}://${config.app.server.host}`;
+	const counterQuantity = ref(1);
+	const increaseCounter = () => counterQuantity.value++;
+	const decreaseCounter = () => {
+		if (counterQuantity.value > 1) counterQuantity.value--;
+	};
+	cartStore.loadCart();
+	const addToCart = () => {
+		cartStore.increaseQuantity({ ...product, quantity: counterQuantity.value });
+		emit('toggle-modal');
+	};
 
-
-const productStore = useProductStore();
-const product = productStore.products.find(item => item.id === props.productId);
-
-const counterQuantity = ref(1);
-const increaseCounter = () => counterQuantity.value++;
-const decreaseCounter = () => {
-	if (counterQuantity.value > 1) counterQuantity.value--;
-};
-
-const cartStore = useCartStore();
-const addToCart = () => {
-	cartStore.increaseQuantity({ ...product, quantity: counterQuantity.value });
-	emit('toggle-modal');
-};
-
-const decreaseQuantity = useDecreaseQuantity();
-const increaseQuantity = useIncreaseQuantity();
-
-
+	const decreaseQuantity = useDecreaseQuantity();
+	const increaseQuantity = useIncreaseQuantity();
 </script>
 
 <template>
 	<div class="card-modal__wrap">
 		<div class="card-modal__headline">
-			{{ product.title }}
+			{{ product.name }}
 			<button class="card-modal__button-headline"
 				@click="$emit('toggle-modal')">
 			</button>
@@ -55,29 +50,29 @@ const increaseQuantity = useIncreaseQuantity();
 			<div class="card-modal__inner">
 				<div class="card-modal__picture-wrap">
 					<picture class="card-modal__picture">
-						<img :src="product.imagePath" :alt="product.title">
+						<img :src="baseUrl + product.photos[0]" :alt="product.name">
 					</picture>
 					<span v-if="product.isNew" class="card-modal__badge">NEW</span>
 				</div>
 				<div class="card-modal__info">
 					<div class="card-modal__row">
-						<p class="card-modal__title">{{ product.title }}</p>
+						<p class="card-modal__title">{{ product.name }}</p>
 						<p class="card-modal__weight">{{ product.weight }} г.</p>
 					</div>
-					<p class="card-modal__desc">{{ product.description }}</p>
-					<div class="card-modal__ingredients">
+					<p class="card-modal__desc">{{ product.introtext }}</p>
+					<!--<div class="card-modal__ingredients">
 						<p class="card-modal__ingredients-title">Состав:</p>
 						<ul class="card-modal__ingredients-list">
-							<!-- <li class="card-modal__ingredients-item">Lorem ipsum dolor sit amet consectetur - 100г.</li> -->
+							<li class="card-modal__ingredients-item">Lorem ipsum dolor sit amet consectetur - 100г.</li>
 							<li class="card-modal__ingredients-item">Lorem ipsum dolor sit amet - 100г.</li>
 							<li class="card-modal__ingredients-item">Lorem ipsum dolor sit amet - 100г.</li>
 							<li class="card-modal__ingredients-item">Lorem ipsum dolor sit - 200г.</li>
-							<!-- <li class="card-modal__ingredients-item">Lorem ipsum dolor sit amet consectetur - 100г.</li> -->
+							<li class="card-modal__ingredients-item">Lorem ipsum dolor sit amet consectetur - 100г.</li> 
 						</ul>
-					</div>
+					</div>-->
 					<div v-if="clientWidth >= 576"
 						class="card-modal__row-2">
-						<div class="card-modal__price">{{ product.priceActual }} ₽</div>
+						<div class="card-modal__price">{{ product.price }} ₽</div>
 						<Counter class="card-modal__counter"
 							@increase-counter="increaseCounter"
 							@decrease-counter="decreaseCounter"
@@ -91,8 +86,8 @@ const increaseQuantity = useIncreaseQuantity();
 					<div v-if="clientWidth < 576"
 						class="card-modal__row-2">
 						<div class="card-modal__price">
-							<div v-if="product.priceOld" class="card-modal__price-old">{{ product.priceOld }} руб</div>
-							<div class="card-modal__price-actual">{{ product.priceActual }} ₽</div>
+							<!--<div v-if="product.priceOld" class="card-modal__price-old">{{ product.priceOld }} руб</div>-->
+							<div class="card-modal__price-actual">{{ product.price }} ₽</div>
 						</div>
 
 						<div class="card-modal__actions">

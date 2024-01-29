@@ -7,6 +7,20 @@ const isSidebarMenuOpen = computed(() => appStore.isSidebarMenuOpen);
 const addScrollLock = useAddScrollLock();
 const removeScrollLock = useRemoveScrollLock();
 watch(isSidebarMenuOpen, (newState) => newState ? addScrollLock() : removeScrollLock());
+const modalFormIsOpen = ref(false);
+	const response = ref('');
+	async function sendEmail(event) {
+		let formdata = new FormData(event.target);
+		formdata.set('type', 'Модальная форма "Задать вопрос"');
+		var obj = {};
+		formdata.forEach((value, key) => obj[key] = value);
+		var json = JSON.stringify(obj);
+		response.value = await new ApiService().sendForm(json);
+		event.target.reset();
+		setTimeout(() => {
+			modalFormIsOpen = !modalFormIsOpen;
+		}, 2000);
+	}
 </script>
 
 <template>
@@ -63,18 +77,18 @@ watch(isSidebarMenuOpen, (newState) => newState ? addScrollLock() : removeScroll
 
 							<div class="sidebar-menu__tel">
 								<p class="sidebar-menu__tel-text">Южно-Сахалинск</p>
-								<a class="sidebar-menu__tel-link" href="tel:+79006600020">+7 (900) 660-00-20</a>
+								<a class="sidebar-menu__tel-link" :href="'tel:+' + appStore.siteparams.phone.replace(/\D/g,'')">{{appStore.siteparams.phone}}</a>
 							</div>
 
 							<div class="sidebar-menu__schedule">
 								<p class="sidebar-menu__schedule-text-1">Принимаем заказы</p>
-								<p class="sidebar-menu__schedule-text-2">с 10:00 до 18:00</p>
+								<p class="sidebar-menu__schedule-text-2" v-html="appStore.siteparams.workingHours"></p>
 							</div>
 
 							<social-list class="sidebar-menu__social">
-								<SocialItem modifier="vk" link="https://vk.com/" />
-								<SocialItem modifier="telegram" link="https://t.me/" />
-								<SocialItem modifier="whatsapp" link="https://wa.me/" />
+								<SocialItem modifier="vk" :link="appStore.siteparams.vk" />
+								<SocialItem modifier="telegram" :link="appStore.siteparams.telegram" />
+								<SocialItem modifier="whatsapp" :link="appStore.siteparams.whatsapp" />
 							</social-list>
 
 							<button class="sidebar-menu__button-callback">Задать вопрос</button>
@@ -98,6 +112,33 @@ watch(isSidebarMenuOpen, (newState) => newState ? addScrollLock() : removeScroll
 			</div>
 		</Transition>
 	</Teleport>
+	<ModalWindow
+		:isOpen="modalFormIsOpen"
+		@toggle-modal="modalFormIsOpen = !modalFormIsOpen">
+		<div class="callback">
+			<button type="button" class="close" @click="modalFormIsOpen = !modalFormIsOpen"><IconsClose /></button>
+			<h2 class="callback__title" v-if="response">{{ response.message }}</h2>
+			<h2 class="callback__title" v-else>Есть вопросы?</h2>
+			<p class="callback__desc" v-if="response">
+				Наш специалист свяжется с Вами в ближайшее время
+			</p>
+			<p class="callback__desc" v-else>
+				Оставьте свой номер телефона, мы свяжемся с Вами, расскажем про все наши блюда и выберем для Вас самый подходящий Бенто!
+			</p>
+			<form @submit.prevent="sendEmail($event)" class="callback__form" action="/">
+				<input class="callback__form-input" type="text" name="name" placeholder="Имя">
+				<input class="callback__form-input" type="tel" name="phone" placeholder="Телефон">
+				<button type="submit" class="callback__form-button">Задать вопрос</button>
+				<label class="custom-checkbox">
+					<input type="checkbox" name="policy" checked required>
+					<i><IconsCheck /></i>
+					<span>
+						Нажимая кнопку, вы соглашаетесь с условиями Политики конфиденциальности
+					</span>
+				</label>
+			</form>
+		</div>
+	</ModalWindow>
 </template>
 
 <style scoped>
@@ -298,4 +339,22 @@ watch(isSidebarMenuOpen, (newState) => newState ? addScrollLock() : removeScroll
 .sidebar-menu__link:hover {
 	color: var(--accent-color)
 }
+
+@media (max-width: 575px) {
+	.sidebar-menu__inner[data-v-c3ae421a] {
+		position: relative;
+		padding: 100px 40px 40px;
+		background-color: #1e1e1e;
+	}
+	.sidebar-menu__nav {
+		margin-bottom: 40px;
+	}
+	.sidebar-menu__tel {
+		margin-bottom: 28px;
+	}
+	.sidebar-menu__schedule {
+		margin-bottom: 46px;
+	}
+}
+
 </style>

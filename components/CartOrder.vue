@@ -1,8 +1,10 @@
 <script setup>
 import { useCartStore } from '~/stores/cartStore';
 import { useOrderStore } from '~/stores/orderStore';
+import ApiService from '~/services/ApiService';
 
 const cartStore = useCartStore();
+cartStore.loadCart();
 
 const orderStore = useOrderStore();
 const {
@@ -34,12 +36,21 @@ const openModalTime = () => {
 	modalTimeActiveTab.value = deliveryTimeType;
 };
 
-
+const response = ref('');
+async function sendOrder(event) {
+	let formdata = new FormData(event.target);
+	formdata.set('type', 'Заказ');
+	var obj = {};
+	formdata.forEach((value, key) => obj[key] = value);
+	var json = JSON.stringify(obj);
+	response.value = await new ApiService().sendForm(json);
+	event.target.reset();
+}
 
 </script>
 
 <template>
-	<form @submit.prevent class="order" :class="$attrs.class">
+	<form @submit.prevent="sendOrder($event)" class="order" :class="$attrs.class">
 		<!-- delivery -->
 		<div class="order__delivery">
 			<p class="order__subtitle">Как вы заберете заказ?</p>
@@ -119,7 +130,7 @@ const openModalTime = () => {
 		<div class="order__price">
 			<div class="order__price-total-wrap">
 				<p class="order__price-total-title">Сумма заказа:</p>
-				<p class="order__price-total-value">{{ cartStore.totalPrice }} ₽</p>
+				<p class="order__price-total-value">{{ cartStore.totalPrice + cartStore.addonsPrice }} ₽</p>
 			</div>
 			<div class="order__price-delivery-wrap">
 				<p class="order__price-delivery-title">Сумма доставки:</p>
@@ -282,5 +293,41 @@ const openModalTime = () => {
 .order__personal-info-link:hover {
 	color: var(--accent-color);
 	text-decoration-color: var(--accent-color);
+}
+
+@media (max-width: 1200px) {
+	.order {
+		max-width: 100%;
+		padding: 19px;
+		border-radius: 9px;
+	}
+	.order__subtitle {
+		font-size: 16.881px;
+		font-style: normal;
+		font-weight: 400;
+		line-height: normal;
+		letter-spacing: 0.169px;
+		margin-bottom: 16.6px;
+	}
+	.order__price-total-title, .order__price-delivery-title {
+		font-size: 14px;
+	}
+	.order__price-total-wrap {
+		padding: 10px 0;
+	}
+	.order__price-total-value, .order__price-delivery-value {
+		font-size: 22px;
+	}
+	.order__button-submit {
+		height: 50px;
+		font-size: 17px;
+		letter-spacing: 0.169px;
+	}
+}
+
+@media (max-width: 991px) {
+	.cart__order {
+		margin-top: 23px;
+	}
 }
 </style>

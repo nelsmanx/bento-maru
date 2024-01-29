@@ -12,15 +12,17 @@ const props = defineProps({
 	productList: {
 		type: Array,
 		required: true
+	},
+	category: {
+		type: Object
 	}
 });
 
 const classModifier = computed(() => props.classModifier ? `category__title--${props.classModifier}` : '');
 
 const cartStore = useCartStore();
-
 const productStore = useProductStore();
-// composables/useCartActions
+cartStore.loadCart();
 const decreaseQuantity = useDecreaseQuantity();
 const increaseQuantity = useIncreaseQuantity();
 </script>
@@ -37,11 +39,12 @@ const increaseQuantity = useIncreaseQuantity();
 			<div class=" category__list">
 				<CardItem class="category__item"
 					v-for="product in props.productList" :key="product.id"
-					:product-id="product.id"
+					:product="product"
 					:product-quantity="cartStore.singleItemQuantity(product.id)"
+					:inFav="productStore.isFav(product.id)"
 					@increase-quantity="increaseQuantity"
 					@decrease-quantity="decreaseQuantity"
-					@toggle-fav="productStore.toggleFav(product.id)" />
+					@toggle-fav="productStore.toggleFavorite(product)" />
 			</div>
 		</div>
 	</div>
@@ -130,7 +133,7 @@ const increaseQuantity = useIncreaseQuantity();
 	}
 
 	.category__list {
-		grid-template-columns: 100%;
+		grid-template-columns: 1fr;
 		gap: 18px;
 	}
 }

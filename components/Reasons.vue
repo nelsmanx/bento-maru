@@ -145,6 +145,7 @@
 .reasons__item-desc--2 {
 	padding-right: 20px;
 }
+
 </style>
 
 <style>

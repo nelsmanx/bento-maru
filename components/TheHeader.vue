@@ -10,7 +10,6 @@ const productStore = useProductStore();
 const hasProductItems = computed(() => cartStore.hasProductItems);
 const isItemInFav = computed(() => productStore.hasProductInFav);
 
-
 // Shadow on header when page is scrolled
 const pageIsScrolled = ref(null);
 onMounted(() => window.addEventListener('scroll', scrollHandler));
@@ -18,7 +17,6 @@ onMounted(() => window.addEventListener('scroll', scrollHandler));
 const scrollHandler = () => {
 	window.scrollY > 0 ? pageIsScrolled.value = true : pageIsScrolled.value = false;
 };
-
 
 const { clientWidth } = useClientWidth();
 
@@ -31,29 +29,29 @@ const { clientWidth } = useClientWidth();
 				class="header__button-burger"></button>
 			<div class="container">
 				<div class="header__items">
-					<a v-if="clientWidth >= 576" class="header__tel" href="tel:+79006600020">+7 (900) 660-00-20</a>
+					<a v-if="clientWidth >= 576" class="header__tel" :href="'tel:+' + appStore.siteparams.phone.replace(/\D/g,'')">{{appStore.siteparams.phone}}</a>
 					<span v-if="clientWidth >= 576" class="header__city">Южно-Сахалинск</span>
 					<div class="header__logo ">
-						<img v-if="$route.path === '/'" class="header__logo-image" src="~\assets\images\logo-cropped-top.svg" alt="Логотип компании">
+						<img v-if="$route.path === '/'" class="header__logo-image" src="~/assets/images/logo-cropped-top.svg" alt="Логотип компании">
 						<NuxtLink v-else to="/" class="header__logo-link">
-							<img class="header__logo-image" src="~\assets\images\logo-cropped-top.png" alt="Логотип компании">
+							<img class="header__logo-image" src="~/assets/images/logo-cropped-top.png" alt="Логотип компании">
 						</NuxtLink>
 					</div>
 					<social-list v-if="clientWidth >= 576" class="header__social"
 						:class="{ 'header__social--cart-full': hasProductItems }">
-						<SocialItem modifier="vk" link="https://vk.com/" />
-						<SocialItem modifier="telegram" link="https://t.me/" />
-						<SocialItem modifier="whatsapp" link="https://wa.me/" />
+						<SocialItem modifier="vk" :link="appStore.siteparams.vk" />
+						<SocialItem modifier="telegram" :link="appStore.siteparams.telegram" />
+						<SocialItem modifier="whatsapp" :link="appStore.siteparams.whatsapp" />
 					</social-list>
 					<div class="header__actions">
-						<NuxtLink to="/favorites"
-							class="header__button-fav"
-							:class="[
-								{ 'header__button-fav--cart-full': hasProductItems },
-								{ 'is-active': isItemInFav }
-							]">
+						<NuxtLink to="/favorites">
+							<div class="header__button-fav"
+								:class="[
+									{ 'header__button-fav--cart-full': hasProductItems },
+									{ 'is-active': isItemInFav }
+								]">
+							</div>
 						</NuxtLink>
-						<a v-if="clientWidth < 576" class="header__button-tel" href="tel:+79006600020"></a>
 						<NuxtLink to="/cart">
 							<HeaderCart class="header__cart" />
 						</NuxtLink>

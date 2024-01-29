@@ -24,8 +24,6 @@ defineEmits(['toggle-modal']);
 	</Teleport>
 </template>
 
-
-
 <style>
 .modal {
 	position: fixed;
