@@ -85,7 +85,7 @@ defineEmits(['tab-click']);
 	font-family: "Century Gothic";
 	font-size: 18px;
 	font-weight: 700;
-	line-height: normal;
+	line-height: 1;
 	letter-spacing: 0.18px;
 	color: #fff;
 	cursor: pointer;
@@ -115,15 +115,24 @@ defineEmits(['tab-click']);
 	.order-toggler__input-custom {
 		border-radius: 6.138px;
 	}
+
 	.order-toggler__label {
 		font-size: 13.811px;
-		letter-spacing: 0.138px; 
+		letter-spacing: 0.138px;
 	}
 }
 
 @media (max-width: 991px) {
 	.order-toggler {
 		border-radius: 9.2px;
+	}
+}
+
+@media (max-width: 575.98px) {
+	.order-toggler {
+		gap: 20px;
+		height: 40px;
+		padding: 3px;
 	}
 }
 </style>

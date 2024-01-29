@@ -1,62 +1,146 @@
 <script setup>
+import { useAppStore } from '~/stores/appStore';
 import { useCartStore } from '~/stores/cartStore';
 import { useOrderStore } from '~/stores/orderStore';
 import ApiService from '~/services/ApiService';
+import * as yup from 'yup';
+
+
+const appStore = useAppStore();
 
 const cartStore = useCartStore();
 cartStore.loadCart();
 
 const orderStore = useOrderStore();
-const {
-	deliveryMethod,
-	deliveryAddress,
-	pickupAddress,
-	deliveryTimeType,
-	customerName,
-	customerTel,
-	paymentMethod,
-	promo,
-	personalDataAgreement
-} = storeToRefs(orderStore);
+
+orderStore.setDefaultPickupAddress();
 
 const addressPreview = computed(() => orderStore.addressPreview);
 const deliveryTimePreview = computed(() => orderStore.deliveryTimePreview);
 
-const modalDeliveryIsOpen = ref(false);
-const modalDeliveryActiveTab = ref(null);
-const openModalDelivery = (activeTab) => {
-	modalDeliveryIsOpen.value = true;
-	modalDeliveryActiveTab.value = activeTab;
+
+// const modalDeliveryIsOpen = ref(false);
+// const modalDeliveryActiveTab = ref(null);
+
+
+const openModalDelivery = (togglerActiveTab) => {
+	appStore.modalDelivery.togglerActiveTab = togglerActiveTab;
+	appStore.modalDelivery.isOpen = true;
+	// modalDeliveryIsOpen.value = true;
+	// modalDeliveryActiveTab.value = activeTab;
 };
 
-const modalTimeIsOpen = ref(false);
-const modalTimeActiveTab = ref(null);
-const openModalTime = () => {
-	modalTimeIsOpen.value = true;
-	modalTimeActiveTab.value = deliveryTimeType;
+
+// const modalTimeIsOpen = ref(false);
+// const modalTimeActiveTab = ref(null);
+
+const openModalTime = (togglerActiveTab) => {
+	appStore.modalTime.togglerActiveTab = togglerActiveTab;
+	appStore.modalTime.isOpen = true;
+	// modalTimeIsOpen.value = true;
+	// modalTimeActiveTab.value = orderStore.deliveryTimeType;
 };
 
-const response = ref('');
+
+const orderForm = reactive(useForm({
+	validationSchema: yup.object({
+		customerName: yup.string().min(2).required(),
+		customerTel: yup.string().matches(/^\+7 \(\d{3}\) \d{3}-\d{2}-\d{2}$/).required(),
+		personalDataAgreement: yup.boolean().oneOf([true]).required()
+	}),
+	initialValues: {
+		personalDataAgreement: true,
+	}
+}));
+
+const customerName = reactive(useField('customerName'));
+const customerTel = reactive(useField('customerTel'));
+const personalDataAgreement = reactive(useField('personalDataAgreement', {
+	// initialValue: true !not working
+}));
+
+const checkInputValue = (input) => {
+	if (input.meta.valid) {
+		orderStore.updateStateKey(input.name, input.value);
+	}
+};
+
+
+const setFastestDeliveryTime = () => {
+	const scheduleStartHours = 10;
+	const scheduleEndHours = 22;
+	const baseDeliveryTimeInMinutes = 60;
+
+	// const testDate = new Date(2024, 0, 24, 5, 0);
+	// const currentDate = new Date(testDate);
+	// const fastestPossibleDate.value = new Date(testDate);
+
+	const currentDate = useNow({ interval: 60000 });
+
+	function getFastestPossibleDate() {
+		const fastestPossibleDate = new Date(currentDate.value);
+
+		fastestPossibleDate.setMinutes(fastestPossibleDate.getMinutes() + baseDeliveryTimeInMinutes);
+
+		// 22, 23 - нерабочие часы текущей смены после завершения рабочего дня. Если час ближайшего времени доставки попадает в этот интервал, то день ближайшего времени доставки переносится на следующий
+		if ([scheduleEndHours, 23].includes(fastestPossibleDate.getHours())) {
+			fastestPossibleDate.setDate(fastestPossibleDate.getDate() + 1);
+		}
+
+		// Если час ближайшего времени доставки позже закрытия смены и раньше открытия, тогда ближайшее время доставки устанавливается на время открытия смены + 1 час (baseDeliveryTimeInMinutes)
+		if (fastestPossibleDate.getHours() >= scheduleEndHours || fastestPossibleDate.getHours() <= scheduleStartHours) {
+			fastestPossibleDate.setHours(scheduleStartHours);
+			fastestPossibleDate.setMinutes(baseDeliveryTimeInMinutes);
+			fastestPossibleDate.setSeconds(0);
+		}
+
+		return fastestPossibleDate;
+	};
+
+	const fastestPossibleDate = ref(getFastestPossibleDate());
+	const fastestDay = computed(() => fastestPossibleDate.value.getDate() === currentDate.value.getDate() ? 'Сегодня' : 'Завтра');;
+	const fastestDateFormatted = computed(() => {
+		return useDateFormat(fastestPossibleDate.value, 'HH:mm', { locales: 'ru-RU' }).value;
+	});
+
+	orderStore.setDeliveryTimeFastest(fastestDay.value, fastestDateFormatted.value);
+
+	watch(currentDate, () => {
+		fastestPossibleDate.value = getFastestPossibleDate();
+		orderStore.setDeliveryTimeFastest(fastestDay.value, fastestDateFormatted.value);
+	});
+};
+setFastestDeliveryTime();
+
+
+
+
+// ########################################
+
 async function sendOrder(event) {
-	let formdata = new FormData(event.target);
-	formdata.set('type', 'Заказ');
-	var obj = {};
-	formdata.forEach((value, key) => obj[key] = value);
-	var json = JSON.stringify(obj);
-	response.value = await new ApiService().sendForm(json);
-	event.target.reset();
+	const order = {};
+	order.cartDetails = cartStore.cartDetails;
+	order.orderDetails = orderStore.orderDetails;
+	const response = ref(await new ApiService().sendForm(JSON.stringify(order)));
+	// response.value = await useFetch('https://bentomaru.sv34.ru/api/send-form', {
+	// 	method: 'POST',
+	// 	body: JSON.stringify(order)
+	// });
+	if (response.value.success === true) {
+		orderStore.orderIsSent = true;
+		cartStore.clearProductsAndAddons();
+	}
 }
-
 </script>
 
 <template>
-	<form @submit.prevent="sendOrder($event)" class="order" :class="$attrs.class">
+	<form @submit.prevent="sendOrder()" class="order" :class="$attrs.class">
 		<!-- delivery -->
 		<div class="order__delivery">
 			<p class="order__subtitle">Как вы заберете заказ?</p>
 			<CartOrderToggler
 				@tab-click="newValue => openModalDelivery(newValue)"
-				:active-tab="deliveryMethod"
+				:active-tab="orderStore.deliveryMethod"
 				groupName="delivery"
 				labelFirst="Доставка"
 				labelSecond="Самовывоз"
@@ -65,36 +149,46 @@ async function sendOrder(event) {
 				class="order__delivery-toggler" />
 
 			<div class="order__delivery-field-list">
+				<!-- @click="openModalDelivery(orderStore.deliveryMethod)" -->
 				<CartOrderField
-					@click="openModalDelivery(deliveryMethod)"
+					@click="openModalDelivery(orderStore.deliveryMethod)"
 					:model="addressPreview"
+					isValid
 					title="Город, улица"
 					classModifier="address"
 					class="order__delivery-field" />
 
 				<CartOrderField
-					@click="modalTimeIsOpen = true"
+					@click="openModalTime(orderStore.deliveryTimeType)"
 					:model="deliveryTimePreview"
+					isValid
 					title="Время доставки"
 					classModifier="time"
 					class="order__delivery-field" />
 
 				<CartOrderField
-					:model="customerName"
+					:isValid="customerName.meta.valid"
 					title="Ваше имя"
 					classModifier="name"
 					class="order__delivery-field">
-					<input v-model="customerName"
+					<input v-model="customerName.value"
+						@blur="checkInputValue(customerName)"
 						class="order-field__input"
 						type="text" name="customer-name" placeholder="Укажите Ваше имя">
 				</CartOrderField>
+
 				<CartOrderField
-					:model="customerTel"
+					:isValid="customerTel.meta.valid"
 					title="Ваш телефон"
 					classModifier="tel"
 					class="order__delivery-field">
-					<input v-model="customerTel"
-						class="order-field__input" type="tel" name="tel" placeholder="+7 (___)___-__-__">
+					<input v-model="customerTel.value" v-inputmask-tel
+						@blur="checkInputValue(customerTel)"
+						class="order-field__input"
+						type="tel" name="tel"
+						inputmode="numeric"
+						autocomplete="off"
+						placeholder="+7 (___)___-__-__">
 				</CartOrderField>
 			</div>
 		</div>
@@ -104,8 +198,8 @@ async function sendOrder(event) {
 			<p class="order__subtitle">Способ оплаты</p>
 
 			<CartOrderToggler
-				@tab-click="newValue => paymentMethod = newValue"
-				:active-tab="paymentMethod"
+				@tab-click="newValue => orderStore.paymentMethod = newValue"
+				:active-tab="orderStore.paymentMethod"
 				groupName="payment"
 				labelFirst="Картой"
 				labelSecond="Наличными"
@@ -115,16 +209,15 @@ async function sendOrder(event) {
 		</div>
 
 		<!-- promo -->
-		<div class="order__promo">
+		<!-- <div class="order__promo">
 			<CartOrderField
-				:model="promo"
 				title="Промокод"
 				classModifier="promo">
-				<input v-model="promo"
+				<input v-model="orderStore.promo"
 					class="order-field__input"
 					type="text" name="promo" placeholder="Введите промокод">
 			</CartOrderField>
-		</div>
+		</div> -->
 
 		<!-- price -->
 		<div class="order__price">
@@ -138,16 +231,21 @@ async function sendOrder(event) {
 			</div>
 		</div>
 
-		<button class="order__button-submit" type="submit">Оформить заказ</button>
+		<button class="order__button-submit"
+			:disabled="!orderForm.meta.valid"
+			type="submit">
+			Оформить заказ
+		</button>
 
 		<div class="order__personal-info">
-			<CheckboxWithLabel v-model="personalDataAgreement">
+			<CheckboxWithLabel v-model="personalDataAgreement.value">
 				Даю согласие на обработку <a class="order__personal-info-link" href="#">персональных данных</a>
 			</CheckboxWithLabel>
 		</div>
 	</form>
 
-	<modalWindow
+	<!-- <modalWindow
+		classModifier="modal--delivery"
 		:isOpen="modalDeliveryIsOpen"
 		@toggle-modal="modalDeliveryIsOpen = !modalDeliveryIsOpen">
 		<CartOrderModalDelivery
@@ -156,13 +254,33 @@ async function sendOrder(event) {
 	</modalWindow>
 
 	<modalWindow
+		classModifier="modal--time"
 		:isOpen="modalTimeIsOpen"
 		@toggle-modal="modalTimeIsOpen = !modalTimeIsOpen">
 		<CartOrderModalTime
-			:toggler-active-tab="deliveryTimeType"
+			:toggler-active-tab="modalTimeActiveTab"
 			@toggle-modal="modalTimeIsOpen = !modalTimeIsOpen" />
-	</modalWindow>
+	</modalWindow> -->
 </template>
+
+<style>
+.modal--delivery .modal__content,
+.modal--time .modal__content {
+	/* width: fit-content;
+	margin: 135px auto 0 auto; */
+	align-self: start;
+	margin-top: 135px;
+}
+
+@media (max-width: 575.98px) {
+
+	.modal--delivery .modal__content,
+	.modal--time .modal__content {
+		/* margin: 70px auto 0 auto; */
+		margin-top: 70px;
+	}
+}
+</style>
 
 <style scoped>
 .order {
@@ -282,6 +400,12 @@ async function sendOrder(event) {
 	cursor: pointer;
 }
 
+.order__button-submit:disabled {
+	opacity: 0.65;
+	transition: opacity 250ms ease-in-out;
+	cursor: default;
+}
+
 .order__personal-info-link {
 	text-decoration: underline;
 	text-decoration-color: #f9fafb;
@@ -301,23 +425,30 @@ async function sendOrder(event) {
 		padding: 19px;
 		border-radius: 9px;
 	}
+
 	.order__subtitle {
 		font-size: 16.881px;
 		font-style: normal;
 		font-weight: 400;
 		line-height: normal;
 		letter-spacing: 0.169px;
-		margin-bottom: 16.6px;
+		margin-bottom: 15px;
 	}
-	.order__price-total-title, .order__price-delivery-title {
+
+	.order__price-total-title,
+	.order__price-delivery-title {
 		font-size: 14px;
 	}
+
 	.order__price-total-wrap {
 		padding: 10px 0;
 	}
-	.order__price-total-value, .order__price-delivery-value {
+
+	.order__price-total-value,
+	.order__price-delivery-value {
 		font-size: 22px;
 	}
+
 	.order__button-submit {
 		height: 50px;
 		font-size: 17px;
@@ -325,9 +456,60 @@ async function sendOrder(event) {
 	}
 }
 
-@media (max-width: 991px) {
-	.cart__order {
-		margin-top: 23px;
+@media (max-width: 575.98px) {
+	.order__delivery-toggler {
+		margin-bottom: 20px;
+	}
+
+	.order__delivery-field:not(:last-child) {
+		margin-bottom: 12px;
+	}
+
+	.order__delivery {
+		margin-bottom: 22px;
+	}
+
+	.order__payment {
+		margin-bottom: 12px;
+	}
+
+	.order__price-total-wrap {
+		padding: 8px 0;
+	}
+
+	.order__price-total-title,
+	.order__price-delivery-title {
+		font-size: 12px;
+	}
+
+	.order__price-delivery-wrap {
+		padding: 9px 0;
+	}
+
+	.order__button-submit {
+		border-radius: 9px;
+	}
+
+	.order__personal-info :deep(.checkbox-w-l__label) {
+		display: flex;
+	}
+
+	.order__personal-info :deep(.checkbox-w-l__input-wrap) {
+		top: 0;
+	}
+
+	.order__personal-info :deep(.checkbox-w-l__custom-input) {
+		width: 15px;
+		height: 15px;
+	}
+
+	.order__personal-info :deep(.checkbox-w-l__label-content) {
+		font-size: 11px;
+	}
+
+	.order__personal-info :deep(.checkbox-w-l__default-input:checked + .checkbox-w-l__custom-input::before) {
+		top: 5px;
+		transform: translateX(-50%);
 	}
 }
 </style>

@@ -2,25 +2,19 @@
 import { useAppStore } from '~/stores/appStore';
 
 const appStore = useAppStore();
-const isSidebarMenuOpen = computed(() => appStore.isSidebarMenuOpen);
+const isSidebarMenuOpen = computed(() => appStore.sidebarMenu.isOpen);
 
 const addScrollLock = useAddScrollLock();
 const removeScrollLock = useRemoveScrollLock();
+
 watch(isSidebarMenuOpen, (newState) => newState ? addScrollLock() : removeScrollLock());
-const modalFormIsOpen = ref(false);
-	const response = ref('');
-	async function sendEmail(event) {
-		let formdata = new FormData(event.target);
-		formdata.set('type', 'Модальная форма "Задать вопрос"');
-		var obj = {};
-		formdata.forEach((value, key) => obj[key] = value);
-		var json = JSON.stringify(obj);
-		response.value = await new ApiService().sendForm(json);
-		event.target.reset();
-		setTimeout(() => {
-			modalFormIsOpen = !modalFormIsOpen;
-		}, 2000);
-	}
+
+
+const handleModalWindowOpening = (modalWindow) => {
+	appStore.toggleSidebarMenu();
+	appStore.toggleModalWindow(modalWindow);
+};
+
 </script>
 
 <template>
@@ -45,11 +39,13 @@ const modalFormIsOpen = ref(false);
 							<nav class="sidebar-menu__nav">
 								<ul class="sidebar-menu__nav-list">
 									<li class="sidebar-menu__nav-item">
-										<a class="sidebar-menu__nav-link" href="#">Все меню</a>
+										<NuxtLink to="/#title-w-d-japan-food-index"
+											@click="appStore.toggleSidebarMenu"
+											class="sidebar-menu__nav-link">Все меню</NuxtLink>
 									</li>
-									<li class="sidebar-menu__nav-item">
-										<a class="sidebar-menu__nav-link sidebar-menu__nav-link--promo" href="#">Акции</a>
-									</li>
+									<!-- <li class="sidebar-menu__nav-item">
+									<a class="sidebar-menu__nav-link sidebar-menu__nav-link--promo" href="#">Акции</a>
+								</li> -->
 									<li class="sidebar-menu__nav-item">
 										<NuxtLink to="/delivery"
 											@click="appStore.toggleSidebarMenu"
@@ -77,7 +73,7 @@ const modalFormIsOpen = ref(false);
 
 							<div class="sidebar-menu__tel">
 								<p class="sidebar-menu__tel-text">Южно-Сахалинск</p>
-								<a class="sidebar-menu__tel-link" :href="'tel:+' + appStore.siteparams.phone.replace(/\D/g,'')">{{appStore.siteparams.phone}}</a>
+								<a class="sidebar-menu__tel-link" :href="'tel:+' + appStore.siteparams.phone.replace(/\D/g, '')">{{ appStore.siteparams.phone }}</a>
 							</div>
 
 							<div class="sidebar-menu__schedule">
@@ -91,7 +87,10 @@ const modalFormIsOpen = ref(false);
 								<SocialItem modifier="whatsapp" :link="appStore.siteparams.whatsapp" />
 							</social-list>
 
-							<button class="sidebar-menu__button-callback">Задать вопрос</button>
+							<button class="sidebar-menu__button-callback"
+								@click="handleModalWindowOpening('modalCallback')">
+								Задать вопрос
+							</button>
 
 							<div class="sidebar-menu__link-section">
 								<ul class="sidebar-menu__link-list">
@@ -112,33 +111,6 @@ const modalFormIsOpen = ref(false);
 			</div>
 		</Transition>
 	</Teleport>
-	<ModalWindow
-		:isOpen="modalFormIsOpen"
-		@toggle-modal="modalFormIsOpen = !modalFormIsOpen">
-		<div class="callback">
-			<button type="button" class="close" @click="modalFormIsOpen = !modalFormIsOpen"><IconsClose /></button>
-			<h2 class="callback__title" v-if="response">{{ response.message }}</h2>
-			<h2 class="callback__title" v-else>Есть вопросы?</h2>
-			<p class="callback__desc" v-if="response">
-				Наш специалист свяжется с Вами в ближайшее время
-			</p>
-			<p class="callback__desc" v-else>
-				Оставьте свой номер телефона, мы свяжемся с Вами, расскажем про все наши блюда и выберем для Вас самый подходящий Бенто!
-			</p>
-			<form @submit.prevent="sendEmail($event)" class="callback__form" action="/">
-				<input class="callback__form-input" type="text" name="name" placeholder="Имя">
-				<input class="callback__form-input" type="tel" name="phone" placeholder="Телефон">
-				<button type="submit" class="callback__form-button">Задать вопрос</button>
-				<label class="custom-checkbox">
-					<input type="checkbox" name="policy" checked required>
-					<i><IconsCheck /></i>
-					<span>
-						Нажимая кнопку, вы соглашаетесь с условиями Политики конфиденциальности
-					</span>
-				</label>
-			</form>
-		</div>
-	</ModalWindow>
 </template>
 
 <style scoped>
@@ -341,20 +313,44 @@ const modalFormIsOpen = ref(false);
 }
 
 @media (max-width: 575px) {
+	.sidebar-menu {
+		width: 290px;
+	}
+
 	.sidebar-menu__inner[data-v-c3ae421a] {
-		position: relative;
-		padding: 100px 40px 40px;
-		background-color: #1e1e1e;
+		height: 100%;
+		padding: 90px 40px 40px;
+		overflow: auto;
 	}
+
 	.sidebar-menu__nav {
-		margin-bottom: 40px;
+		margin-bottom: 44px;
 	}
+
+	.sidebar-menu__nav-item {
+		padding: 13px 0;
+	}
+
+	.sidebar-menu__nav-link {
+		font-size: 16px;
+	}
+
 	.sidebar-menu__tel {
 		margin-bottom: 28px;
 	}
+
+	.sidebar-menu__tel-text,
+	.sidebar-menu__schedule-text-1 {
+		font-size: 14px;
+	}
+
+	.sidebar-menu__tel-link,
+	.sidebar-menu__schedule-text-2 {
+		font-size: 23px;
+	}
+
 	.sidebar-menu__schedule {
 		margin-bottom: 46px;
 	}
 }
-
 </style>

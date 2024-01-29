@@ -6,8 +6,13 @@ export default defineNuxtConfig({
 		  modulePreload: false
 		}
 	},
-	modules: ['@pinia/nuxt', 'nuxt-swiper'],
+	modules: [
+		'@pinia/nuxt', 
+		'nuxt-swiper',
+		'@vueuse/nuxt',
+		'@vee-validate/nuxt',
+	],
 	pinia: {
 		storesDirs: ['./stores/**'],
-	},
+	}
 })

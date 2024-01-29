@@ -16,6 +16,7 @@ export const useProductStore = defineStore('product', {
 		getCategory() {
 			return this.category;
 		},
+
 		hasProductInFav() {
 			if (this.favorites.length > 0) {
 				return true;
@@ -23,6 +24,7 @@ export const useProductStore = defineStore('product', {
 				return false;
 			}
 		},
+
 		isFav: (state) => {
 			return (itemId) => {
 				const itemInFav = state.favorites.find(product => product.id === itemId);
@@ -32,34 +34,42 @@ export const useProductStore = defineStore('product', {
 	},
 	actions: {
 		async getBanners() {
-            this.banners = await new ApiService().getBanners(); 
-        },
+			this.banners = await new ApiService().getBanners();
+		},
+
 		async getCategories() {
-            this.categories = await new ApiService().getCategories(); 
-        },
+			this.categories = await new ApiService().getCategories();
+		},
+
 		async activeCategory(categoryid) {
-			if(categoryid) {
+			if (categoryid) {
 				this.active = categoryid;
 			}
-			if(this.categories) {
+			if (this.categories) {
 				this.category = this.categories.find(item => item.id === this.active);
 			}
 		},
+
 		async getActiveProducts() {
-			this.products = await new ApiService().getProducts(this.category.id); 
+			this.products = await new ApiService().getProducts(this.category.id);
 		},
+
 		async getBento() {
-			this.bento = await new ApiService().getProducts(156); 
+			this.bento = await new ApiService().getProducts(156);
 		},
+
 		async getCurry() {
-			this.curry = await new ApiService().getProducts(157); 
+			this.curry = await new ApiService().getProducts(157);
 		},
+
 		async loadFavorites() {
-			if (process.client) { this.favorites = JSON.parse(localStorage.getItem('favorites')) || []; 
+			if (process.client) {
+				this.favorites = JSON.parse(localStorage.getItem('favorites')) || [];
 			} else {
 				this.favorites = [];
 			}
 		},
+
 		toggleFavorite(item) {
 			const itemInFavorites = this.favorites.find(favorite => favorite.id === item.id);
 			if (itemInFavorites) {

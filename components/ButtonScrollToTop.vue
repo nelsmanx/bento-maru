@@ -54,6 +54,7 @@ const scrollToTop = () => window.scrollTo({ top: 0, behavior: 'smooth' });
 		height: 40px;
 		right: 10px;
 		bottom: 60px;
+		border-radius: 6px;
 	}
 }
 </style>

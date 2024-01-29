@@ -37,20 +37,11 @@ const props = defineProps({
 	color: var(--accent-color);
 }
 
-/* ### japan-food ### */
-.title-w-d--japan-food {
-	padding: 40px 0 30px;
-}
-
 @media (max-width: 575.98px) {
 
 	/* ### japan-food ### */
 	.title-w-d--japan-food-index-top {
 		padding: 20px 0;
-	}
-
-	.title-w-d--japan-food-index-bottom {
-		padding: 30px 0;
 	}
 
 	.title-w-d--japan-food .title-w-d__title-wrap {

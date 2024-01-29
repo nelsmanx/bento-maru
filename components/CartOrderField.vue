@@ -17,15 +17,18 @@ const props = defineProps({
 	},
 	cursorAuto: {
 		type: Boolean
+	},
+	isValid: {
+		type: Boolean
 	}
 });
 
-const classModifier = props.classModifier ? `order-field__title--${props.classModifier}` :
-	'order-field__title--without-icon';
+const classModifier = props.classModifier ? `order-field__title--${props.classModifier}` : 'order-field__title--without-icon';
+
 </script>
 
 <template>
-	<div :class="{ 'is-active': props.model, 'order-field--cursor-auto': props.cursorAuto }"
+	<div :class="{ 'is-valid': props.isValid, 'order-field--cursor-auto': props.cursorAuto }"
 		class="order-field">
 		<div class="order-field__inner">
 			<p :class="classModifier"
@@ -36,16 +39,9 @@ const classModifier = props.classModifier ? `order-field__title--${props.classMo
 				<p class="order-field__value">{{ props.model }}</p>
 			</slot>
 
-			<span :class="{ 'is-active': props.model }"
-				class="order-field__check"></span>
-
-			<!-- <label class="order-field__input-label">
-				<input
-					:name="props.checkboxName"
-					type="checkbox"
-					class="order-field__input-default">
-				<span class="order-field__input-custom"></span>
-			</label> -->
+			<span :class="{ 'is-valid': props.isValid }"
+				class="order-field__check">
+			</span>
 		</div>
 	</div>
 </template>
@@ -64,7 +60,7 @@ const classModifier = props.classModifier ? `order-field__title--${props.classMo
 	cursor: auto;
 }
 
-.order-field.is-active {
+.order-field.is-valid {
 	border-color: var(--accent-color);
 }
 
@@ -145,7 +141,8 @@ const classModifier = props.classModifier ? `order-field__title--${props.classMo
 	color: #fff;
 }
 
-.order-field__input {
+.order-field__input,
+.order-field__label {
 	font-family: "Cera Pro";
 	font-size: 16px;
 	font-weight: 400;
@@ -154,6 +151,12 @@ const classModifier = props.classModifier ? `order-field__title--${props.classMo
 	color: #fff;
 	border: none;
 	background-color: transparent;
+	cursor: pointer;
+}
+
+.order-field__input:focus::placeholder {
+	color: transparent;
+	transition: color 150ms ease-in-out;
 }
 
 /* ### chrome autofill ### */
@@ -173,6 +176,13 @@ const classModifier = props.classModifier ? `order-field__title--${props.classMo
 	color: #fff;
 }
 
+.order-field__input[type="radio"] {
+	-webkit-appearance: none;
+	appearance: none;
+	background-color: #fff;
+	margin: 0;
+}
+
 .order-field__check {
 	grid-area: check;
 	position: relative;
@@ -184,7 +194,7 @@ const classModifier = props.classModifier ? `order-field__title--${props.classMo
 	border-radius: 6px;
 }
 
-.order-field__check.is-active {
+.order-field__check.is-valid {
 	border-color: var(--accent-color);
 }
 
@@ -201,7 +211,7 @@ const classModifier = props.classModifier ? `order-field__title--${props.classMo
 	transform: translate(-50%, -50%);
 }
 
-.order-field__check.is-active::before {
+.order-field__check.is-valid::before {
 	background-image: url("~/assets/icons/check-orange.svg");
 }
 
@@ -209,10 +219,14 @@ const classModifier = props.classModifier ? `order-field__title--${props.classMo
 	.order-field__title {
 		font-size: 12px;
 	}
-	.order-field__value, .order-field__input {
+
+	.order-field__value,
+	.order-field__input,
+	.order-field__label {
 		font-size: 13px;
 		letter-spacing: 0.16px;
 	}
+
 	.order-field {
 		height: 48px;
 	}
@@ -221,6 +235,93 @@ const classModifier = props.classModifier ? `order-field__title--${props.classMo
 @media (max-width: 991px) {
 	.order-field {
 		border-radius: 9.2px;
+	}
+}
+
+@media (max-width: 575.98px) {
+	.order-field {
+		height: 46px;
+		padding: 6px 8px 6px 9px;
+	}
+
+	.order-field__check {
+		width: 18px;
+		height: 18px;
+		border-radius: 4px;
+	}
+
+	.order-field__check::before {
+		width: 7px;
+		height: 5px;
+	}
+
+	.order-field__title {
+		font-size: 10px;
+	}
+
+	.order-field__title::before {
+		margin-right: 2px;
+	}
+
+	.order-field__title--without-icon::before {
+		margin-right: 0;
+	}
+
+	.order-field__value,
+	.order-field__input,
+	.order-field__label {
+		line-height: 1;
+	}
+
+	.order__delivery-toggler {
+		margin-bottom: 20px;
+	}
+
+	.order__delivery-field:not(:last-child) {
+		margin-bottom: 9px;
+	}
+
+	.order__delivery {
+		margin-bottom: 26px;
+	}
+
+	.order__price-total-wrap {
+		padding: 8px 0;
+	}
+
+	.order__price-total-title,
+	.order__price-delivery-title {
+		font-size: 12px;
+	}
+
+	.order__price-delivery-wrap {
+		padding: 9px 0;
+	}
+
+	.order__button-submit {
+		border-radius: 9px;
+	}
+
+	.order__personal-info :deep(.checkbox-w-l__label) {
+		display: flex;
+	}
+
+	.order__personal-info :deep(.checkbox-w-l__input-wrap) {
+		top: 0;
+	}
+
+	.order__personal-info :deep(.checkbox-w-l__custom-input) {
+		width: 15px;
+		height: 15px;
+	}
+
+	.order__personal-info :deep(.checkbox-w-l__label-content) {
+		font-size: 11px;
+	}
+
+	.order__personal-info :deep(.checkbox-w-l__default-input:checked + .checkbox-w-l__custom-input::before) {
+		top: 5px;
+		transform: translateX(-50%);
 	}
 }
 </style>

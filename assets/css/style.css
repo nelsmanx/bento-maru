@@ -119,64 +119,6 @@ body.scroll-lock {
 	object-fit: contain;
 }
 
-.background-decor {
-	position: relative;
-	--adaptive-height: 100%;
-}
-
-.background-decor::before {
-	content: '';
-	position: absolute;
-	top: 0;
-	left: 0;
-	width: 100%;
-	height: var(--adaptive-height);
-	/* right: 0; */
-	/* bottom: var(--bottom-offset); */
-	z-index: -1;
-	background-image:
-		/* flower right */
-		url("~/assets/images/background/flower-right.svg"),
-		/* fish left */
-		url("~/assets/images/background/fish.svg"),
-		/* wind right */
-		url("~/assets/images/background/wind-right.svg"),
-		/* flower left */
-		url("~/assets/images/background/flower-left.svg"),
-		/* fish right */
-		url("~/assets/images/background/fish.svg"),
-		/* wind left */
-		url("~/assets/images/background/wind-left.svg");
-	background-size:
-		/* flower right */
-		202px 4248px,
-		/* fish left */
-		456px 4248px,
-		/* wind right */
-		324px 4248px,
-		/* flower left */
-		202px 4248px,
-		/* fish right */
-		456px 4248px,
-		/* wind left */
-		266px 4248px;
-	background-position:
-		/* flower right */
-		right 190px top -1840px,
-		/* fish left */
-		96px -1035px,
-		/* wind right */
-		right 170px top -255px,
-		/* flower left */
-		190px 320px,
-		/* fish right */
-		right 80px top 1125px,
-		/* wind left */
-		190px 1875px;
-	background-repeat:
-		repeat-y;
-}
-
 /* ### footer at the bottom ### */
 html,
 body,
@@ -192,10 +134,4 @@ body,
 
 main {
 	flex: 1 1 auto;
-}
-
-@media (max-width: 575.98px) {
-	.background-decor::before {
-		display: none;
-	}
 }

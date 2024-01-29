@@ -63,7 +63,7 @@
 	<Support class="support--delivery" />
 </template>
 
-<style scoped>
+<!-- <style scoped>
 .category-title--delivery {
 	padding: 10px 0 38px;
 }
@@ -222,5 +222,291 @@
 .support--delivery {
 	padding: 55px 0 10px;
 }
-</style>
+</style> -->
 
+<style lang="scss" scoped>
+.category-title--delivery {
+	padding: 10px 0 38px;
+}
+
+/* ### delivery ### */
+.delivery {
+	padding: 35px 0 60px;
+}
+
+.delivery__inner {
+	display: grid;
+	grid-template-columns: 470px 655px;
+	justify-content: space-between;
+	gap: 50px;
+
+	@media (max-width: 1400px) {
+		grid-template-columns: 470px 1fr;
+		gap: 30px;
+	}
+
+	@media (max-width: 1200px) {
+		grid-template-columns: 1fr 1fr;
+		gap: 20px;
+	}
+
+	@media (max-width: 991px) {
+		grid-template-columns: 1fr;
+	}
+}
+
+.delivery__content {}
+
+.delivery__title {
+	margin-bottom: 25px;
+	font-family: "Century Gothic";
+	font-size: 42px;
+	font-weight: 700;
+	line-height: normal;
+	letter-spacing: 0.42px;
+	color: var(--accent-color);
+
+	@media (max-width: 1200px) {
+		font-size: 34px;
+	}
+
+	@media (max-width: 768px) {
+		font-size: 28px;
+	}
+
+	@media (max-width: 575px) {
+		font-size: 24px;
+	}
+}
+
+.delivery__text-group-1 {
+	margin-bottom: 24px;
+}
+
+.delivery__par {
+	font-family: "Cera Pro";
+	font-size: 20px;
+	font-weight: 400;
+	line-height: 1.6;
+	letter-spacing: 0.2px;
+	color: #fff;
+
+	@media (max-width: 1200px) {
+		font-size: 18px;
+	}
+
+	@media (max-width: 768px) {
+		font-size: 16px;
+	}
+
+	@media (max-width: 575px) {
+		font-size: 14px;
+	}
+}
+
+.delivery__par:not(:last-child) {
+	margin-bottom: 10px;
+}
+
+.delivery__subtitle {
+	margin-bottom: 15px;
+	font-family: "Century Gothic";
+	font-size: 35px;
+	font-weight: 700;
+	line-height: normal;
+	letter-spacing: 0.35px;
+	color: #f9fafb;
+
+	@media (max-width: 1200px) {
+		font-size: 30px;
+	}
+
+	@media (max-width: 768px) {
+		font-size: 24px;
+	}
+
+	@media (max-width: 575px) {
+		font-size: 20px;
+	}
+}
+
+.delivery__text-group-2 {
+	margin-bottom: 40px;
+}
+
+.delivery__button {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	width: 413px;
+	height: 65px;
+	padding: 10px;
+	font-family: "Century Gothic";
+	font-size: 22px;
+	font-weight: 700;
+	line-height: normal;
+	letter-spacing: 0.22px;
+	color: #fff;
+	background: var(--accent-gradient);
+	border: none;
+	border-radius: 12px;
+
+	@media (max-width: 1200px) {
+		font-size: 20px;
+		width: 360px;
+		height: 55px;
+	}
+
+	@media (max-width: 768px) {
+		font-size: 18px;
+		width: 320px;
+		height: 50px;
+	}
+
+	@media (max-width: 575px) {
+		font-size: 14px;
+		width: 280px;
+		height: 45px;
+	}
+}
+
+.delivery__map {
+	padding-top: 10px;
+
+	@media (max-width: 991px) {
+		padding-top: 25px;
+		height: 340px;
+	}
+}
+
+.delivery__map-picture {
+	position: relative;
+	display: block;
+	width: 100%;
+	height: 100%;
+	/* padding: calc(100% / (621 / 463)) 0 0; */
+	border-radius: 12px;
+	overflow: hidden;
+}
+
+.delivery__map-picture img {
+	position: absolute;
+	inset: 0;
+	display: block;
+	width: 100%;
+	max-width: 100%;
+	height: 100%;
+	max-height: 100%;
+	object-fit: cover;
+	object-position: center;
+}
+
+/* ### delivery-info ### */
+.delivery-info {}
+
+.delivery-info--time {
+	margin-bottom: 46px;
+
+	@media (max-width: 1200px) {
+		margin-bottom: 30px;
+	}
+
+	@media (max-width: 768px) {
+		margin-bottom: 24px;
+	}
+}
+
+.delivery-info__inner {
+	padding: 25px 58px 48px 38px;
+	border: 1px solid #282828;
+	border-radius: 12px;
+	background: linear-gradient(1deg, #121212 0.77%, rgba(18, 18, 18, 0.49) 43.56%);
+
+	@media (max-width: 1200px) {
+		padding: 30px;
+	}
+
+	@media (max-width: 768px) {
+		padding: 20px;
+	}
+
+	@media (max-width: 575px) {
+		padding: 15px;
+	}
+}
+
+.delivery-info__inner--payment {
+	position: relative;
+}
+
+.delivery-info__inner--payment::after {
+	content: '';
+	position: absolute;
+	top: 30px;
+	right: 30px;
+	display: block;
+	width: 186px;
+	height: 39px;
+	background: url("~/assets/icons/delivery-payment.svg") center/contain no-repeat;
+
+	@media (max-width: 768px) {
+		top: 20px;
+		right: 15px;
+	}
+
+	@media (max-width: 575px) {
+		display: none;
+	}
+}
+
+.delivery-info__title {
+	margin-bottom: 20px;
+	font-family: "Century Gothic";
+	font-size: 35px;
+	font-weight: 700;
+	line-height: normal;
+	letter-spacing: 0.35px;
+	color: var(--accent-color);
+
+	@media (max-width: 1200px) {
+		font-size: 30px;
+	}
+
+	@media (max-width: 768px) {
+		font-size: 24px;
+	}
+
+	@media (max-width: 575px) {
+		font-size: 20px;
+	}
+}
+
+.delivery-info__par {
+	font-family: "Cera Pro";
+	font-size: 20px;
+	font-weight: 400;
+	line-height: 1.6;
+	letter-spacing: 0.2px;
+	color: #fff;
+
+	@media (max-width: 1200px) {
+		font-size: 18px;
+	}
+
+	@media (max-width: 768px) {
+		font-size: 16px;
+	}
+
+	@media (max-width: 575px) {
+		font-size: 14px;
+	}
+}
+
+.delivery-info__par:not(:last-child) {
+	margin-bottom: 33px;
+}
+
+.support--delivery {
+	padding: 55px 0 10px;
+}
+</style>

@@ -1,10 +1,10 @@
 <script setup>
-	import config from "@/config";
-	import { useProductStore } from '@/stores/productStore';
-	const baseUrl = `${config.app.server.scheme}://${config.app.server.host}`;
-	const productStore = useProductStore();
-	productStore.getBanners();
-	const { clientWidth } = useClientWidth();
+import config from "@/config";
+import { useProductStore } from '@/stores/productStore';
+const baseUrl = `${config.app.server.scheme}://${config.app.server.host}`;
+const productStore = useProductStore();
+productStore.getBanners();
+const { clientWidth } = useClientWidth();
 </script>
 
 <template>
@@ -26,7 +26,7 @@
 								<div class="swiper__info">
 									<div class="swiper__title" v-html="banner.h1"></div>
 									<div class="swiper__desc" v-html="banner.content"></div>
-									<button class="swiper__button">Перейти в каталог</button>
+									<NuxtLink to="#title-w-d-japan-food-index" class="swiper__button">Перейти в каталог</NuxtLink>
 								</div>
 							</div>
 						</div>
@@ -102,25 +102,31 @@
 	opacity: 1;
 }
 
-.swiper__title b, #swiper-hero .swiper__desc p strong {
-	color: var(--accent-color) !important;
+#swiper-hero .swiper__title b,
+#swiper-hero .swiper__desc p strong {
+	color: var(--accent-color);
 }
+
 .swiper__image {
 	width: 100%;
 	height: 100%;
 	object-fit: contain;
 }
+
 @media (max-width: 1200px) {
 	.swiper__image {
 		width: 100%;
 		object-fit: contain;
 	}
 }
+
 @media (max-width: 575.98px) {
 	#swiper-hero {
-		min-height: 530px;
-		border-radius: 6px;
 		padding-bottom: 27px;
+	}
+
+	#swiper-hero .swiper-slide {
+		height: auto;
 	}
 
 	#swiper-hero .swiper-button-prev,
@@ -303,10 +309,6 @@
 	margin-top: 90px;
 }
 
-/* #swiper-hero .swiper__info--5 {
-	max-width: 550px;
-	margin-top: 90px;
-} */
 #swiper-hero .swiper__title {
 	margin-bottom: 28px;
 	font-family: "Century Gothic";
@@ -375,6 +377,7 @@
 	display: flex;
 	justify-content: center;
 	align-items: center;
+	width: fit-content;
 	padding: 1.2em 3em;
 	font-family: "Century Gothic";
 	font-size: 19px;
@@ -404,10 +407,11 @@
 	}
 
 	#swiper-hero .swiper__inner {
-		height: 530px;
+		height: 100%;
 		background:
 			linear-gradient(90deg, #000 -28.61%, #333438 150.26%),
 			url("~/assets/images/carousel-hero/product-shadow-mobile.png") top 0 center/contain no-repeat;
+		border-radius: 6px;
 	}
 
 	#swiper-hero .swiper__inner::before {

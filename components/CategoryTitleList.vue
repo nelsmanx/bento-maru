@@ -1,14 +1,17 @@
 <script setup>
 import { useProductStore } from '@/stores/productStore';
+
+
 const productStore = useProductStore();
 const categories = productStore.categories;
 const route = useRoute();
 const router = useRouter();
+
 function updateCategory(id) {
 	productStore.activeCategory(id);
 	if (route.name !== 'index') {
-      router.push('/')
-    }
+		router.push('/');
+	}
 }
 </script>
 
@@ -18,8 +21,7 @@ function updateCategory(id) {
 			<Swiper
 				:slidesPerView="'auto'"
 				:spaceBetween="29"
-				:speed="1000"
-			>
+				:speed="1000">
 				<SwiperSlide v-for="(item, key) in categories" :key="key">
 					<div class="category-title__item">
 						<button type="button" class="category-title__link" @click="updateCategory(item.id)">
@@ -56,6 +58,7 @@ function updateCategory(id) {
 	opacity: 0.3;
 	transform: translateX(-50%);
 }
+
 .swiper-slide {
 	width: fit-content;
 }
@@ -85,7 +88,9 @@ function updateCategory(id) {
 	color: #fff !important;
 	cursor: pointer;
 	transition: color 150ms ease-in-out;
-	a, button {
+
+	a,
+	button {
 		background: transparent;
 		border: 0;
 		padding: 0;
@@ -94,7 +99,9 @@ function updateCategory(id) {
 		cursor: pointer;
 		transition: 0.5s
 	}
-	a:hover, button:hover {
+
+	a:hover,
+	button:hover {
 		color: var(--accent-color);
 	}
 }
@@ -127,5 +134,4 @@ function updateCategory(id) {
 	.category-title__item {
 		font-size: 13px;
 	}
-}
-</style>
+}</style>

@@ -33,9 +33,7 @@ const productsInFav = computed(() => productStore.favorites);
 	letter-spacing: 0.42px;
 	color: var(--accent-color);
 }
-</style>
 
-<style>
 .category-title--fav {
 	padding: 10px 0 38px;
 }
@@ -43,4 +41,20 @@ const productsInFav = computed(() => productStore.favorites);
 .support--fav {
 	padding: 0px 0 70px;
 }
+
+@media (max-width: 575.98px) {
+	.favorites {
+		padding: 0 0 30px;
+	}
+
+	.favorites__title {
+		font-size: 18px;
+	}
+
+	.category-title--fav {
+		padding: 10px 0 32px;
+	}
+}
 </style>
+
+<style></style>

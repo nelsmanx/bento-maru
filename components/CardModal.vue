@@ -1,112 +1,125 @@
 <script setup>
-	import config from "~/config";
-	import { useCartStore } from '~/stores/cartStore';
+import config from "~/config";
+import { useCartStore } from '~/stores/cartStore';
+import { useProductStore } from '~/stores/productStore';
 
-	const props = defineProps({
-		productId: {
-			type: Number,
-			required: true
-		},
-		productQuantity: {
-			type: Number,
-			required: true
-		}
-	});
+const props = defineProps({
+	productId: {
+		type: Number,
+		required: true
+	},
+	isFav: {
+		type: Boolean
+	},
+	productQuantity: {
+		type: Number,
+		required: true
+	}
+});
 
-	const emit = defineEmits(['toggle-modal']);
+const emit = defineEmits(['toggle-modal']);
 
-	const { clientWidth } = useClientWidth();
-	const cartStore = useCartStore();
-	const product = cartStore.cart.find(item => item.id === props.productId);
-	const baseUrl = `${config.app.server.scheme}://${config.app.server.host}`;
-	const counterQuantity = ref(1);
-	const increaseCounter = () => counterQuantity.value++;
-	const decreaseCounter = () => {
-		if (counterQuantity.value > 1) counterQuantity.value--;
-	};
-	cartStore.loadCart();
-	const addToCart = () => {
-		cartStore.increaseQuantity({ ...product, quantity: counterQuantity.value });
-		emit('toggle-modal');
-	};
+const cartStore = useCartStore();
+const productStore = useProductStore();
 
-	const decreaseQuantity = useDecreaseQuantity();
-	const increaseQuantity = useIncreaseQuantity();
+const product = productStore.products.find(item => item.id === props.productId);
+const baseUrl = `${config.app.server.scheme}://${config.app.server.host}`;
+
+
+const addScrollLock = useAddScrollLock();
+const removeScrollLock = useRemoveScrollLock();
+const scrollLockRemoveDelay = 300;
+
+onMounted(() => addScrollLock());
+onUnmounted(() => setTimeout(() => removeScrollLock(), scrollLockRemoveDelay));
+
+
+const counterQuantity = ref(1);
+const increaseCounter = () => counterQuantity.value++;
+const decreaseCounter = () => {
+	if (counterQuantity.value > 1) counterQuantity.value--;
+};
+
+cartStore.loadCart();
+const addToCart = () => {
+	cartStore.increaseQuantity({ ...product, quantity: counterQuantity.value });
+	emit('toggle-modal');
+};
+
+const decreaseQuantity = useDecreaseQuantity();
+const increaseQuantity = useIncreaseQuantity();
+
+
+const { clientWidth } = useClientWidth();
+console.log(product);
 </script>
 
 <template>
-	<div class="card-modal__wrap">
-		<div class="card-modal__headline">
-			{{ product.name }}
-			<button class="card-modal__button-headline"
-				@click="$emit('toggle-modal')">
-			</button>
-		</div>
+	<div class="card-modal__headline">
+		{{ product.name }}
+		<button class="card-modal__button-headline"
+			@click="$emit('toggle-modal')">
+		</button>
+	</div>
 
-		<div class="card-modal">
-			<button class="card-modal__button-close"
-				@click="$emit('toggle-modal')">
-			</button>
-			<div class="card-modal__inner">
-				<div class="card-modal__picture-wrap">
-					<picture class="card-modal__picture">
-						<img :src="baseUrl + product.photos[0]" :alt="product.name">
-					</picture>
-					<span v-if="product.isNew" class="card-modal__badge">NEW</span>
+	<div class="card-modal">
+		<button class="card-modal__button-close"
+			@click="$emit('toggle-modal')">
+		</button>
+		<div class="card-modal__inner">
+			<div class="card-modal__picture-wrap">
+				<picture class="card-modal__picture">
+					<img :src="baseUrl + product.photos[0]" :alt="product.name">
+				</picture>
+				<span v-if="product.isNew" class="card-modal__badge">NEW</span>
+			</div>
+			<div class="card-modal__info">
+				<div class="card-modal__row">
+					<p class="card-modal__title">{{ product.name }}</p>
+					<p class="card-modal__weight">{{ product.weight }}</p>
 				</div>
-				<div class="card-modal__info">
-					<div class="card-modal__row">
-						<p class="card-modal__title">{{ product.name }}</p>
-						<p class="card-modal__weight">{{ product.weight }} г.</p>
+				<p class="card-modal__desc">{{ product.introtext }}</p>
+
+				<div v-if="product.content" class="card-modal__ingredients">
+					<p class="card-modal__ingredients-title">Состав:</p>
+					<div v-html="product.content"></div>
+				</div>
+				<div v-if="clientWidth >= 576"
+					class="card-modal__row-2">
+					<div class="card-modal__price">{{ product.price }} ₽</div>
+					<Counter class="card-modal__counter"
+						@increase-counter="increaseCounter"
+						@decrease-counter="decreaseCounter"
+						:quantity="counterQuantity" />
+					<button class="card-modal__button-cart"
+						@click="addToCart">
+						Добавить
+					</button>
+				</div>
+
+				<div v-if="clientWidth < 576"
+					class="card-modal__row-2">
+					<div class="card-modal__price">
+						<!--<div v-if="product.priceOld" class="card-modal__price-old">{{ product.priceOld }} руб</div>-->
+						<div class="card-modal__price-actual">{{ product.price }} ₽</div>
 					</div>
-					<p class="card-modal__desc">{{ product.introtext }}</p>
-					<!--<div class="card-modal__ingredients">
-						<p class="card-modal__ingredients-title">Состав:</p>
-						<ul class="card-modal__ingredients-list">
-							<li class="card-modal__ingredients-item">Lorem ipsum dolor sit amet consectetur - 100г.</li>
-							<li class="card-modal__ingredients-item">Lorem ipsum dolor sit amet - 100г.</li>
-							<li class="card-modal__ingredients-item">Lorem ipsum dolor sit amet - 100г.</li>
-							<li class="card-modal__ingredients-item">Lorem ipsum dolor sit - 200г.</li>
-							<li class="card-modal__ingredients-item">Lorem ipsum dolor sit amet consectetur - 100г.</li> 
-						</ul>
-					</div>-->
-					<div v-if="clientWidth >= 576"
-						class="card-modal__row-2">
-						<div class="card-modal__price">{{ product.price }} ₽</div>
-						<Counter class="card-modal__counter"
-							@increase-counter="increaseCounter"
-							@decrease-counter="decreaseCounter"
-							:quantity="counterQuantity" />
-						<button class="card-modal__button-cart"
-							@click="addToCart">
-							Добавить
+
+					<div class="card-modal__actions">
+						<button @click="productStore.toggleFavorite(product)"
+							:class="{ 'is-active': isFav }"
+							class="card__button-fav">
 						</button>
-					</div>
 
-					<div v-if="clientWidth < 576"
-						class="card-modal__row-2">
-						<div class="card-modal__price">
-							<!--<div v-if="product.priceOld" class="card-modal__price-old">{{ product.priceOld }} руб</div>-->
-							<div class="card-modal__price-actual">{{ product.price }} ₽</div>
-						</div>
-
-						<div class="card-modal__actions">
-							<button @click="productStore.toggleFav(product.id)"
-								:class="{ 'is-active': product.isFav }"
-								class="card__button-fav">
-							</button>
-
-							<Counter v-if="props.productQuantity"
-								class="card-modal__counter"
-								@increase-counter="increaseQuantity(product.id)"
-								@decrease-counter="decreaseQuantity(product.id)"
-								:quantity="props.productQuantity" />
-							<button v-else
-								class="card-modal__button-cart"
-								@click="increaseQuantity(product.id)">
-								В корзину
-							</button>
-						</div>
+						<Counter v-if="props.productQuantity"
+							class="card-modal__counter"
+							@increase-counter="increaseQuantity(product.id)"
+							@decrease-counter="decreaseQuantity(product.id)"
+							:quantity="props.productQuantity" />
+						<button v-else
+							class="card-modal__button-cart"
+							@click="increaseQuantity(product.id)">
+							В корзину
+						</button>
 					</div>
 				</div>
 			</div>
@@ -145,7 +158,7 @@
 
 .card-modal {
 	position: relative;
-	max-width: 1200px;
+	width: 1200px;
 	min-height: 500px;
 	padding: 42px 60px 50px 42px;
 	border-radius: 12px;
@@ -159,8 +172,10 @@
 
 .card-modal__button-close {
 	position: absolute;
-	top: 50px;
-	right: 40px;
+	/* top: 50px;
+	right: 40px; */
+	top: 20px;
+	right: 20px;
 	width: 30px;
 	height: 30px;
 	background-image: url("~/assets/icons/close.svg");
@@ -270,9 +285,11 @@
 	color: #fff;
 }
 
-.card-modal__ingredients-list {}
+.card-modal__ingredients-list,
+.card-modal__ingredients ul {}
 
-.card-modal__ingredients-item {
+.card-modal__ingredients-item,
+.card-modal__ingredients :deep(li) {
 	padding: 14px 0 14px 25px;
 	font-family: "Cera Pro";
 	font-size: 16px;
@@ -283,7 +300,8 @@
 	background: url("~/assets/icons/list-marker-star.svg") left 0 top 18px/13px 13px no-repeat;
 }
 
-.card-modal__ingredients-item:not(:last-child) {
+.card-modal__ingredients-item:not(:last-child),
+.card-modal__ingredients :deep(li:not(:last-child)) {
 	border-bottom: 1px solid rgb(234 234 234 /0.1);
 }
 
@@ -328,10 +346,10 @@
 }
 
 @media (max-width: 575.98px) {
-	.card-modal__wrap {
-		padding-top: 30px;
-	}
 
+	/* .card-modal__wrap {
+		padding-top: 30px;
+	} */
 	.card-modal__headline {
 		display: block;
 	}
@@ -392,7 +410,8 @@
 		font-size: 16px;
 	}
 
-	.card-modal__ingredients-item {
+	.card-modal__ingredients-item,
+	.card-modal__ingredients :deep(li) {
 		padding: 7px 0 7px 16px;
 		font-size: 12px;
 		background-size: 8px 8px;

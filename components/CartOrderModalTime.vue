@@ -1,5 +1,7 @@
 <script setup>
 import { useOrderStore } from '~/stores/orderStore';
+import * as yup from 'yup';
+
 
 const props = defineProps({
 	togglerActiveTab: {
@@ -10,35 +12,63 @@ const props = defineProps({
 const emit = defineEmits(['toggle-modal']);
 
 const orderStore = useOrderStore();
-const {
-	deliveryTimeType,
-	deliveryTimeFastest,
-	deliveryTimeExact,
-	deliveryTimeExactTemp
-} = storeToRefs(orderStore);
+
+const isMobileScreen = inject('isMobileScreen');
 
 const activeTab = ref(props.togglerActiveTab);
 
-onMounted(() => copyDeliveryTimeExactToTemp());
 
-const copyDeliveryTimeExactToTemp = () => {
-	orderStore.makeDeepObjectCopy('deliveryTimeExact', 'deliveryTimeExactTemp');
-};
+const addScrollLock = useAddScrollLock();
+const removeScrollLock = useRemoveScrollLock();
+const scrollLockRemoveDelay = 300;
+
+onMounted(() => addScrollLock());
+onUnmounted(() => setTimeout(() => removeScrollLock(), scrollLockRemoveDelay));
+
+
+// onMounted(() => copyDeliveryTimeExactToTemp());
+
+// const copyDeliveryTimeExactToTemp = () => {
+// 	orderStore.makeDeepObjectCopy('deliveryTimeExact', 'deliveryTimeExactTemp');
+// };
+
+
+const exactDeliveryTimeForm = reactive(useForm({
+	validationSchema: yup.object({
+		exactDeliveryDay: yup.string().min(2).required(),
+		exactDeliveryTime: yup.string().matches(/^([01]?[0-9]|2[0-3]):[0-5][0-9]$/).required(),
+	}),
+	initialValues: {
+		exactDeliveryDay: orderStore.deliveryTimeExact.day || '',
+		exactDeliveryTime: orderStore.deliveryTimeExact.time || '',
+	}
+}));
+
+const exactDeliveryDay = reactive(useField('exactDeliveryDay'));
+const exactDeliveryTime = reactive(useField('exactDeliveryTime'));
 
 const submitDeliveryTimeExact = () => {
-	deliveryTimeType.value = 'exact';
-	orderStore.makeDeepObjectCopy('deliveryTimeExactTemp', 'deliveryTimeExact');
+	orderStore.deliveryTimeType = 'exact';
+	orderStore.deliveryTimeExact.day = exactDeliveryDay.value;
+	orderStore.deliveryTimeExact.time = exactDeliveryTime.value;
 	emit('toggle-modal');
 };
 
 const submitDeliveryTimeFastest = () => {
-	deliveryTimeType.value = 'fastest';
+	orderStore.deliveryTimeType = 'fastest';
 	emit('toggle-modal');
 };
+
+
 </script>
 
 <template>
 	<div class="order-modal">
+		<button v-if="isMobileScreen"
+			@click="emit('toggle-modal')"
+			class="order-modal__button-close">
+		</button>
+
 		<CartOrderToggler
 			:active-tab="activeTab"
 			@tab-click="newValue => activeTab = newValue"
@@ -49,63 +79,63 @@ const submitDeliveryTimeFastest = () => {
 			valueSecond="exact"
 			class="order-modal__toggler" />
 
-		<div v-if="activeTab === 'fastest'"
-			class="order-modal__time-details">
+		<form v-show="activeTab === 'fastest'"
+			@submit.prevent="submitDeliveryTimeFastest"
+			class="order-modal__time-form">
 			<p class="order-modal__subtitle">Доставка по городу <span class="accent">до 60 минут</span></p>
 			<div class="order-modal__field-list">
 				<CartOrderField
-					:model="deliveryTimeFastest.day"
+					:model="orderStore.deliveryTimeFastest.day"
+					isValid
 					title="День"
 					cursor-auto
 					class="order-modal__field-time">
 				</CartOrderField>
 				<CartOrderField
-					:model="deliveryTimeFastest.time"
+					:model="orderStore.deliveryTimeFastest.time"
+					isValid
 					title="Время"
 					cursor-auto
 					class="order-modal__field-time">
 				</CartOrderField>
 			</div>
 			<p class="order-modal__terms">Ознакомиться с <a class="order-modal__terms-link" href="#">условиями доставки</a></p>
-			<button class="order-modal__button-submit"
-				@click=submitDeliveryTimeFastest>
-				Применить
-			</button>
-		</div>
+			<button class="order-modal__button-submit">Применить</button>
+		</form>
 
-		<div v-else
-			class="order-modal__time-details">
+		<form v-show="activeTab === 'exact'"
+			@submit.prevent="submitDeliveryTimeExact"
+			class="order-modal__time-form">
 			<p class="order-modal__subtitle">Укажите время получения</p>
 			<div class="order-modal__field-list">
 				<CartOrderField
-					:model="deliveryTimeExactTemp.day"
+					:isValid="exactDeliveryDay.meta.valid"
 					title="День"
 					class="order-modal__field-time">
-					<input v-model="deliveryTimeExactTemp.day"
+					<input v-model="exactDeliveryDay.value"
 						class="order-field__input"
 						type="text" name="day" placeholder="">
 				</CartOrderField>
 				<CartOrderField
-					:model="deliveryTimeExactTemp.time"
+					:isValid="exactDeliveryTime.meta.valid"
 					title="Время"
 					class="order-modal__field-time">
-					<input v-model="deliveryTimeExactTemp.time"
+					<input v-model="exactDeliveryTime.value" v-inputmask-time
 						class="order-field__input"
 						type="text" name="time" placeholder="">
 				</CartOrderField>
 			</div>
 			<button class="order-modal__button-submit"
-				@click=submitDeliveryTimeExact>
+				:disabled="!exactDeliveryTimeForm.meta.valid">
 				Применить
 			</button>
-		</div>
-
-
+		</form>
 	</div>
 </template>
 
 <style scoped>
 .order-modal {
+	position: relative;
 	width: 430px;
 	padding: 25px;
 	background: linear-gradient(356deg, #121212 1.63%, rgba(18, 18, 18, 0.49) 92.66%);
@@ -113,12 +143,23 @@ const submitDeliveryTimeFastest = () => {
 	border-radius: 12px;
 }
 
-.order-modal__toggler {
-	margin-bottom: 34px;
+.order-modal__button-close {
+	position: absolute;
+	top: -50px;
+	right: -5px;
+	width: 30px;
+	height: 30px;
+	background-image: url("~/assets/icons/close.svg");
+	background-color: transparent;
+	background-size: 16px 16px;
+	background-position: center;
+	background-repeat: no-repeat;
+	border: none;
+	cursor: pointer;
 }
 
-.order-modal__time-details {
-	margin-bottom: 16px;
+.order-modal__toggler {
+	margin-bottom: 34px;
 }
 
 .order-modal__subtitle {
@@ -182,5 +223,46 @@ const submitDeliveryTimeFastest = () => {
 	border: none;
 	border-radius: 12px;
 	cursor: pointer;
+}
+
+.order-modal__button-submit:disabled {
+	opacity: 0.65;
+	transition: opacity 250ms ease-in-out;
+	cursor: default;
+}
+
+@media (max-width: 575.98px) {
+	.order-modal {
+		width: 330px;
+		padding: 20px;
+	}
+
+	.order-modal__toggler {
+		margin-bottom: 25px;
+	}
+
+	.order-modal__subtitle {
+		margin-bottom: 12px;
+		font-size: 12px;
+	}
+
+	.order-modal__field-time:not(:last-child) {
+		margin-bottom: 9px;
+	}
+
+	.order-modal__field-list {
+		margin-bottom: 18px;
+	}
+
+	.order-modal__terms {
+		margin-bottom: 18px;
+		font-size: 12px;
+	}
+
+	.order-modal__button-submit {
+		height: 50px;
+		font-size: 17px;
+		border-radius: 9px;
+	}
 }
 </style>

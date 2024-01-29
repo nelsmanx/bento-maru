@@ -3,6 +3,9 @@ const props = defineProps({
 	isOpen: {
 		type: Boolean,
 		required: true
+	},
+	classModifier: {
+		type: String,
 	}
 });
 defineEmits(['toggle-modal']);
@@ -11,10 +14,11 @@ defineEmits(['toggle-modal']);
 <template>
 	<Teleport to="body">
 		<Transition name="modal">
-			<div class="modal" v-show="props.isOpen"
+			<div class="modal" :class="classModifier"
+				v-show="props.isOpen"
 				@click="$emit('toggle-modal')">
-				<Transition name="modal-content" @click.stop>
-					<div class="modal__content"
+				<Transition name="modal-content">
+					<div class="modal__content" @click.stop
 						v-if="props.isOpen">
 						<slot />
 					</div>
@@ -35,6 +39,7 @@ defineEmits(['toggle-modal']);
 	align-items: center;
 	width: 100%;
 	height: 100%;
+	padding: 0 25px;
 	background-color: rgba(29, 30, 33, 0.80);
 	backdrop-filter: blur(25px);
 	overflow-x: hidden;

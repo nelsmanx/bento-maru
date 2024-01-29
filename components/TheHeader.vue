@@ -18,6 +18,14 @@ const scrollHandler = () => {
 	window.scrollY > 0 ? pageIsScrolled.value = true : pageIsScrolled.value = false;
 };
 
+const header = ref(null);
+onMounted(() => {
+	console.log(header.value);
+	const headerHeight = header.value.offsetHeight;
+	document.documentElement.style.setProperty('--headerHeight', `${headerHeight}px`);
+});
+
+
 const { clientWidth } = useClientWidth();
 
 </script>
@@ -29,29 +37,29 @@ const { clientWidth } = useClientWidth();
 				class="header__button-burger"></button>
 			<div class="container">
 				<div class="header__items">
-					<a v-if="clientWidth >= 576" class="header__tel" :href="'tel:+' + appStore.siteparams.phone.replace(/\D/g,'')">{{appStore.siteparams.phone}}</a>
-					<span v-if="clientWidth >= 576" class="header__city">Южно-Сахалинск</span>
+					<a v-show="clientWidth >= 576" class="header__tel" :href="'tel:+' + appStore.siteparams.phone.replace(/\D/g, '')">{{ appStore.siteparams.phone }}</a>
+					<span v-show="clientWidth >= 576" class="header__city">Южно-Сахалинск</span>
 					<div class="header__logo ">
-						<img v-if="$route.path === '/'" class="header__logo-image" src="~/assets/images/logo-cropped-top.svg" alt="Логотип компании">
+						<img v-if="$route.path === '/'" class="header__logo-image" src="~/assets/images/logo-cropped-top.png" alt="Логотип компании">
 						<NuxtLink v-else to="/" class="header__logo-link">
 							<img class="header__logo-image" src="~/assets/images/logo-cropped-top.png" alt="Логотип компании">
 						</NuxtLink>
 					</div>
-					<social-list v-if="clientWidth >= 576" class="header__social"
+					<social-list v-show="clientWidth >= 576" class="header__social"
 						:class="{ 'header__social--cart-full': hasProductItems }">
 						<SocialItem modifier="vk" :link="appStore.siteparams.vk" />
 						<SocialItem modifier="telegram" :link="appStore.siteparams.telegram" />
 						<SocialItem modifier="whatsapp" :link="appStore.siteparams.whatsapp" />
 					</social-list>
 					<div class="header__actions">
-						<NuxtLink to="/favorites">
-							<div class="header__button-fav"
-								:class="[
-									{ 'header__button-fav--cart-full': hasProductItems },
-									{ 'is-active': isItemInFav }
-								]">
-							</div>
+						<NuxtLink to="/favorites"
+							class="header__button-fav"
+							:class="[
+								{ 'header__button-fav--cart-full': hasProductItems },
+								{ 'is-active': isItemInFav }
+							]">
 						</NuxtLink>
+						<a v-show="clientWidth < 576" class="header__button-tel" :href="'tel:+' + appStore.siteparams.phone.replace(/\D/g, '')"></a>
 						<NuxtLink to="/cart">
 							<HeaderCart class="header__cart" />
 						</NuxtLink>

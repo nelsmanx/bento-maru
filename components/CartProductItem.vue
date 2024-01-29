@@ -191,20 +191,30 @@ const productTotalPrice = computed(() => props.productQuantity * product.price);
 	.cart-product-item__desc {
 		font-size: 12px;
 	}
+
 	.cart-product-item__inner {
 		grid-template-columns: 195px 1fr;
 	}
 }
+
 @media (max-width: 768px) {
 	.cart-product-item {
 		padding: 11px 12px;
 	}
+
 	.cart-product-item__inner {
 		grid-template-columns: 73px 1fr;
 		gap: 12px;
 	}
+
 	.cart-product-item__title {
 		font-size: 15px;
+	}
+}
+
+@media (max-width: 575.98px) {
+	.cart-product-item__title {
+		font-size: 18px;
 	}
 }
 </style>

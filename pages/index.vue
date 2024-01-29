@@ -1,28 +1,33 @@
 <script setup>
 import { useProductStore } from '@/stores/productStore';
+
+useSeoMeta({
+	title: 'Бэнто Мару - Доставка Бенто по Южно-Сахалинску'
+});
+
 const productStore = useProductStore();
 productStore.activeCategory();
 productStore.getActiveProducts();
 watch(() => productStore.category, () => {
 	productStore.getActiveProducts();
-})
+});
 /*Временный костыль*/
 productStore.getBento();
 productStore.getCurry();
 
 const { clientWidth } = useClientWidth();
 
+
 const decorIconsQuantity = computed(() => {
 	if (clientWidth.value < 576) return 8;
 	return 10;
 });
 
-const backgroundDecor = ref(null);
-if (backgroundDecor.value) {
-	console.log(backgroundDecor.value);
-	const handleBackgroundDecor = useBackgroundDecorHandler(backgroundDecor);
-	handleBackgroundDecor();
-}
+// const backgroundDecor = ref(null);
+// if (backgroundDecor.value) {
+// 	const handleBackgroundDecor = useBackgroundDecorHandler(backgroundDecor);
+// 	handleBackgroundDecor();
+// }
 </script>
 
 <template>
@@ -30,21 +35,21 @@ if (backgroundDecor.value) {
 	<CarouselHero v-if="clientWidth >= 576" />
 
 	<TitleWithDecor
-		class="title-w-d--japan-food title-w-d--japan-food-index-top"
+		id="title-w-d-japan-food-index"
+		class="title-w-d--japan-food title-w-d--japan-food-index"
 		:decorIconsQuantity="decorIconsQuantity">
 		ЯПОНСКИЕ КОРОБОЧКИ&nbsp;С&nbsp;ЕДОЙ
 	</TitleWithDecor>
 
 	<CarouselHero v-if="clientWidth < 576" />
 
-	<div class="background-decor" ref="backgroundDecor">
+	<BackgroundDecor>
 		<CategoryTitleList v-if="clientWidth >= 576" class="category-title--index" />
 		<Category id="new"
 			:title="productStore.category.name"
 			:classModifier="productStore.category.alias"
 			:category="productStore.category"
-			:productList="productStore.products"
-		/>
+			:productList="productStore.products" />
 
 		<Reasons v-if="clientWidth >= 576" />
 
@@ -58,42 +63,20 @@ if (backgroundDecor.value) {
 			classModifier="curry"
 			title="Карри"
 			:productList="productStore.curry" />
-
 		<Support class="support--index" />
-	</div>
-
-	<TitleWithDecor v-if="clientWidth < 576"
-		class="title-w-d--japan-food title-w-d--japan-food-index-bottom"
-		:decorIconsQuantity="decorIconsQuantity">
-		ЯПОНСКИЕ КОРОБОЧКИ&nbsp;С&nbsp;ЕДОЙ
-	</TitleWithDecor>
-
-	<NavMenu v-if="clientWidth < 576" />
+	</BackgroundDecor>
 </template>
 
 <style scoped>
-.product {
-	padding-top: 40px;
+.title-w-d--japan-food-index {
+	padding: 40px 0 30px;
 }
 
-.product__title-wrap {
-	display: flex;
-	justify-content: space-between;
-	align-items: center;
-	margin-bottom: 30px
+#title-w-d-japan-food-index:target {
+	/* --header-height определяется в компоненте "TheHeader" 
+	scroll-margin-top: var(--headerHeight);*/
+	scroll-margin-top: 115px;
 }
-
-.product__title {
-	margin-right: 10px;
-	font-family: "Century Gothic";
-	font-size: 54px;
-	font-weight: 400;
-	line-height: 1;
-	letter-spacing: 0.54px;
-	color: var(--accent-color);
-}
-
-.product__title-decor {}
 
 .category-title--index {
 	margin-bottom: 50px;

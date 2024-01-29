@@ -41,7 +41,7 @@ const increaseQuantity = useIncreaseQuantity();
 					v-for="product in props.productList" :key="product.id"
 					:product="product"
 					:product-quantity="cartStore.singleItemQuantity(product.id)"
-					:inFav="productStore.isFav(product.id)"
+					:isFav="productStore.isFav(product.id)"
 					@increase-quantity="increaseQuantity"
 					@decrease-quantity="decreaseQuantity"
 					@toggle-fav="productStore.toggleFavorite(product)" />
@@ -133,7 +133,7 @@ const increaseQuantity = useIncreaseQuantity();
 	}
 
 	.category__list {
-		grid-template-columns: 1fr;
+		grid-template-columns: 100%;
 		gap: 18px;
 	}
 }

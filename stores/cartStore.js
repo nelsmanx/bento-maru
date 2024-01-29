@@ -1,6 +1,6 @@
 export const useCartStore = defineStore('cart', {
 	state: () => {
-        return {
+		return {
 			cart: [],
 			sause: {
 				title: "Соевый соус",
@@ -12,7 +12,7 @@ export const useCartStore = defineStore('cart', {
 				price: 15,
 				quantity: 2
 			}
-		}
+		};
 	},
 
 	getters: {
@@ -37,16 +37,39 @@ export const useCartStore = defineStore('cart', {
 
 		hasProductItems() {
 			return this.cart.length ? true : false;
+		},
+
+		cartDetails() {
+			const cartDetails = [];
+			this.cart.forEach(item => {
+				const itemDetails = {};
+				itemDetails.name = item.name;
+				itemDetails.quantity = item.quantity;
+				cartDetails.push(itemDetails);
+			});
+
+			if (this.sause.quantity || this.sticks.quantity) {
+				const addonDetails = { addons: {} };
+				if (this.sause.quantity) addonDetails.addons.sauseQuantity = this.sause.quantity;
+				if (this.sticks.quantity) addonDetails.addons.sticksQuantity = this.sticks.quantity;
+				cartDetails.push(addonDetails);
+			};
+
+			cartDetails.push({ totalPrice: this.totalPrice + this.addonsPrice });
+
+			return cartDetails;
 		}
 	},
 
 	actions: {
-		loadCart() {
-			if (process.client) { this.cart = JSON.parse(localStorage.getItem('cart')) || []; 
+		async loadCart() {
+			if (process.client) {
+				this.cart = await JSON.parse(localStorage.getItem('cart')) || [];
 			} else {
-				this.cart= [];
+				this.cart = [];
 			}
 		},
+
 		increaseQuantity(item) {
 			const itemInCart = this.cart.find(product => product.id === item.id);
 			if (itemInCart) {
@@ -58,6 +81,7 @@ export const useCartStore = defineStore('cart', {
 				if (process.client) { localStorage.setItem('cart', JSON.stringify(this.cart)); }
 			}
 		},
+
 		decreaseQuantity(itemId) {
 			const itemInCart = this.cart.find(product => product.id === itemId);
 			itemInCart.quantity--;

@@ -1,18 +1,79 @@
-<script setup></script>
+<script setup>
+import ApiService from '~/services/ApiService';
+// import { useAppStore } from '~/stores/appStore';
+import * as yup from 'yup';
+
+defineEmits(['toggle-modal']);
+
+// const appStore = useAppStore();
+
+const addScrollLock = useAddScrollLock();
+const removeScrollLock = useRemoveScrollLock();
+const scrollLockRemoveDelay = 300;
+
+
+onMounted(() => addScrollLock());
+onUnmounted(() => setTimeout(() => removeScrollLock(), scrollLockRemoveDelay));
+
+
+const callbackModalForm = reactive(useForm({
+	validationSchema: yup.object({
+		callbackModalName: yup.string().notRequired(),
+		callbackModalTel: yup.string().matches(/^\+7 \(\d{3}\) \d{3}-\d{2}-\d{2}$/).required(),
+		callbackModalPersonalDataAgreement: yup.boolean().oneOf([true]).required()
+	})
+}));
+
+const callbackModalName = reactive(useField('callbackModalName'));
+const callbackModalTel = reactive(useField('callbackModalTel'));
+const callbackModalPersonalDataAgreement = reactive(useField('callbackModalPersonalDataAgreement'));
+callbackModalForm.setFieldValue('callbackModalPersonalDataAgreement', true);
+
+const callbackModalFormIsSent = ref(false);
+
+async function sendRequest(event) {
+	const formData = new FormData(event.target);
+	formData.set('type', 'Форма - "Задать вопрос"');
+	const response = ref(await new ApiService().sendForm(formData));
+	if (response.value.success === true) {
+		callbackModalFormIsSent.value = true;
+	}
+	callbackModalForm.resetForm();
+}
+</script>
 
 <template>
 	<div class="callback-modal">
-		<button class="callback-modal__button-close"></button>
+		<button class="callback-modal__button-close"
+			@click="$emit('toggle-modal')">
+		</button>
 		<div class="callback-modal__inner">
-			<p class="callback-modal__title">Есть вопросы?</p>
-			<p class="callback-modal__desc">Оставьте свой номер телефона, мы свяжемся с Вами, расскажем про все наши блюда и&nbsp;выберем для Вас самый подходящий Бенто!</p>
-			<form @submit.prevent
-				class="callback-modal__form" action="/">
-				<input class="callback-modal__form-input callback-modal__form-input--name" type="text" placeholder="Имя">
-				<input class="callback-modal__form-input callback-modal__form-input--tel" type="tel" placeholder="Телефон">
-				<button class="callback-modal__form-button" type="submit">Задать вопрос</button>
+			<template v-if="callbackModalFormIsSent">
+				<h2 class="callback-modal__title">Ваша заявка отправлена</h2>
+				<p class="callback-modal__desc">Наш специалист свяжется с Вами в ближайшее время</p>
+			</template>
+			<template v-else>
+				<h2 class="callback-modal__title">Есть вопросы?</h2>
+				<p class="callback-modal__desc">Оставьте свой номер телефона, мы свяжемся с Вами, расскажем про все наши блюда и&nbsp;выберем для Вас самый подходящий Бенто!</p>
+			</template>
+
+			<form @submit.prevent="sendRequest($event)"
+				class="callback-modal__form">
+				<input v-model="callbackModalName.value"
+					class="callback-modal__form-input callback-modal__form-input--name" type="text" placeholder="Имя">
+				<input v-model="callbackModalTel.value" v-inputmask-tel
+					class="callback-modal__form-input callback-modal__form-input--tel"
+					type="tel"
+					inputmode="numeric"
+					autocomplete="off"
+					placeholder="Телефон">
+				<button :disabled="!callbackModalForm.meta.valid"
+					type="submit" class="callback-modal__form-button">
+					Задать вопрос
+				</button>
+
 				<div class="callback-modal__personal-info">
-					<CheckboxWithLabel>
+					<CheckboxWithLabel v-model="callbackModalPersonalDataAgreement.value">
 						Нажимая кнопку, вы соглашаетесь с условиями&nbsp;<a class="callback-modal__personal-info-link" href="#">Политики&nbsp;конфиденциальности</a>
 					</CheckboxWithLabel>
 				</div>
@@ -87,6 +148,15 @@
 	border-radius: 12px;
 }
 
+/* ### chrome autofill ### */
+.callback-modal__form-input:-webkit-autofill,
+.callback-modal__form-input:-webkit-autofill:hover,
+.callback-modal__form-input:-webkit-autofill:focus,
+.callback-modal__form-input:-webkit-autofill:active {
+	-webkit-transition-delay: 9999s;
+	transition-delay: 9999s;
+}
+
 .callback-modal__form-input:focus-visible {
 	outline: 1px solid #fff;
 }
@@ -119,6 +189,12 @@
 	border: none;
 	border-radius: 12px;
 	cursor: pointer;
+}
+
+.callback-modal__form-button:disabled {
+	opacity: 0.65;
+	transition: opacity 250ms ease-in-out;
+	cursor: default;
 }
 
 .callback-modal__personal-info {}

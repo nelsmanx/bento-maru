@@ -87,7 +87,7 @@ defineEmits(['increase-counter', 'decrease-counter']);
 	color: var(--accent-color);
 }
 
-@media (max-width: 575.98px) {
+/* @media (max-width: 575.98px) {
 	.counter {
 		width: 120px;
 		height: 41px;
@@ -103,5 +103,5 @@ defineEmits(['increase-counter', 'decrease-counter']);
 	.counter__plus, .counter__minus {
 		--line-width: 10px;
 	}
-}
+} */
 </style>

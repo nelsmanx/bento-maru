@@ -1,8 +1,14 @@
+<script setup>
+import { useAppStore } from '~/stores/appStore';
+
+const appStore = useAppStore();
+</script>
+
 <template>
 	<div class="message-us">
 		<h2 class="message-us__title">Есть вопросы?</h2>
 		<p class="message-us__desc">Задавайте их напрямую, позвонив в ресторан, или напишите нам в мессенджер. Мы обязательно ответим!</p>
-		<a class="message-us__button" href="https://wa.me/" target="_blank">Напишите нам в мессенджер</a>
+		<a class="message-us__button" :href="appStore.siteparams.whatsapp" target="_blank">Напишите нам в мессенджер</a>
 	</div>
 </template>
 

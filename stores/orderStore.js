@@ -1,6 +1,10 @@
+import { useAppStore } from '~/stores/appStore';
+
 export const useOrderStore = defineStore('order', {
 	state: () => ({
-		deliveryMethod: 'pickup',
+		orderIsSent: false,
+
+		deliveryMethod: 'pickup', // pickup/delivery
 
 		deliveryAddress: {
 			cityStreet: null,
@@ -11,33 +15,20 @@ export const useOrderStore = defineStore('order', {
 			intercom: null,
 			comment: null
 		},
-		// deliveryAddress: {
-		// 	cityStreet: 'Южно-Сахалинск, ул. Больничная',
-		// 	house: '35Б',
-		// 	apartment: 89,
-		// 	entrance: 5,
-		// 	floor: 2,
-		// 	intercom: 123,
-		// 	comment: null
-		// },
-		deliveryAddressTemp: {},
 
-		pickupAddress: 'Южно-Сахалинск, ул. Мира',
+		pickupAddress: null,
 
+		deliveryTimeType: 'fastest', // fastest/exact
 
-		deliveryTimeType: 'fastest',
 		deliveryTimeFastest: {
-			type: 'fastest',
-			day: 'Сегодня',
-			time: '12:00'
-		},
-		deliveryTimeExact: {
-			type: 'exact',
 			day: null,
 			time: null
 		},
 
-		deliveryTimeExactTemp: {},
+		deliveryTimeExact: {
+			day: null,
+			time: null
+		},
 
 		customerName: null,
 		customerTel: null,
@@ -52,6 +43,7 @@ export const useOrderStore = defineStore('order', {
 				? `${this.deliveryAddress.cityStreet} ${this.deliveryAddress.house}`
 				: this.pickupAddress;
 		},
+
 		deliveryTimePreview() {
 			if (this.deliveryTimeType === 'fastest') {
 				return `${this.deliveryTimeFastest.day}, ${this.deliveryTimeFastest.time}`;
@@ -60,20 +52,72 @@ export const useOrderStore = defineStore('order', {
 			}
 		},
 
+		orderDetails() {
+			const orderDetails = {};
+			orderDetails.deliveryMethod = this.deliveryMethod;
+			if (orderDetails.deliveryMethod === 'pickup') {
+				orderDetails.pickupAddress = this.pickupAddress;
+			}
 
+			if (orderDetails.deliveryMethod === 'delivery') {
+				orderDetails.deliveryAddress = {};
+
+				for (let key in this.deliveryAddress) {
+					if (!this.deliveryAddress[key]) break;
+					orderDetails.deliveryAddress[key] = this.deliveryAddress[key];
+				}
+			}
+
+			orderDetails.deliveryTimeType = this.deliveryTimeType;
+
+			if (orderDetails.deliveryTimeType === 'fastest') {
+				orderDetails.deliveryDay = this.deliveryTimeFastest.day;
+				orderDetails.deliveryTime = this.deliveryTimeFastest.time;
+			}
+
+			if (orderDetails.deliveryTimeType === 'exact') {
+				orderDetails.deliveryDay = this.deliveryTimeExact.day;
+				orderDetails.deliveryTime = this.deliveryTimeExact.time;
+			}
+
+			orderDetails.customerName = this.customerName;
+			orderDetails.customerTel = this.customerTel;
+			orderDetails.paymentMethod = this.paymentMethod;
+
+			if (orderDetails.promo) orderDetails.promo = this.promo;
+
+			return orderDetails;
+		}
 	},
 
 	actions: {
-		makeDeepObjectCopy(originalObject, copiedObject) {
-			this[copiedObject] = JSON.parse(JSON.stringify(this[originalObject]));
+		// makeDeepObjectCopy(originalObject, copiedObject) {
+		// 	this[copiedObject] = JSON.parse(JSON.stringify(this[originalObject]));
+		// },
+		// copyDeliveryAddressToTemp() {
+		// 	this.deliveryAddressTemp = JSON.parse(JSON.stringify(this.deliveryAddress));
+		// },
+		// updateDeliveryAddress() {
+		// 	this.deliveryAddress = JSON.parse(JSON.stringify(this.deliveryAddressTemp));
+		// },
+		updateDeliveryAddress(newValues) {
+			Object.keys(newValues).forEach(key => {
+				this.deliveryAddress[key] = newValues[key];
+			});
 		},
 
-
-		copyDeliveryAddressToTemp() {
-			this.deliveryAddressTemp = JSON.parse(JSON.stringify(this.deliveryAddress));
+		setDeliveryTimeFastest(day, time) {
+			this.deliveryTimeFastest.day = day;
+			this.deliveryTimeFastest.time = time;
 		},
-		updateDeliveryAddress() {
-			this.deliveryAddress = JSON.parse(JSON.stringify(this.deliveryAddressTemp));
+
+		setDefaultPickupAddress() {
+			const appStore = useAppStore();
+			this.pickupAddress = appStore.pickupAddresses[0];
+		},
+
+		updateStateKey(key, value) {
+			this[key] = value;
 		}
 	}
 });

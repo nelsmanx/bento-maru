@@ -55,12 +55,212 @@
 	<Support class="support--about" />
 </template>
 
+<style lang="scss" scoped>
+.category-title--about {
+	padding: 10px 0 38px;
+}
+
+/* ### about ### */
+.about {
+	padding: 35px 0 35px;
+}
+
+.about__inner {
+	display: grid;
+	grid-template-columns: 595px 640px;
+	justify-content: space-between;
+	gap: 50px;
+
+	@media (max-width: 1400px) {
+		grid-template-columns: 470px 1fr;
+		gap: 30px;
+	}
+
+	@media (max-width: 1200px) {
+		grid-template-columns: 1fr 1fr;
+		gap: 20px;
+	}
+
+	@media (max-width: 991px) {
+		grid-template-columns: 1fr;
+	}
+}
+
+.about__content {}
+
+.about__title {
+	margin-bottom: 24px;
+	font-family: "Century Gothic";
+	font-size: 42px;
+	font-weight: 700;
+	line-height: normal;
+	letter-spacing: 0.42px;
+	color: var(--accent-color);
+
+	@media (max-width: 1200px) {
+		font-size: 34px;
+	}
+
+	@media (max-width: 768px) {
+		font-size: 28px;
+	}
+
+	@media (max-width: 575px) {
+		font-size: 24px;
+	}
+}
+
+.about__text-group {}
+
+.about__par {
+	font-family: "Cera Pro";
+	font-size: 20px;
+	font-weight: 400;
+	line-height: 1.5;
+	letter-spacing: 0.2px;
+	color: #fff;
+
+	@media (max-width: 1200px) {
+		font-size: 18px;
+	}
+
+	@media (max-width: 768px) {
+		font-size: 16px;
+	}
+
+	@media (max-width: 575px) {
+		font-size: 14px;
+	}
+}
+
+.about__par:not(:last-child) {
+	margin-bottom: 25px;
+}
+
+.about__media {
+	position: relative;
+	padding-top: 10px;
+
+	@media (max-width: 991px) {
+		padding-top: 25px;
+		height: 360px;
+	}
+}
+
+.about__media-picture {
+	position: relative;
+	display: block;
+	width: 100%;
+	height: 100%;
+	/* padding: calc(100% / (621 / 463)) 0 0; */
+	border-radius: 12px;
+	overflow: hidden;
+}
+
+.about__media-picture img {
+	position: absolute;
+	inset: 0;
+	display: block;
+	width: 100%;
+	max-width: 100%;
+	height: 100%;
+	max-height: 100%;
+	object-fit: cover;
+	object-position: center;
+}
+
+.about__media-link-youtube {
+	position: absolute;
+	top: 35px;
+	right: 23px;
+	display: block;
+	width: 139px;
+	height: 45px;
+	background-image: url("~/assets/icons/contacts-youtube.svg");
+	background-color: transparent;
+	background-size: 112px 25px;
+	background-repeat: no-repeat;
+	background-position: center;
+	border: 1px solid #282828;
+	border-radius: 8px;
+	cursor: pointer;
+
+	@media (max-width: 991px) {
+		width: 80px;
+		height: 30px;
+		background-size: contain;
+		border: 0;
+	}
+}
+
+/* ### about-info ### */
+.about-info {}
+
+.about-info__inner {
+	padding: 33px 32px 43px 34px;
+	border: 1px solid #282828;
+	border-radius: 12px;
+	background: linear-gradient(1deg, #121212 0.77%, rgba(18, 18, 18, 0.49) 43.56%);
+
+	@media (max-width: 1200px) {
+		padding: 30px;
+	}
+
+	@media (max-width: 768px) {
+		padding: 20px;
+	}
+
+	@media (max-width: 575px) {
+		padding: 15px;
+	}
+}
+
+.about-info__par {
+	font-family: "Cera Pro";
+	font-size: 20px;
+	font-weight: 400;
+	line-height: 1.6;
+	letter-spacing: 0.2px;
+	color: #fff;
+
+	@media (max-width: 1200px) {
+		font-size: 18px;
+	}
+
+	@media (max-width: 768px) {
+		font-size: 16px;
+	}
+
+	@media (max-width: 575px) {
+		font-size: 14px;
+	}
+}
+
+.about-info__par:not(:last-child) {
+	margin-bottom: 32px;
+}
+
+.support--about {
+	padding: 45px 0 70px;
+
+	@media (max-width: 1200px) {
+		padding: 30px 0 30px;
+	}
+
+	@media (max-width: 768px) {
+		padding: 20px 0 20px;
+	}
+
+	@media (max-width: 575px) {
+		padding: 15px 0 15px;
+	}
+}
+</style>
 
 
 
 
-
-<style scoped>
+<!-- <style scoped>
 .category-title--about {
 	padding: 10px 0 38px;
 }
@@ -174,4 +374,4 @@
 .support--about {
 	padding: 45px 0 70px;
 }
-</style>
+</style> -->

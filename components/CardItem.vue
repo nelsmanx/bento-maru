@@ -1,11 +1,13 @@
 <script setup>
 import config from "@/config";
+import { useAppStore } from "~/stores/appStore";
+
 const props = defineProps({
 	product: {
 		type: Object,
 		required: true
 	},
-	inFav: {
+	isFav: {
 		type: Boolean
 	},
 	productQuantity: {
@@ -16,20 +18,31 @@ const props = defineProps({
 
 defineEmits(['increase-quantity', 'decrease-quantity', 'toggle-fav']);
 
-const modalCardIsOpen = ref(false);
+const appStore = useAppStore();
 
-const addScrollLock = useAddScrollLock();
-const removeScrollLock = useRemoveScrollLock();
-const scrollLockRemoveDelay = 300;
+const openModalCard = () => {
+	appStore.modalCard.productId = props.product.id;
+	appStore.modalCard.productQuantity = props.productQuantity;
+	appStore.modalCard.isFav = props.isFav;
+	appStore.modalCard.isOpen = true;
+};
+
+// const modalCardIsOpen = ref(false);
+
+// const addScrollLock = useAddScrollLock();
+// const removeScrollLock = useRemoveScrollLock();
+// const scrollLockRemoveDelay = 300;
+
 const baseUrl = `${config.app.server.scheme}://${config.app.server.host}`;
 
-watch(modalCardIsOpen, (newState) => {
-	if (newState) {
-		addScrollLock();
-	} else {
-		setTimeout(() => removeScrollLock(), scrollLockRemoveDelay);
-	}
-});
+// watch(modalCardIsOpen, (newState) => {
+// 	if (newState) {
+// 		addScrollLock();
+// 	} else {
+// 		setTimeout(() => removeScrollLock(), scrollLockRemoveDelay);
+// 	}
+// });
+
 
 </script>
 
@@ -37,13 +50,13 @@ watch(modalCardIsOpen, (newState) => {
 	<div class="card" :class="$attrs.class" v-if="product">
 		<div class="card__inner">
 			<span v-if="product.new === 1" class="card__badge">NEW</span>
-			<picture class="card__picture" @click="modalCardIsOpen = !modalCardIsOpen">
+			<picture class="card__picture" @click="openModalCard">
 				<img :src="baseUrl + product.photos[0]" :alt="product.name">
 			</picture>
 			<div class="card__info">
 				<div class="card__title-and-weight">
 					<p class="card__title"
-						@click="modalCardIsOpen = !modalCardIsOpen">
+						@click="openModalCard">
 						{{ product.name }}
 					</p>
 					<p class="card__weight">{{ product.weight }}</p>
@@ -56,7 +69,7 @@ watch(modalCardIsOpen, (newState) => {
 					</div>
 					<div class="card__actions">
 						<button @click="$emit('toggle-fav')"
-							:class="{ 'is-active': inFav }"
+							:class="{ 'is-active': isFav }"
 							class="card__button-fav">
 						</button>
 
@@ -68,22 +81,23 @@ watch(modalCardIsOpen, (newState) => {
 						<Counter v-else
 							@increase-counter="$emit('increase-quantity', product.id)"
 							@decrease-counter="$emit('decrease-quantity', product.id)"
-							:quantity="props.productQuantity" />
+							:quantity="props.productQuantity"
+							class="card__counter" />
 					</div>
 				</div>
 			</div>
 		</div>
 	</div>
-	
-	<ModalWindow
-		:isOpen="modalCardIsOpen"
-		@toggle-modal="modalCardIsOpen = !modalCardIsOpen">
-		<CardModal
-			:productId="product.id"
-			:productQuantity="props.productQuantity"
-			@toggle-modal="modalCardIsOpen = !modalCardIsOpen" />
-	</ModalWindow>
 </template>
+
+<style>
+@media (max-width: 575.98px) {
+	.modal--card .modal__content {
+		align-self: start;
+		margin-top: 30px;
+	}
+}
+</style>
 
 <style scoped>
 .card {
@@ -94,6 +108,17 @@ watch(modalCardIsOpen, (newState) => {
 	border: 1px solid #282828;
 	border-radius: 12px;
 	overflow: hidden;
+}
+
+.card__inner {
+	height: 100%;
+	display: grid;
+	grid-template-rows: auto 1fr;
+}
+
+.card__info {
+	display: grid;
+	grid-template-rows: auto 1fr auto;
 }
 
 .card__badge {
@@ -138,6 +163,9 @@ watch(modalCardIsOpen, (newState) => {
 }
 
 .card__info {
+	display: grid;
+	grid-template-rows: auto 1fr auto;
+	height: 100%;
 	padding: 30px 45px 45px 40px;
 }
 
@@ -260,11 +288,10 @@ watch(modalCardIsOpen, (newState) => {
 	align-items: center;
 	width: 178px;
 	height: 54px;
-	/* padding: 0.8em 2.1em; */
 	font-family: "Century Gothic";
 	font-size: 19px;
 	font-weight: 700;
-	line-height: normal;
+	line-height: 1;
 	letter-spacing: 0.19px;
 	color: var(--accent-color);
 	background: transparent;
@@ -300,7 +327,7 @@ watch(modalCardIsOpen, (newState) => {
 
 @media (max-width: 575.98px) {
 	.card {
-		height: 475px;
+		height: auto;
 		border-radius: 6px;
 	}
 
