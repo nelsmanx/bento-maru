@@ -213,22 +213,40 @@ const { clientWidth } = useClientWidth();
 }
 </style>
 
-<style scoped>
+<style lang="scss" scoped>
+
 #swiper-hero .swiper__inner {
 	position: relative;
 	height: 545px;
-	background-image:
-		url("~/assets/images/carousel-hero/product-shadow.png"),
-		url("~/assets/images/carousel-hero/bg-gradient.jpg");
-	background-size:
-		contain,
-		cover;
-	background-position:
-		left 45px center,
-		0 0;
+	background-image: url("~/assets/images/carousel-hero/bg-gradient.jpg");
+	background-size: cover;
+	background-position: 0 0;
 	background-repeat: no-repeat, no-repeat;
 	overflow: hidden;
 	isolation: isolate;
+}
+
+.swiper__image-wrap {
+	position: relative;
+
+}
+
+.swiper__image-wrap::before {
+	content: '';
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	height: 545px;
+	width: 760px;
+	transform: translate(-50%, -50%);
+	background-image: url("~/assets/images/carousel-hero/product-shadow.png");
+	background-size: contain;
+	background-repeat: no-repeat;
+	background-position: center;
+
+	@media (max-width: 991px) {
+		display: none;
+	}
 }
 
 #swiper-hero .swiper__inner::before {
