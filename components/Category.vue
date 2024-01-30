@@ -23,6 +23,7 @@ const classModifier = computed(() => props.classModifier ? `category__title--${p
 const cartStore = useCartStore();
 const productStore = useProductStore();
 cartStore.loadCart();
+
 const decreaseQuantity = useDecreaseQuantity();
 const increaseQuantity = useIncreaseQuantity();
 </script>
@@ -103,6 +104,30 @@ const increaseQuantity = useIncreaseQuantity();
 	gap: 42px 60px;
 }
 
+@media (max-width: 1399.98px) {
+	.category__list[data-v-82fc8e27] {
+		gap: 40px
+	}
+}
+
+@media (max-width: 991.98px) {
+	.category__list {
+		gap: 30px;
+	}
+
+	.category__title {
+		margin-bottom: 24px;
+		font-size: 30px;
+	}
+}
+
+@media (max-width: 767.98px) {
+	.category__list {
+		grid-template-columns: 100%;
+		gap: 18px;
+	}
+}
+
 @media (max-width: 575.98px) {
 	.category {
 		margin-bottom: 35px;
@@ -133,7 +158,6 @@ const increaseQuantity = useIncreaseQuantity();
 	}
 
 	.category__list {
-		grid-template-columns: 100%;
 		gap: 18px;
 	}
 }

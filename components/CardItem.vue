@@ -21,7 +21,7 @@ defineEmits(['increase-quantity', 'decrease-quantity', 'toggle-fav']);
 const appStore = useAppStore();
 
 const openModalCard = () => {
-	appStore.modalCard.productId = props.product.id;
+	appStore.modalCard.product = props.product;
 	appStore.modalCard.productQuantity = props.productQuantity;
 	appStore.modalCard.isFav = props.isFav;
 	appStore.modalCard.isOpen = true;
@@ -47,7 +47,8 @@ const baseUrl = `${config.app.server.scheme}://${config.app.server.host}`;
 </script>
 
 <template>
-	<div class="card" :class="$attrs.class" v-if="product">
+	<!-- <div class="card" :class="$attrs.class" v-if="product"> -->
+	<div class="card" v-if="product">
 		<div class="card__inner">
 			<span v-if="product.new === 1" class="card__badge">NEW</span>
 			<picture class="card__picture" @click="openModalCard">
@@ -74,13 +75,13 @@ const baseUrl = `${config.app.server.scheme}://${config.app.server.host}`;
 						</button>
 
 						<button v-if="!props.productQuantity"
-							@click="$emit('increase-quantity', product.id)"
+							@click="$emit('increase-quantity', product)"
 							class="card__button-cart">
 							В корзину
 						</button>
 						<Counter v-else
-							@increase-counter="$emit('increase-quantity', product.id)"
-							@decrease-counter="$emit('decrease-quantity', product.id)"
+							@increase-counter="$emit('increase-quantity', product)"
+							@decrease-counter="$emit('decrease-quantity', product)"
 							:quantity="props.productQuantity"
 							class="card__counter" />
 					</div>
@@ -90,20 +91,11 @@ const baseUrl = `${config.app.server.scheme}://${config.app.server.host}`;
 	</div>
 </template>
 
-<style>
-@media (max-width: 575.98px) {
-	.modal--card .modal__content {
-		align-self: start;
-		margin-top: 30px;
-	}
-}
-</style>
-
 <style scoped>
 .card {
 	position: relative;
 	max-width: 620px;
-	height: 765px;
+	/* height: 765px; */
 	background: linear-gradient(1deg, #121212 0.77%, rgba(18, 18, 18, 0.49) 43.56%);
 	border: 1px solid #282828;
 	border-radius: 12px;
@@ -177,6 +169,7 @@ const baseUrl = `${config.app.server.scheme}://${config.app.server.host}`;
 }
 
 .card__title {
+	margin-right: 20px;
 	font-family: "Century Gothic";
 	font-size: 36px;
 	font-weight: 700;
@@ -325,7 +318,40 @@ const baseUrl = `${config.app.server.scheme}://${config.app.server.host}`;
 	opacity: 1;
 }
 
-@media (max-width: 575.98px) {
+@media (max-width: 1399.98px) {
+	.card__info {
+		padding: 30px 40px 40px 40px;
+	}
+
+	.card__title-and-weight {
+		align-items: flex-start;
+	}
+
+	.card__title {
+		font-size: 32px;
+	}
+
+	.card__desc {
+		font-size: 18px;
+		-webkit-line-clamp: 4;
+	}
+}
+
+@media (max-width: 1199.98px) {
+	.card__title {
+		font-size: 28px;
+	}
+
+	.card__price-actual {
+		font-size: 32px;
+	}
+
+	.card__button-fav {
+		display: none;
+	}
+}
+
+@media (max-width: 991.98px) {
 	.card {
 		height: auto;
 		border-radius: 6px;

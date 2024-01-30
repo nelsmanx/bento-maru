@@ -37,6 +37,63 @@ const props = defineProps({
 	color: var(--accent-color);
 }
 
+@media (max-width: 1399.98px) {
+
+	/* ### japan-food ### */
+	.title-w-d--japan-food .title-w-d__title {
+		font-size: 52px;
+	}
+
+	.title-w-d--japan-food :deep(.decor-icons__item) {
+		--scale: 0.9;
+	}
+}
+
+@media (max-width: 1199.98px) {
+	.title-w-d--japan-food :deep(.decor-icons) {
+		display: none;
+	}
+}
+
+@media (max-width: 991.98px) {
+
+	/* ### japan-food ### */
+	.title-w-d--japan-food .title-w-d__title-wrap {
+		position: relative;
+		flex-direction: column;
+		align-items: flex-start;
+	}
+
+	.title-w-d--japan-food .title-w-d__title {
+		margin-right: 0;
+		margin-bottom: 10px;
+		font-size: 40px;
+		line-height: 1.1;
+	}
+
+	.title-w-d--japan-food :deep(.decor-icons) {
+		display: inline-grid;
+	}
+}
+
+@media (max-width: 767.98px) {
+
+	/* ### japan-food ### */
+	.title-w-d--japan-food :deep(.decor-icons) {
+		position: absolute;
+		top: 7px;
+		left: 249px;
+		gap: 3px;
+		padding: 4px;
+		border-radius: 6px;
+		border-width: 2px;
+	}
+
+	.title-w-d--japan-food :deep(.decor-icons__item) {
+		--scale: 0.65;
+	}
+}
+
 @media (max-width: 575.98px) {
 
 	/* ### japan-food ### */
@@ -44,23 +101,16 @@ const props = defineProps({
 		padding: 20px 0;
 	}
 
-	.title-w-d--japan-food .title-w-d__title-wrap {
-		position: relative;
-	}
-
 	.title-w-d--japan-food .title-w-d__title {
-		margin-right: 0;
+		margin-bottom: 0;
 		font-size: 31px;
-		line-height: 1.1;
 	}
 
 	.title-w-d--japan-food :deep(.decor-icons) {
-		position: absolute;
 		top: 5px;
 		left: 180px;
 		gap: 2px;
-		padding: 4px;
-		border-radius: 6px;
+		/* border-radius: 6px; */
 		border-width: 1.5px;
 	}
 

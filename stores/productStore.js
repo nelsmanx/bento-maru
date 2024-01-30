@@ -6,8 +6,11 @@ export const useProductStore = defineStore('product', {
 		categories: [],
 		active: 41,
 		category: [],
+
 		bento: [],
-		curry: [],
+		gedza: [],
+		sushi: [],
+
 		banners: [],
 		favorites: []
 	}),
@@ -58,8 +61,12 @@ export const useProductStore = defineStore('product', {
 			this.bento = await new ApiService().getProducts(156);
 		},
 
-		async getCurry() {
-			this.curry = await new ApiService().getProducts(157);
+		async getSushi() {
+			this.sushi = await new ApiService().getProducts(158);
+		},
+
+		async getGedza() {
+			this.gedza = await new ApiService().getProducts(162);
 		},
 
 		async loadFavorites() {

@@ -2,6 +2,7 @@ import config from "../config";
 import { emitter } from "./MittService";
 import { useFetch } from "nuxt/app";
 
+
 class ApiService {
 	constructor(loader = true) {
 		this.loader = loader;

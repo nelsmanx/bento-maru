@@ -170,7 +170,9 @@ const handleModalWindowOpening = (modalWindow) => {
 
 .sidebar-menu__inner {
 	position: relative;
+	height: 100%;
 	padding: 114px 40px 40px;
+	overflow: auto;
 }
 
 .sidebar-menu__button-close {
@@ -312,15 +314,19 @@ const handleModalWindowOpening = (modalWindow) => {
 	color: var(--accent-color)
 }
 
+@media (max-width: 991.98px) {
+	.sidebar-menu {
+		width: 400px;
+	}
+}
+
 @media (max-width: 575px) {
 	.sidebar-menu {
 		width: 290px;
 	}
 
-	.sidebar-menu__inner[data-v-c3ae421a] {
-		height: 100%;
+	.sidebar-menu__inner {
 		padding: 90px 40px 40px;
-		overflow: auto;
 	}
 
 	.sidebar-menu__nav {

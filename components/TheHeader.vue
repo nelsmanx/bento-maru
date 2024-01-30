@@ -37,15 +37,15 @@ const { clientWidth } = useClientWidth();
 				class="header__button-burger"></button>
 			<div class="container">
 				<div class="header__items">
-					<a v-show="clientWidth >= 576" class="header__tel" :href="'tel:+' + appStore.siteparams.phone.replace(/\D/g, '')">{{ appStore.siteparams.phone }}</a>
-					<span v-show="clientWidth >= 576" class="header__city">Южно-Сахалинск</span>
+					<a v-show="clientWidth >= 768" class="header__tel" :href="'tel:+' + appStore.siteparams.phone.replace(/\D/g, '')">{{ appStore.siteparams.phone }}</a>
+					<span v-show="clientWidth >= 1200" class="header__city">Южно-Сахалинск</span>
 					<div class="header__logo ">
 						<img v-if="$route.path === '/'" class="header__logo-image" src="~/assets/images/logo-cropped-top.png" alt="Логотип компании">
 						<NuxtLink v-else to="/" class="header__logo-link">
 							<img class="header__logo-image" src="~/assets/images/logo-cropped-top.png" alt="Логотип компании">
 						</NuxtLink>
 					</div>
-					<social-list v-show="clientWidth >= 576" class="header__social"
+					<social-list v-show="clientWidth >= 1200" class="header__social"
 						:class="{ 'header__social--cart-full': hasProductItems }">
 						<SocialItem modifier="vk" :link="appStore.siteparams.vk" />
 						<SocialItem modifier="telegram" :link="appStore.siteparams.telegram" />
@@ -59,7 +59,7 @@ const { clientWidth } = useClientWidth();
 								{ 'is-active': isItemInFav }
 							]">
 						</NuxtLink>
-						<a v-show="clientWidth < 576" class="header__button-tel" :href="'tel:+' + appStore.siteparams.phone.replace(/\D/g, '')"></a>
+						<a v-show="clientWidth < 768" class="header__button-tel" :href="'tel:+' + appStore.siteparams.phone.replace(/\D/g, '')"></a>
 						<NuxtLink to="/cart">
 							<HeaderCart class="header__cart" />
 						</NuxtLink>
@@ -181,6 +181,73 @@ const { clientWidth } = useClientWidth();
 	background-image: url("~/assets/icons/fav-orange-active.svg");
 }
 
+@media (max-width: 1399.98px) {
+	.header__logo-image {
+		--scale: 0.9;
+	}
+
+	.header__tel {
+		margin-right: 55px;
+	}
+
+	.header__social {
+		margin-right: 55px;
+	}
+
+	.header__social--cart-full {
+		margin-right: 12px;
+	}
+}
+
+@media (max-width: 1199.98px) {
+	.header__actions {
+		margin-left: auto;
+	}
+}
+
+@media (max-width: 991.98px) {
+	.header__items {
+		height: 95px;
+	}
+
+	.header__logo-image {
+		--scale: 0.75;
+	}
+
+	.header__tel {
+		margin-right: 0;
+		font-size: 18px;
+	}
+
+	.header__button-tel {
+		display: block;
+		padding: 5px;
+		width: 40px;
+		height: 40px;
+		background: url("~/assets/icons/tel-white.svg") center/ 18px 18px no-repeat;
+		border: 1px solid #fff;
+		border-radius: 7px;
+		cursor: pointer;
+	}
+
+	.header__button-fav {
+		width: 40px;
+		height: 40px;
+		margin-right: 9px;
+		background-size: 18px 14px;
+		border-radius: 7px;
+	}
+}
+
+@media (max-width: 767.98px) {
+	.header__cart {
+		position: fixed;
+		left: 50%;
+		bottom: 20px;
+		transform: translateX(-50%);
+	}
+}
+
 @media (max-width: 575.98px) {
 	.header__items {
 		height: 70px;
@@ -204,28 +271,14 @@ const { clientWidth } = useClientWidth();
 	.header__button-fav {
 		width: 34px;
 		height: 34px;
-		margin-right: 9px;
 		border-width: 1px;
-		border-radius: 7px;
 		background-size: 17px 14px;
 	}
 
 	.header__button-tel {
-		display: block;
-		padding: 5px;
 		width: 34px;
 		height: 34px;
 		background: url("~/assets/icons/tel-white.svg") center/ 14px 14px no-repeat;
-		border: 1px solid #fff;
-		border-radius: 7px;
-		cursor: pointer;
-	}
-
-	.header__cart {
-		position: fixed;
-		left: 50%;
-		bottom: 20px;
-		transform: translateX(-50%);
 	}
 }
 </style>

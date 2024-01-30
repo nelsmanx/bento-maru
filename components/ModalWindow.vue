@@ -72,4 +72,11 @@ defineEmits(['toggle-modal']);
 .modal-content-leave-active {
 	transition: all 500ms ease;
 }
+
+@media (max-width: 575.98px) {
+	.modal--card .modal__content {
+		align-self: start;
+		margin-top: 30px;
+	}
+}
 </style>

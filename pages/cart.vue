@@ -20,6 +20,12 @@ const increaseQuantity = useIncreaseQuantity();
 
 const toastIsVisible = ref(false);
 
+
+function increase(item) {
+	item.quantity++;
+	if (process.client) { localStorage.setItem('cart', JSON.stringify(cartStore.cart)); }
+}
+
 function decrease(item) {
 	if (item.quantity > 0) {
 		item.quantity--;
@@ -27,10 +33,6 @@ function decrease(item) {
 	if (process.client) { localStorage.setItem('cart', JSON.stringify(cartStore.cart)); }
 }
 
-function increase(item) {
-	item.quantity++;
-	if (process.client) { localStorage.setItem('cart', JSON.stringify(cartStore.cart)); }
-}
 
 const isMobileScreen = inject("isMobileScreen");
 </script>
@@ -71,8 +73,8 @@ const isMobileScreen = inject("isMobileScreen");
 										<div class="cart-product-item__desc">{{ product.introtext }}</div>
 										<div class="cart-product-item__row-2">
 											<Counter :quantity="product.quantity"
-												@increase-counter="increase(product)"
-												@decrease-counter="decrease(product)"
+												@increase-counter="increaseQuantity(product)"
+												@decrease-counter="decreaseQuantity(product)"
 												class="cart-product-item__counter" />
 											<div class="cart-product-item__price">
 												{{ product.quantity * product.price }} ₽
@@ -84,6 +86,7 @@ const isMobileScreen = inject("isMobileScreen");
 						</ul>
 					</div>
 
+					<!-- <div class="cart__addon" v-if="cartStore.sause.quantity || cartStore.sticks.quantity"> -->
 					<div class="cart__addon">
 						<h2 class="cart__addon-title">Добавки:</h2>
 						<ul class="cart__addon-list">
@@ -108,8 +111,8 @@ const isMobileScreen = inject("isMobileScreen");
 								</div>
 							</li>
 						</ul>
-						<button @click="cartStore.clearAddons"
-							class="cart__addon-button-clear"></button>
+						<!-- <button @click="cartStore.clearAddons"
+							class="cart__addon-button-clear"></button> -->
 					</div>
 
 					<CartOrder class="cart__order" />

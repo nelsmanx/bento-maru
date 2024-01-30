@@ -11,28 +11,33 @@ productStore.getActiveProducts();
 watch(() => productStore.category, () => {
 	productStore.getActiveProducts();
 });
+
+
 /*Временный костыль*/
 productStore.getBento();
-productStore.getCurry();
+productStore.getGedza();
+productStore.getSushi();
+
+
 
 const { clientWidth } = useClientWidth();
 
-
 const decorIconsQuantity = computed(() => {
+
+	if (clientWidth.value >= 1400) return 10;
+	if (clientWidth.value < 1400 && clientWidth.value >= 1200) return 5;
+	if (clientWidth.value < 1200 && clientWidth.value >= 992) return 0;
+	if (clientWidth.value < 992 && clientWidth.value >= 768) return 19;
+	if (clientWidth.value < 768 && clientWidth.value >= 576) return 7;
 	if (clientWidth.value < 576) return 8;
-	return 10;
+
 });
 
-// const backgroundDecor = ref(null);
-// if (backgroundDecor.value) {
-// 	const handleBackgroundDecor = useBackgroundDecorHandler(backgroundDecor);
-// 	handleBackgroundDecor();
-// }
 </script>
 
 <template>
 	<CategoryTitleList v-if="clientWidth < 576" class="category-title--index" />
-	<CarouselHero v-if="clientWidth >= 576" />
+	<CarouselHero v-if="clientWidth >= 992" />
 
 	<TitleWithDecor
 		id="title-w-d-japan-food-index"
@@ -41,7 +46,7 @@ const decorIconsQuantity = computed(() => {
 		ЯПОНСКИЕ КОРОБОЧКИ&nbsp;С&nbsp;ЕДОЙ
 	</TitleWithDecor>
 
-	<CarouselHero v-if="clientWidth < 576" />
+	<CarouselHero v-if="clientWidth < 992" />
 
 	<BackgroundDecor>
 		<CategoryTitleList v-if="clientWidth >= 576" class="category-title--index" />
@@ -51,18 +56,24 @@ const decorIconsQuantity = computed(() => {
 			:category="productStore.category"
 			:productList="productStore.products" />
 
-		<Reasons v-if="clientWidth >= 576" />
+		<Reasons v-if="clientWidth >= 992" />
 
-		<Category id="vip-bento"
-			title="VIP-Бенто"
-			classModifier="vip-bento"
+		<Category id="bento"
+			title="Бенто"
+			classModifier="bento"
 			:productList="productStore.bento" />
 
-		<Category id="curry"
+		<Category id="gedza"
+			title="Гёдза"
+			classModifier="gedza"
+			:productList="productStore.gedza" />
+
+		<Category id="sushi"
+			title="Суши"
 			class="category--without-mb"
-			classModifier="curry"
-			title="Карри"
-			:productList="productStore.curry" />
+			classModifier="sushi"
+			:productList="productStore.sushi" />
+
 		<Support class="support--index" />
 	</BackgroundDecor>
 </template>

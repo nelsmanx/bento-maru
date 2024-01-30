@@ -101,17 +101,16 @@ const cartAddonsPrice = computed(() => cartStore.addonsPrice);
 	color: #fff;
 }
 
-@media (max-width: 575.98px) {
+@media (max-width: 991.98px) {
 	.cart {
-		display: none;
+		height: 40px;
+		border-radius: 5px;
 	}
 
 	.cart--full {
-		display: grid;
-		width: 185px;
-		height: 34px;
+		width: 190px;
+		height: 40px;
 		padding: 0 15px;
-		border-radius: 5px;
 		box-shadow: 0px 4px 13.1px 0px rgba(0, 0, 0, 0.30);
 	}
 
@@ -127,6 +126,23 @@ const cartAddonsPrice = computed(() => cartStore.addonsPrice);
 	.cart__price {
 		min-width: 51px;
 		font-size: 15px;
+	}
+}
+
+@media (max-width: 767.98px) {
+	.cart {
+		display: none;
+	}
+
+	.cart--full {
+		display: grid;
+	}
+}
+
+@media (max-width: 575.98px) {
+	.cart--full {
+		width: 185px;
+		height: 34px;
 	}
 }
 </style>

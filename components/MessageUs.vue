@@ -14,7 +14,7 @@ const appStore = useAppStore();
 
 <style scoped>
 .message-us {
-	max-width: 390px;
+	width: 390px;
 	min-height: 285px;
 	padding: 40px;
 	border-radius: 12px;
@@ -65,8 +65,21 @@ const appStore = useAppStore();
 	background: url("~/assets/icons/message-us-button.svg") center/contain no-repeat;
 }
 
-@media (max-width: 575.98px) {
+@media (max-width: 1399.98px) {
 	.message-us {
+		width: 340px;
+		padding: 36px;
+	}
+
+	.message-us__button {
+		font-size: 14px;
+	}
+}
+
+@media (max-width: 992.98px) {
+	.message-us {
+		width: 100%;
+		max-width: 500px;
 		min-height: auto;
 		padding: 35px;
 		border-radius: 6px;
@@ -84,7 +97,9 @@ const appStore = useAppStore();
 	}
 
 	.message-us__button {
+		max-width: 270px;
 		height: 44px;
+		margin-inline: auto;
 		font-size: 13px;
 		font-weight: 700;
 		border-radius: 6px;

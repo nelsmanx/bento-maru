@@ -72,11 +72,12 @@ export const useCartStore = defineStore('cart', {
 
 		increaseQuantity(item) {
 			const itemInCart = this.cart.find(product => product.id === item.id);
+
 			if (itemInCart) {
 				itemInCart.quantity = itemInCart.quantity + item.quantity;
 				if (process.client) { localStorage.setItem('cart', JSON.stringify(this.cart)); }
 			} else {
-				item.quantity = 1;
+				item.quantity = item.quantity ? item.quantity : 1;
 				this.cart.push(item);
 				if (process.client) { localStorage.setItem('cart', JSON.stringify(this.cart)); }
 			}
@@ -85,6 +86,7 @@ export const useCartStore = defineStore('cart', {
 		decreaseQuantity(itemId) {
 			const itemInCart = this.cart.find(product => product.id === itemId);
 			itemInCart.quantity--;
+
 			if (itemInCart.quantity === 0) {
 				this.cart = this.cart.filter(product => product.id !== itemId);
 			}

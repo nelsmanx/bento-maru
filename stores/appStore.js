@@ -19,7 +19,7 @@ export const useAppStore = defineStore('appStore', {
 
 			modalCard: {
 				isOpen: false,
-				productId: null,
+				product: null,
 				isFav: null,
 				productQuantity: null
 			},

@@ -41,6 +41,7 @@ onMounted(() => {
 		<main>
 			<slot />
 		</main>
+
 		<TheFooter />
 
 		<SidebarMenu />
@@ -58,7 +59,7 @@ onMounted(() => {
 			:isOpen="appStore.modalCard.isOpen"
 			@toggle-modal="appStore.toggleModalWindow('modalCard')">
 			<CardModal
-				:productId="appStore.modalCard.productId"
+				:product="appStore.modalCard.product"
 				:isFav="appStore.modalCard.isFav"
 				:productQuantity="appStore.modalCard.productQuantity"
 				@toggle-modal="appStore.toggleModalWindow('modalCard')" />

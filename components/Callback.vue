@@ -86,7 +86,7 @@ async function sendRequest(event) {
 
 .callback__form {
 	display: grid;
-	grid-template-columns: 266px 252px 1fr;
+	grid-template-columns: 1fr 1fr 205px;
 	gap: 14px;
 }
 
@@ -94,6 +94,7 @@ async function sendRequest(event) {
 	display: flex;
 	justify-content: center;
 	align-items: center;
+	width: 100%;
 	height: 50px;
 	padding: 0 20px;
 	font-family: "Century Gothic";
@@ -147,7 +148,13 @@ async function sendRequest(event) {
 	cursor: default;
 }
 
-@media (max-width: 575.98px) {
+@media (max-width: 1399.98px) {
+	.callback {
+		padding: 36px 54px 36px 40px;
+	}
+}
+
+@media (max-width: 992.98px) {
 	.callback {
 		min-height: auto;
 		padding: 26px 26px 32px;

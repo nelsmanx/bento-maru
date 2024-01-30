@@ -6,10 +6,21 @@ const appStore = useAppStore();
 const cartStore = useCartStore();
 
 const isMobileScreen = inject("isMobileScreen");
+
+const { clientWidth } = useClientWidth();
+
+const decorIconsQuantity = computed(() => {
+	if (clientWidth.value >= 1400) return 10;
+	if (clientWidth.value < 1400 && clientWidth.value >= 1200) return 7;
+	if (clientWidth.value < 1200 && clientWidth.value >= 993) return 4;
+	if (clientWidth.value < 993 && clientWidth.value >= 768) return 17;
+	if (clientWidth.value < 768 && clientWidth.value >= 576) return 7;
+	if (clientWidth.value < 576) return 8;
+});
 </script>
 
 <template>
-	<footer v-show="!isMobileScreen" class="footer">
+	<footer v-show="clientWidth >= 993" class="footer">
 		<div class="container">
 			<div class="footer__top">
 				<div class="footer__top-inner">
@@ -26,7 +37,9 @@ const isMobileScreen = inject("isMobileScreen");
 						<p class="footer__top-schedule-text-2" v-html="appStore.siteparams.workingHours"></p>
 					</div>
 					<div class="footer__top-decor-wrap">
-						<DecorIcons :quantity="10" class="footer__top-decor" />
+						<DecorIcons v-if="clientWidth >= 993"
+							:quantity="decorIconsQuantity"
+							class="footer__top-decor" />
 					</div>
 				</div>
 			</div>
@@ -71,13 +84,13 @@ const isMobileScreen = inject("isMobileScreen");
 
 
 	<ClientOnly>
-		<footer v-if="isMobileScreen"
+		<footer v-if="clientWidth < 993"
 			:class="{ 'footer-mobile--empty-cart': !cartStore.hasProductItems }"
 			class="footer-mobile">
 
 			<TitleWithDecor
 				class="title-w-d--japan-food footer-mobile__title-w-d"
-				:decorIconsQuantity="8">
+				:decorIconsQuantity="decorIconsQuantity">
 				ЯПОНСКИЕ КОРОБОЧКИ&nbsp;С&nbsp;ЕДОЙ
 			</TitleWithDecor>
 
@@ -308,6 +321,7 @@ const isMobileScreen = inject("isMobileScreen");
 
 .footer__bottom-info-link-list {
 	display: flex;
+	flex-wrap: wrap;
 }
 
 .footer__bottom-info-link-item:not(:last-child)::after {
@@ -352,6 +366,49 @@ const isMobileScreen = inject("isMobileScreen");
 }
 
 .footer__bottom-social {}
+
+@media (max-width: 1399.98px) {
+	.footer__top-inner {
+		grid-template-columns: repeat(3, 280px) 1fr;
+	}
+
+	.footer__bottom-logo {
+		--scale: 0.9;
+	}
+
+	.footer__bottom-list {
+		gap: 25px;
+		margin-right: 40px;
+	}
+
+	.footer__bottom {
+		padding: 30px 0;
+	}
+
+	.footer__bottom-info {
+		margin-right: 50px;
+		padding-left: 230px;
+	}
+}
+
+@media (max-width: 1199.98px) {
+	.footer__top-inner {
+		grid-template-columns: repeat(3, auto) 1fr;
+	}
+
+	.footer__top-info {
+		padding-right: 30px;
+	}
+
+	.footer__top-tel {
+		padding-inline: 30px;
+	}
+
+	.footer__top-schedule {
+		padding-left: 30px;
+		margin-right: 30px;
+	}
+}
 </style>
 
 <style scoped>
@@ -535,4 +592,6 @@ const isMobileScreen = inject("isMobileScreen");
 	color: var(--accent-color);
 	opacity: 1;
 }
+
+@media (max-width: 767.98px) {}
 </style>

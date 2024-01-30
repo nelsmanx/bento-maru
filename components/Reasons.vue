@@ -1,9 +1,22 @@
+<script setup>
+
+const { clientWidth } = useClientWidth();
+const decorIconsQuantity = computed(() => {
+	if (clientWidth.value >= 1400) return 16;
+	if (clientWidth.value < 1400 && clientWidth.value >= 1200) return 10;
+	if (clientWidth.value < 1200 && clientWidth.value >= 993) return 4;
+	if (clientWidth.value < 993 && clientWidth.value >= 768) return 17;
+	if (clientWidth.value < 768 && clientWidth.value >= 576) return 7;
+	if (clientWidth.value < 576) return 8;
+});
+</script>
+
 <template>
 	<section class="reasons">
 		<div class="container">
 			<div class="reasons__title-wrap">
 				<h2 class="reasons__title">4 ПРИЧИНЫ ЗАКАЗАТЬ У НАС</h2>
-				<DecorIcons :quantity="16" class="reasons__title-decor" />
+				<DecorIcons :quantity="decorIconsQuantity" class="reasons__title-decor" />
 			</div>
 
 			<ul class="reasons__list">
@@ -146,6 +159,49 @@
 	padding-right: 20px;
 }
 
+@media (max-width: 1399.98px) {
+	.reasons__list {
+		grid-template-columns: 220px 277px 255px 1fr;
+		padding: 40px 35px 50px 45px;
+	}
+
+	.reasons__item--1 {
+		padding-right: 30px;
+	}
+
+	.reasons__item--2 {
+		padding-left: 30px;
+		padding-right: 30px;
+	}
+
+	.reasons__item--3 {
+		padding-left: 30px;
+		padding-right: 30px;
+	}
+
+	.reasons__item--4 {
+		padding-left: 30px;
+	}
+
+	.reasons__item-desc.reasons__item-desc--2 {
+		padding-right: 0;
+	}
+}
+
+@media (max-width: 1199.98px) {
+	.reasons__list {
+		grid-template-columns: repeat(2, 1fr);
+		gap: 40px 0;
+	}
+
+	.reasons__item--3 {
+		padding-left: 0;
+	}
+
+	.reasons__item:not(:last-child)::after {
+		display: none;
+	}
+}
 </style>
 
 <style>

@@ -234,4 +234,42 @@ async function sendRequest(event) {
 	height: 6px;
 	background-image: url("~/assets/icons/check-white.svg");
 }
+
+@media (max-width: 992.98px) {
+	.callback-modal {
+		max-width: 330px;
+		min-height: auto;
+		padding: 26px 26px 32px;
+		border-radius: 6px;
+	}
+
+	.callback-modal__title {
+		margin-bottom: 16px;
+		font-size: 25px;
+		text-align: center;
+	}
+
+	.callback-modal__desc {
+		margin-bottom: 24px;
+		font-size: 12px;
+		text-align: center;
+	}
+
+	.callback-modal__form-input {
+		height: 50px;
+		font-size: 13px;
+		border-radius: 6px;
+	}
+
+	.callback-modal__form-input--name,
+	.callback-modal__form-input--tel {
+		margin-bottom: 14px;
+	}
+
+	.callback-modal__form-button {
+		height: 54px;
+		font-size: 15px;
+		border-radius: 6px;
+	}
+}
 </style>

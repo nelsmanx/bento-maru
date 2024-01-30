@@ -113,6 +113,14 @@ const { clientWidth } = useClientWidth();
 	object-fit: contain;
 }
 
+@media (max-width: 1399.98px) {
+
+	#swiper-hero .swiper-button-prev,
+	#swiper-hero .swiper-button-next {
+		--side-offset: 20px;
+	}
+}
+
 @media (max-width: 1200px) {
 	.swiper__image {
 		width: 100%;
@@ -120,7 +128,7 @@ const { clientWidth } = useClientWidth();
 	}
 }
 
-@media (max-width: 575.98px) {
+@media (max-width: 991.98px) {
 	#swiper-hero {
 		padding-bottom: 27px;
 	}
@@ -132,34 +140,34 @@ const { clientWidth } = useClientWidth();
 	#swiper-hero .swiper-button-prev,
 	#swiper-hero .swiper-button-next {
 		--side-offset: 0;
-		top: 130px;
-		width: 18px;
-		height: 36px;
+		top: 270px;
+		width: 30px;
+		height: 60px;
 		background: #fff;
 	}
 
 	#swiper-hero .swiper-button-prev {
-		border-radius: 0 20px 20px 0;
+		border-radius: 0 30px 30px 0;
 	}
 
 	#swiper-hero .swiper-button-next {
-		border-radius: 20px 0 0 20px;
+		border-radius: 30px 0 0 30px;
 	}
 
 	#swiper-hero .swiper-button-prev:before,
 	#swiper-hero .swiper-button-next:before {
-		width: 6px;
-		height: 11px;
+		width: 9px;
+		height: 16px;
 	}
 
 	#swiper-hero .swiper-button-prev:before {
 		background-image: url("~/assets/images/carousel-hero/arrow-prev-gray.svg");
-		transform: translateX(-3px);
+		transform: translateX(-4px);
 	}
 
 	#swiper-hero .swiper-button-next:before {
 		background-image: url("~/assets/images/carousel-hero/arrow-next-gray.svg");
-		transform: translateX(3px);
+		transform: translateX(4px);
 	}
 
 	#swiper-hero .swiper-pagination {
@@ -169,6 +177,38 @@ const { clientWidth } = useClientWidth();
 	#swiper-hero .swiper-pagination-bullet {
 		width: 4px;
 		height: 4px;
+	}
+}
+
+@media (max-width: 575.98px) {
+
+	#swiper-hero .swiper-button-prev,
+	#swiper-hero .swiper-button-next {
+		top: 130px;
+		width: 18px;
+		height: 36px;
+	}
+
+	#swiper-hero .swiper-button-prev {
+		border-radius: 0 18px 18px 0;
+	}
+
+	#swiper-hero .swiper-button-next {
+		border-radius: 18px 0 0 18px;
+	}
+
+	#swiper-hero .swiper-button-prev:before,
+	#swiper-hero .swiper-button-next:before {
+		width: 6px;
+		height: 11px;
+	}
+
+	#swiper-hero .swiper-button-prev:before {
+		transform: translateX(-3px);
+	}
+
+	#swiper-hero .swiper-button-next:before {
+		transform: translateX(3px);
 	}
 }
 </style>
@@ -391,8 +431,37 @@ const { clientWidth } = useClientWidth();
 	cursor: pointer;
 }
 
-@media (max-width: 575.98px) {
-	.hero-carousel {
+@media (max-width: 1399.98px) {
+	#swiper-hero .swiper__content {
+		grid-template-columns: 490px 1fr;
+	}
+
+	#swiper-hero .swiper__info {
+		margin-top: 0;
+		display: flex;
+		flex-direction: column;
+		justify-content: center;
+	}
+}
+
+@media (max-width: 1199.98px) {
+	#swiper-hero .swiper__title {
+		font-size: 36px;
+		margin-bottom: 20px;
+	}
+
+	#swiper-hero .swiper__desc {
+		font-size: 18px;
+		margin-bottom: 40px;
+	}
+
+	#swiper-hero .swiper__button {
+		font-size: 18px;
+	}
+}
+
+@media (max-width: 991.98px) {
+	#swiper-hero .hero-carousel {
 		padding-bottom: 32px;
 	}
 
@@ -403,7 +472,7 @@ const { clientWidth } = useClientWidth();
 	#swiper-hero .swiper__content {
 		grid-template-columns: 100%;
 		grid-template-rows: auto 1fr;
-		gap: 15px;
+		gap: 30px;
 	}
 
 	#swiper-hero .swiper__inner {
@@ -411,7 +480,7 @@ const { clientWidth } = useClientWidth();
 		background:
 			linear-gradient(90deg, #000 -28.61%, #333438 150.26%),
 			url("~/assets/images/carousel-hero/product-shadow-mobile.png") top 0 center/contain no-repeat;
-		border-radius: 6px;
+		border-radius: 12px;
 	}
 
 	#swiper-hero .swiper__inner::before {
@@ -439,12 +508,12 @@ const { clientWidth } = useClientWidth();
 
 	#swiper-hero .swiper__title {
 		margin-bottom: 18px;
-		font-size: 20px;
+		font-size: 24px;
 	}
 
 	#swiper-hero .swiper__desc {
 		margin-bottom: 25px;
-		font-size: 13px;
+		font-size: 16px;
 		line-height: 1.4;
 		flex: 1 1 auto;
 	}
@@ -453,6 +522,24 @@ const { clientWidth } = useClientWidth();
 		width: 100%;
 		font-size: 15px;
 		border-radius: 6px;
+	}
+}
+
+@media (max-width: 575.98px) {
+	#swiper-hero .swiper__inner {
+		border-radius: 6px;
+	}
+
+	#swiper-hero .swiper__content {
+		gap: 15px;
+	}
+
+	#swiper-hero .swiper__title {
+		font-size: 20px;
+	}
+
+	#swiper-hero .swiper__desc {
+		font-size: 13px;
 	}
 }
 </style>

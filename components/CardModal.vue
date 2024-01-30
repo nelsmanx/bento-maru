@@ -4,8 +4,8 @@ import { useCartStore } from '~/stores/cartStore';
 import { useProductStore } from '~/stores/productStore';
 
 const props = defineProps({
-	productId: {
-		type: Number,
+	product: {
+		type: Object,
 		required: true
 	},
 	isFav: {
@@ -22,7 +22,7 @@ const emit = defineEmits(['toggle-modal']);
 const cartStore = useCartStore();
 const productStore = useProductStore();
 
-const product = productStore.products.find(item => item.id === props.productId);
+// const product = productStore.products.find(item => item.id === props.productId);
 const baseUrl = `${config.app.server.scheme}://${config.app.server.host}`;
 
 
@@ -42,7 +42,7 @@ const decreaseCounter = () => {
 
 cartStore.loadCart();
 const addToCart = () => {
-	cartStore.increaseQuantity({ ...product, quantity: counterQuantity.value });
+	cartStore.increaseQuantity({ ...props.product, quantity: counterQuantity.value });
 	emit('toggle-modal');
 };
 
@@ -51,7 +51,7 @@ const increaseQuantity = useIncreaseQuantity();
 
 
 const { clientWidth } = useClientWidth();
-console.log(product);
+
 </script>
 
 <template>
