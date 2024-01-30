@@ -7,6 +7,16 @@ const productsInFav = computed(() => productStore.favorites);
 </script>
 
 <template>
+	<Head>
+        <Title>Японские коробочки с едой</Title>
+        <Meta name="description" content="Японские коробочки с едой"/>
+        <Meta property="og:type" content="website" />
+        <Meta property="og:url" content="https://bentomaru.ru" />
+        <Meta property="og:locale" content="ru_RUS" />
+        <Meta property="og:image" content="https://bentomaru.ru/img/bento-mix.jpg" />
+        <Meta property="og:title" content="Японские коробочки с едой" />
+        <Meta property="og:description" content="Японские коробочки с едой" />
+    </Head>
 	<CategoryTitleList class="category-title--fav" />
 
 	<div class="favorites">
