@@ -43,6 +43,21 @@ const baseUrl = `${config.app.server.scheme}://${config.app.server.host}`;
 // 	}
 // });
 
+const ingredientsDesc = ref(null);
+
+onMounted(() => {
+	if (!ingredientsDesc.value) return;
+
+	const ingredientsItems = ingredientsDesc.value.querySelectorAll('li');
+	const ingredientsItemsArray = [];
+
+	ingredientsItems.forEach(item => ingredientsItemsArray.push(item.innerText));
+	const ingredientsItemsString = ingredientsItemsArray.join(', ');
+
+	ingredientsDesc.value.querySelector('ul').remove();
+	ingredientsDesc.value.innerText = ingredientsItemsString;
+})
+
 
 </script>
 
@@ -62,7 +77,11 @@ const baseUrl = `${config.app.server.scheme}://${config.app.server.host}`;
 					</p>
 					<p class="card__weight">{{ product.weight }}</p>
 				</div>
-				<div class="card__desc" v-html="product.introtext"></div>
+				<div v-if="product.introtext" class="card__desc" v-html="product.introtext"></div>
+				<div v-else-if="product.content" ref="ingredientsDesc"
+					v-html="product.content"
+					class="card__desc card__desc--ingredients"></div>
+
 				<div class="card__price-and-actions">
 					<div class="card__price">
 						<div class="card__price-actual">{{ product.price }} ₽</div>
@@ -201,6 +220,31 @@ const baseUrl = `${config.app.server.scheme}://${config.app.server.host}`;
 	display: -webkit-box;
 	-webkit-line-clamp: 3;
 	-webkit-box-orient: vertical;
+}
+
+.card__desc--ingredients:deep(ul) {
+	display: flex;
+	flex-wrap: wrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	display: -webkit-box;
+	-webkit-line-clamp: 3;
+	-webkit-box-orient: vertical;
+}
+
+/* .card__desc--ingredients li:not(:last-child) {
+	margin-right: 10px;
+} */
+.card__desc--ingredients:deep(li) {
+	/* display: inline-block; */
+}
+
+.card__desc--ingredients:deep(li:not(:last-child)) {
+	margin-right: 10px;
+}
+
+.card__desc--ingredients:deep(li:not(:last-child)::after) {
+	content: ',';
 }
 
 .card__price-and-actions {

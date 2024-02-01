@@ -25,5 +25,8 @@ export default defineNuxtConfig({
 		  'project-case-old',
 		  'projects-old'
 		],
-	}
+	},
+	// plugins: [
+	// 	{ src: '~/plugins/ymapPlugin.js',  mode: 'client' }
+	// ]
 })

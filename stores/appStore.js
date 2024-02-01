@@ -35,8 +35,7 @@ export const useAppStore = defineStore('appStore', {
 			},
 
 			pickupAddresses: [
-				'Южно-Сахалинск, ул.Больничная',
-				'Южно-Сахалинск, ул. Мира'
+				'Южно-Сахалинск, ул.Больничная 35Б',
 			],
 		};
 	},

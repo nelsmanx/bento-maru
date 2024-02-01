@@ -272,7 +272,17 @@ const { clientWidth } = useClientWidth();
 }
 
 .card-modal__ingredients {
+	height: 195px;
 	margin-bottom: 40px;
+	padding-right: 15px;
+	overflow-y: auto;
+}
+
+@supports (scrollbar-width:thin) {
+	.card-modal__ingredients {
+		scrollbar-width: thin;
+		scrollbar-color: var(--accent-color) #282828;
+	}
 }
 
 .card-modal__ingredients-title {
@@ -404,6 +414,10 @@ const { clientWidth } = useClientWidth();
 	.card-modal__desc {
 		margin-bottom: 26px;
 		font-size: 14px;
+	}
+
+	.card-modal__ingredients {
+		height: 120px;
 	}
 
 	.card-modal__ingredients-title {

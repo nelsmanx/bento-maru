@@ -1,14 +1,14 @@
 <template>
 	<Head>
-        <Title>Японские коробочки с едой</Title>
-        <Meta name="description" content="Японские коробочки с едой"/>
-        <Meta property="og:type" content="website" />
-        <Meta property="og:url" content="https://bentomaru.ru" />
-        <Meta property="og:locale" content="ru_RUS" />
-        <Meta property="og:image" content="https://bentomaru.ru/img/bento-mix.jpg" />
-        <Meta property="og:title" content="Японские коробочки с едой" />
-        <Meta property="og:description" content="Японские коробочки с едой" />
-    </Head>
+		<Title>Японские коробочки с едой</Title>
+		<Meta name="description" content="Японские коробочки с едой" />
+		<Meta property="og:type" content="website" />
+		<Meta property="og:url" content="https://bentomaru.ru" />
+		<Meta property="og:locale" content="ru_RUS" />
+		<Meta property="og:image" content="https://bentomaru.ru/img/bento-mix.jpg" />
+		<Meta property="og:title" content="Японские коробочки с едой" />
+		<Meta property="og:description" content="Японские коробочки с едой" />
+	</Head>
 
 	<CategoryTitleList class="category-title--delivery" />
 
@@ -19,20 +19,18 @@
 					<h1 class="delivery__title">УСЛОВИЯ ДОСТАВКИ</h1>
 					<div class="delivery__text-group-1">
 						<p class="delivery__par">Осуществляем доставку по всему г. Южно-Сахалинск не зависимо от Вашего района</p>
-						<p class="delivery__par">Принимаем заказы на доставку: 10:00-23:59</p>
-						<p class="delivery__par">Принимаем заказы на самовывоз: 10:00-23:30</p>
+						<p class="delivery__par">Принимаем заказы на доставку: 08:30-19:00</p>
+						<p class="delivery__par">Принимаем заказы на самовывоз: 08:30-19:00</p>
 					</div>
 					<p class="delivery__subtitle">Самовывоз заказов</p>
 					<div class="delivery__text-group-2">
 						<p class="delivery__par">Выдаем заказы по адресу г.Южно-Сахалинск, ул. Больничная 35Б</p>
 					</div>
-					<div class="delivery__button">Доставка - от 1 000 рублей!</div>
+					<div class="delivery__button">Доставка - от 1 500 рублей!</div>
 				</div>
 
 				<div class="delivery__map">
-					<picture class="delivery__map-picture">
-						<img src="~/assets/images/map-pickup.jpg" alt="Пункт самовывоза на карте">
-					</picture>
+					<MapComponent />
 				</div>
 			</div>
 		</div>
@@ -382,7 +380,9 @@
 }
 
 .delivery__map {
-	padding-top: 10px;
+	margin-top: 10px;
+	border-radius: 12px;
+	overflow: hidden;
 
 	@media (max-width: 991px) {
 		padding-top: 25px;

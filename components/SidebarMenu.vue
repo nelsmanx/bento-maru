@@ -95,13 +95,7 @@ const handleModalWindowOpening = (modalWindow) => {
 							<div class="sidebar-menu__link-section">
 								<ul class="sidebar-menu__link-list">
 									<li class="sidebar-menu__link-item">
-										<a class="sidebar-menu__link" href="#">Условия проведения акций</a>
-									</li>
-									<li class="sidebar-menu__link-item">
-										<a class="sidebar-menu__link" href="#">Политика конфиденциальности</a>
-									</li>
-									<li class="sidebar-menu__link-item">
-										<a class="sidebar-menu__link" href="#">Прочие ссылки</a>
+										<NuxtLink to="/policy" class="sidebar-menu__link">Политика конфиденциальности</NuxtLink>
 									</li>
 								</ul>
 							</div>
