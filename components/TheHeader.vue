@@ -20,7 +20,6 @@ const scrollHandler = () => {
 
 const header = ref(null);
 onMounted(() => {
-	console.log(header.value);
 	const headerHeight = header.value.offsetHeight;
 	document.documentElement.style.setProperty('--headerHeight', `${headerHeight}px`);
 });

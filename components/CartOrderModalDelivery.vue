@@ -217,9 +217,11 @@ const comment = reactive(useField('comment'));
 			</div>
 
 			<div class="order-modal__map">
-				<picture class="order-modal__map-picture">
+				<MapComponent />
+
+				<!-- <picture class="order-modal__map-picture">
 					<img src="~/assets/images/map-pickup.jpg" alt="Карта пункта самовывоза">
-				</picture>
+				</picture> -->
 			</div>
 			<button class="order-modal__button-submit">Применить</button>
 		</form>
@@ -310,17 +312,34 @@ const comment = reactive(useField('comment'));
 }
 
 .order-modal__map {
+	position: relative;
+	display: block;
+	width: 100%;
+	height: 0;
 	margin-bottom: 22px;
+	padding: calc(100% / (382 / 288)) 0 0;
+	border-radius: 12px;
+	overflow: hidden;
 }
 
-.order-modal__map-picture {
+.order-modal :deep(.yandex-container) {
+	position: absolute;
+	inset: 0;
+	display: block;
+	width: 100%;
+	max-width: 100%;
+	height: 100%;
+	max-height: 100%;
+	object-fit: cover;
+	object-position: center;
+}
+
+/* .order-modal__map-picture {
 	position: relative;
 	display: block;
 	width: 100%;
 	height: 0;
 	padding: calc(100% / (382 / 288)) 0 0;
-	border-radius: 12px;
-	overflow: hidden;
 }
 
 .order-modal__map-picture img {
@@ -333,8 +352,7 @@ const comment = reactive(useField('comment'));
 	max-height: 100%;
 	object-fit: cover;
 	object-position: center;
-}
-
+} */
 .order-modal__button-submit {
 	display: flex;
 	justify-content: center;

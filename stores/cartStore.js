@@ -9,7 +9,7 @@ export const useCartStore = defineStore('cart', {
 			},
 			sticks: {
 				title: "Дополнительные палочки",
-				price: 15,
+				price: 0,
 				quantity: 2
 			}
 		};

@@ -50,27 +50,16 @@ const decorIconsQuantity = computed(() => {
 						<p class="footer__bottom-info-text">© {{ new Date().getFullYear() }} ООО «СОТОРА», 693027 Сахалинская область,г.Южно-Сахалинск, пр-кт Победы д.9Б, кв.62, ИНН 6166106919, ОГРН 1226500003982. </p>
 						<ul class="footer__bottom-info-link-list">
 							<li class="footer__bottom-info-link-item">
-								<a class="footer__bottom-info-link" href="#">Публичная оферта</a>
-							</li>
-							<li class="footer__bottom-info-link-item">
-								<a class="footer__bottom-info-link" href="#">Политика использования cookie</a>
-							</li>
-							<li class="footer__bottom-info-link-item">
-								<a class="footer__bottom-info-link" href="#">Политика конфиденциальности</a>
-							</li>
-							<li class="footer__bottom-info-link-item">
-								<a class="footer__bottom-info-link" href="#">Согласие на обработку персональных данных</a>
+								<NuxtLink to="/policy" class="footer__bottom-info-link">Политика конфиденциальности</NuxtLink>
 							</li>
 						</ul>
 					</div>
-					<ul class="footer__bottom-list">
+
+					<!-- <ul class="footer__bottom-list">
 						<li class="footer__bottom-item">
 							<a class="footer__bottom-link" href="#">Сссылка</a>
 						</li>
-						<li class="footer__bottom-item">
-							<a class="footer__bottom-link" href="#">Сссылка</a>
-						</li>
-					</ul>
+					</ul> -->
 
 					<social-list class="footer__bottom-social">
 						<SocialItem modifier="vk" :link="appStore.siteparams.vk" />
@@ -151,23 +140,14 @@ const decorIconsQuantity = computed(() => {
 				<div class="footer-mobile__link-section">
 					<ul class="footer-mobile__link-list">
 						<li class="footer-mobile__link-item">
-							<a class="footer-mobile__link" href="#">Условия проведения акций</a>
-						</li>
-						<li class="footer-mobile__link-item">
-							<a class="footer-mobile__link" href="#">Политика конфиденциальности</a>
-						</li>
-						<li class="footer-mobile__link-item">
-							<a class="footer-mobile__link" href="#">Прочие ссылки</a>
+							<NuxtLink to="/policy" class="footer-mobile__link">Политика конфиденциальности</NuxtLink>
 						</li>
 					</ul>
 				</div>
 
 				<div class="footer-mobile__copr">
 					<span class="footer-mobile__copr-text">© {{ new Date().getFullYear() }} ООО «СОТОРА», 693027 Сахалинская область, г.Южно-Сахалинск, пр-кт Победы д.9Б, кв.62, ИНН 6166106919, ОГРН 1226500003982. </span>
-					<a class="footer-mobile__copr-link" href="#">Публичная оферта</a>
-					<a class="footer-mobile__copr-link" href="#">Политика использования cookie</a>
-					<a class="footer-mobile__copr-link" href="#">Политика конфиденциальности</a>
-					<a class="footer-mobile__copr-link" href="#">Согласие на обработку персональных данных</a>
+					<NuxtLink to="/policy" class="footer-mobile__copr-link">Политика конфиденциальности</NuxtLink>
 				</div>
 			</div>
 		</footer>
@@ -304,7 +284,8 @@ const decorIconsQuantity = computed(() => {
 }
 
 .footer__bottom-info {
-	margin-right: 65px;
+	/* margin-right: 65px; */
+	margin-right: 240px;
 	margin-left: auto;
 	font-family: "Cera Pro";
 	font-size: 9px;
@@ -386,7 +367,8 @@ const decorIconsQuantity = computed(() => {
 	}
 
 	.footer__bottom-info {
-		margin-right: 50px;
+		/* margin-right: 50px; */
+		margin-right: 160px;
 		padding-left: 230px;
 	}
 }
@@ -407,6 +389,11 @@ const decorIconsQuantity = computed(() => {
 	.footer__top-schedule {
 		padding-left: 30px;
 		margin-right: 30px;
+	}
+
+	.footer__bottom-info {
+		margin-right: 60px;
+		padding-left: 260px;
 	}
 }
 </style>

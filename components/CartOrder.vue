@@ -67,8 +67,8 @@ const checkInputValue = (input) => {
 
 
 const setFastestDeliveryTime = () => {
-	const scheduleStartHours = 10;
-	const scheduleEndHours = 22;
+	const scheduleStartHours = 8;
+	const scheduleEndHours = 19;
 	const baseDeliveryTimeInMinutes = 60;
 
 	// const testDate = new Date(2024, 0, 24, 5, 0);
@@ -82,15 +82,16 @@ const setFastestDeliveryTime = () => {
 
 		fastestPossibleDate.setMinutes(fastestPossibleDate.getMinutes() + baseDeliveryTimeInMinutes);
 
-		// 22, 23 - нерабочие часы текущей смены после завершения рабочего дня. Если час ближайшего времени доставки попадает в этот интервал, то день ближайшего времени доставки переносится на следующий
-		if ([scheduleEndHours, 23].includes(fastestPossibleDate.getHours())) {
+		// 19, 20, 21, 22, 23 - нерабочие часы текущей смены после завершения рабочего дня. Если час ближайшего времени доставки попадает в этот интервал, то день ближайшего времени доставки переносится на следующий
+		if ([scheduleEndHours, 20, 21, 22, 23].includes(fastestPossibleDate.getHours())) {
 			fastestPossibleDate.setDate(fastestPossibleDate.getDate() + 1);
 		}
 
 		// Если час ближайшего времени доставки позже закрытия смены и раньше открытия, тогда ближайшее время доставки устанавливается на время открытия смены + 1 час (baseDeliveryTimeInMinutes)
 		if (fastestPossibleDate.getHours() >= scheduleEndHours || fastestPossibleDate.getHours() <= scheduleStartHours) {
 			fastestPossibleDate.setHours(scheduleStartHours);
-			fastestPossibleDate.setMinutes(baseDeliveryTimeInMinutes);
+			// добавлено 30 минут по причине начала не ровно с 8, а с 8:30
+			fastestPossibleDate.setMinutes(30 + baseDeliveryTimeInMinutes);
 			fastestPossibleDate.setSeconds(0);
 		}
 
