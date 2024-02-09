@@ -39,16 +39,16 @@ const isMobileScreen = inject("isMobileScreen");
 
 <template>
 	<Head>
-        <Title>Японские коробочки с едой</Title>
-        <Meta name="description" content="Японские коробочки с едой"/>
-        <Meta property="og:type" content="website" />
-        <Meta property="og:url" content="https://bentomaru.ru" />
-        <Meta property="og:locale" content="ru_RUS" />
-        <Meta property="og:image" content="https://bentomaru.ru/img/bento-mix.jpg" />
-        <Meta property="og:title" content="Японские коробочки с едой" />
-        <Meta property="og:description" content="Японские коробочки с едой" />
-    </Head>
-	
+		<Title>Японские коробочки с едой</Title>
+		<Meta name="description" content="Японские коробочки с едой" />
+		<Meta property="og:type" content="website" />
+		<Meta property="og:url" content="https://bentomaru.ru" />
+		<Meta property="og:locale" content="ru_RUS" />
+		<Meta property="og:image" content="https://bentomaru.ru/img/bento-mix.jpg" />
+		<Meta property="og:title" content="Японские коробочки с едой" />
+		<Meta property="og:description" content="Японские коробочки с едой" />
+	</Head>
+
 	<BackgroundDecor>
 
 		<CategoryTitleList class="category-title--cart" />
@@ -63,7 +63,7 @@ const isMobileScreen = inject("isMobileScreen");
 						</button>
 					</template>
 					<h1 v-if="!cartStore.totalItemsQuantity && !orderStore.orderIsSent" class="cart__title">Ваша корзина пуста</h1>
-					<h1 v-if="orderStore.orderIsSent && !cartStore.totalItemsQuantity" class="cart__title">Ваш заказ принят, в течении 15 минут с вами свяжется наш сотрудник</h1>
+					<h1 v-if="orderStore.orderIsSent && !cartStore.totalItemsQuantity" class="cart__title">Ваш заказ принят, в течение 15 минут с вами свяжется наш сотрудник</h1>
 				</div>
 
 				<div v-if="cartStore.totalItemsQuantity" class="cart__inner">
@@ -145,7 +145,7 @@ const isMobileScreen = inject("isMobileScreen");
 
 	<CartToast v-if="toastIsVisible" class="cart__toast"
 		title="Спасибо за заказ!"
-		subtitle="Заказ будет доставлен в течении"
+		subtitle="Заказ будет доставлен в течение"
 		subtitleAccent="60 минут" />
 </template>
 
