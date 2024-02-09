@@ -23,7 +23,6 @@ router.beforeEach(() => {
 	<NuxtLayout>
 		<NuxtPage :key="$route.fullPath" />
 	</NuxtLayout>
-	<PreloaderComponent />
 </template>
 
 <style src="~/assets/css/fonts.css"></style>

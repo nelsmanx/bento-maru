@@ -111,6 +111,8 @@ const { clientWidth } = useClientWidth();
 	width: 100%;
 	height: 100%;
 	object-fit: contain;
+	position: relative;
+	z-index: 1;
 }
 
 @media (max-width: 1399.98px) {
