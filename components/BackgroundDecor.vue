@@ -38,7 +38,7 @@ onMounted(() => {
 		}
 	}
 
-	backgroundDecor.value.style.setProperty('--adaptive-height', `${adaptiveHeight}px`);
+	// backgroundDecor.value.style.setProperty('--adaptive-height', `${adaptiveHeight}px`);
 });
 
 </script>
