@@ -39,6 +39,7 @@ onMounted(() => {
 	}
 
 	// backgroundDecor.value.style.setProperty('--adaptive-height', `${adaptiveHeight}px`);
+	// Вытягивает контент при смене категории, так что после футера образуется пустое пространство
 });
 
 </script>
