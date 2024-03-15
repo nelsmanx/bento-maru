@@ -14,7 +14,19 @@ export default defineNuxtConfig({
 		'nuxt-swiper',
 		'@vueuse/nuxt',
 		'@vee-validate/nuxt',
-		'@nuxtjs/sitemap'
+		'@nuxtjs/sitemap',
+		[
+			'yandex-metrika-module-nuxt3',
+			{
+			  id: '95849402',
+			  webvisor: true,
+			  consoleLog: false,
+			  clickmap: true,
+			  useCDN: false,
+			  trackLinks: true,
+			  accurateTrackBounce: true,
+			}
+		]
 	],
 	pinia: {
 		storesDirs: ['./stores/**'],
