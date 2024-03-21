@@ -1,7 +1,7 @@
 <script setup>
 import { useProductStore } from '@/stores/productStore';
 
-
+const appStore = useAppStore();
 const productStore = useProductStore();
 const categories = productStore.categories;
 const route = useRoute();
@@ -11,6 +11,13 @@ function updateCategory(id) {
 	productStore.activeCategory(id);
 	if (route.name !== 'index') {
 		router.push('/');
+	}
+
+	const activeCategory = document.querySelector('#active-category');
+	if (activeCategory) {
+		const activeCategoryPosition = activeCategory.getBoundingClientRect();
+		const pageY = activeCategoryPosition.top + window.scrollY;
+		window.scrollTo(0, pageY - appStore.headerHeight);
 	}
 }
 </script>
@@ -39,7 +46,7 @@ function updateCategory(id) {
 			</Swiper>
 		</div>
 	</div>
-</template >
+</template>
 
 <style scoped>
 .category-title {
@@ -134,4 +141,5 @@ function updateCategory(id) {
 	.category-title__item {
 		font-size: 13px;
 	}
-}</style>
+}
+</style>

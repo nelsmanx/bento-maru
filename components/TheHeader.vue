@@ -21,6 +21,7 @@ const scrollHandler = () => {
 const header = ref(null);
 onMounted(() => {
 	const headerHeight = header.value.offsetHeight;
+	appStore.headerHeight = headerHeight;
 	document.documentElement.style.setProperty('--headerHeight', `${headerHeight}px`);
 });
 
@@ -54,9 +55,9 @@ const { clientWidth } = useClientWidth();
 						<NuxtLink to="/favorites"
 							class="header__button-fav"
 							:class="[
-								{ 'header__button-fav--cart-full': hasProductItems },
-								{ 'is-active': isItemInFav }
-							]">
+		{ 'header__button-fav--cart-full': hasProductItems },
+		{ 'is-active': isItemInFav }
+	]">
 						</NuxtLink>
 						<a v-show="clientWidth < 768" class="header__button-tel" :href="'tel:+' + appStore.siteparams.phone.replace(/\D/g, '')"></a>
 						<NuxtLink to="/cart">

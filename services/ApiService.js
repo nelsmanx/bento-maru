@@ -25,8 +25,9 @@ class ApiService {
 		return this.request('/get-banners');
 	}
 
-	getProducts(id) {
-		return this.request(`/get-products?id=${id}`);
+	async getProducts(id) {
+		const allProducts = await this.request(`/get-products?id=${id}`);
+		return allProducts.filter(product => product.active === 1);
 	}
 
 	sendForm(data) {

@@ -67,7 +67,9 @@ onMounted(() => {
 		<div class="card__inner">
 			<span v-if="product.new === 1" class="card__badge">NEW</span>
 			<picture class="card__picture" @click="openModalCard">
-				<img :src="baseUrl + product.photos[0]" :alt="product.name">
+				<img v-if="product.photos && product.photos.length > 0"
+					:src="baseUrl + product.photos[0]" :alt="product.name">
+				<img v-else src="\assets\images\no-image-found.jpg" alt="" aria-hidden="true">
 			</picture>
 			<div class="card__info">
 				<div class="card__title-and-weight">

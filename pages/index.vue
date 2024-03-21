@@ -37,15 +37,15 @@ const decorIconsQuantity = computed(() => {
 
 <template>
 	<Head>
-        <Title>Японские коробочки с едой</Title>
-        <Meta name="description" content="Японские коробочки с едой"/>
-        <Meta property="og:type" content="website" />
-        <Meta property="og:url" content="https://bentomaru.ru" />
-        <Meta property="og:locale" content="ru_RUS" />
-        <Meta property="og:image" content="https://bentomaru.ru/img/bento-mix.jpg" />
-        <Meta property="og:title" content="Японские коробочки с едой" />
-        <Meta property="og:description" content="Японские коробочки с едой" />
-    </Head>
+		<Title>Японские коробочки с едой</Title>
+		<Meta name="description" content="Японские коробочки с едой" />
+		<Meta property="og:type" content="website" />
+		<Meta property="og:url" content="https://bentomaru.ru" />
+		<Meta property="og:locale" content="ru_RUS" />
+		<Meta property="og:image" content="https://bentomaru.ru/img/bento-mix.jpg" />
+		<Meta property="og:title" content="Японские коробочки с едой" />
+		<Meta property="og:description" content="Японские коробочки с едой" />
+	</Head>
 	<CategoryTitleList v-if="clientWidth < 576" class="category-title--index" />
 	<CarouselHero v-if="clientWidth >= 992" />
 
@@ -60,7 +60,7 @@ const decorIconsQuantity = computed(() => {
 
 	<BackgroundDecor>
 		<CategoryTitleList v-if="clientWidth >= 576" class="category-title--index" />
-		<Category id="new"
+		<Category id="active-category"
 			:title="productStore.category.name"
 			:classModifier="productStore.category.alias"
 			:category="productStore.category"
