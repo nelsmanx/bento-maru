@@ -27,7 +27,7 @@ class ApiService {
 
 	async getProducts(id) {
 		const allProducts = await this.request(`/get-products?id=${id}`);
-		return allProducts.filter(product => product.active === 1);
+		return allProducts.filter(product => product.active === 1 && product.deleted === 0);
 	}
 
 	sendForm(data) {

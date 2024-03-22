@@ -74,7 +74,9 @@ const isMobileScreen = inject("isMobileScreen");
 									class="cart-product-item__button-del"></button>
 								<div class="cart-product-item__inner">
 									<picture class="cart-product-item__picture">
-										<img :src="baseUrl + product.photos[0]" :alt="product.name">
+										<img v-if="product.photos && product.photos.length > 0"
+											:src="baseUrl + product.photos[0]" :alt="product.name">
+										<img v-else src="\assets\images\no-image-found.jpg" alt="" aria-hidden="true">
 									</picture>
 									<div class="cart-product-item__info">
 										<div class="cart-product-item__row-1">
