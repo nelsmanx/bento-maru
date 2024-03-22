@@ -63,10 +63,10 @@ onMounted(() => {
 
 <template>
 	<!-- <div class="card" :class="$attrs.class" v-if="product"> -->
-	<div class="card" v-if="product">
+	<div class="card" v-if="product && product.active && product.deleted === 0">
 		<div class="card__inner">
 			<span v-if="product.new === 1" class="card__badge">NEW</span>
-			<picture class="card__picture" @click="openModalCard">
+			<picture class="card__picture" @click="openModalCard" v-if="product.photos && product.photos.length > 0">
 				<img :src="baseUrl + product.photos[0]" :alt="product.name">
 			</picture>
 			<div class="card__info">
@@ -81,11 +81,10 @@ onMounted(() => {
 				<div v-else-if="product.content" ref="ingredientsDesc"
 					v-html="product.content"
 					class="card__desc card__desc--ingredients"></div>
-
 				<div class="card__price-and-actions">
 					<div class="card__price">
 						<div class="card__price-actual">{{ product.price }} ₽</div>
-						<div v-if="product.priceOld > 0" class="card__price-old">{{ product.priceOld }} руб</div>
+						<template v-if="product.priceOld"><div v-if="product.priceOld > 0" class="card__price-old">{{ product.priceOld }} руб</div></template>
 					</div>
 					<div class="card__actions">
 						<button @click="$emit('toggle-fav')"
