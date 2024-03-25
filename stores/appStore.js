@@ -8,6 +8,7 @@ export const useAppStore = defineStore('appStore', {
 			loader: 0,
 			siteparams: [],
 			scrollbarWidth: null,
+			headerHeight: null,
 
 			sidebarMenu: {
 				isOpen: false

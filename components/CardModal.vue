@@ -69,7 +69,9 @@ const { clientWidth } = useClientWidth();
 		<div class="card-modal__inner">
 			<div class="card-modal__picture-wrap">
 				<picture class="card-modal__picture">
-					<img :src="baseUrl + product.photos[0]" :alt="product.name">
+					<img v-if="product.photos && product.photos.length > 0"
+						:src="baseUrl + product.photos[0]" :alt="product.name">
+					<img v-else src="\assets\images\no-image-found.jpg" alt="" aria-hidden="true">
 				</picture>
 				<span v-if="product.isNew" class="card-modal__badge">NEW</span>
 			</div>
